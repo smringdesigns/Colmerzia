@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
             'store_id' => $store->id,
             'uuid' => Str::uuid(),
             'name' => 'Administrador',
-            'email' => 'admin@commerzia.com',
+            'email' => 'elmusdevops@gmail.com',
             'password' => bcrypt('password'),
             'is_active' => true,
         ]);

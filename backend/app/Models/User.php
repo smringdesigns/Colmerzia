@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-
 use App\Models\Role;
 use App\Models\Store;
 use Database\Factories\UserFactory;
+use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -30,39 +29,18 @@ use Illuminate\Notifications\Notifiable;
 ])]
 class User extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable, SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
-    /**
-     * Relación:
-     * Un usuario pertenece a una tienda.
-     *
-     * Tabla:
-     * users.store_id -> stores.id
-     */
     public function store()
     {
         return $this->belongsTo(Store::class);
     }
 
-    /**
-     * Relación:
-     * Un usuario puede tener múltiples roles.
-     *
-     * Tabla pivote:
-     * role_user
-     */
     public function roles()
     {
         return $this->belongsToMany(Role::class);
     }
 
-    /**
-     * Verifica si el usuario posee un rol específico.
-     *
-     * Ejemplo:
-     * $user->hasRole('admin');
-     */
     public function hasRole(string $role): bool
     {
         return $this->roles()
@@ -70,9 +48,6 @@ class User extends Authenticatable
             ->exists();
     }
 
-    /**
-     * Conversión automática de tipos.
-     */
     protected function casts(): array
     {
         return [
