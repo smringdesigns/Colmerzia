@@ -1,53 +1,77 @@
-import { NavLink } from "react-router-dom";
 import {
     LayoutDashboard,
     Package,
     Users,
+    Warehouse,
     ShoppingCart,
-    Boxes,
     Settings,
 } from "lucide-react";
 
-const links = [
-    { to: "/",            icon: LayoutDashboard, label: "Dashboard"     },
-    { to: "/productos",   icon: Package,          label: "Productos"     },
-    { to: "/inventario",  icon: Boxes,            label: "Inventario"    },
-    { to: "/clientes",    icon: Users,             label: "Clientes"      },
-    { to: "/pedidos",     icon: ShoppingCart,      label: "Pedidos"       },
-    { to: "/ajustes",     icon: Settings,          label: "Configuración" },
+import { NavLink } from "react-router-dom";
+
+const menu = [
+    {
+        name: "Dashboard",
+        path: "/",
+        icon: LayoutDashboard,
+    },
+    {
+        name: "Productos",
+        path: "/products",
+        icon: Package,
+    },
+    {
+        name: "Inventario",
+        path: "/inventory",
+        icon: Warehouse,
+    },
+    {
+        name: "Clientes",
+        path: "/customers",
+        icon: Users,
+    },
+    {
+        name: "Pedidos",
+        path: "/orders",
+        icon: ShoppingCart,
+    },
+    {
+        name: "Configuración",
+        path: "/settings",
+        icon: Settings,
+    },
 ];
 
 export default function Sidebar() {
     return (
-        <aside className="w-64 h-screen bg-slate-900 text-white flex flex-col">
-
-            <div className="p-6 border-b border-slate-700">
-                <h1 className="text-3xl font-bold">
-                    Commerzia
-                </h1>
+        <aside className="sidebar">
+            <div className="sidebar-brand">
+                <div className="sidebar-logo">C</div>
+                <div>
+                    <h1>Commerzia</h1>
+                    <p>Commerce admin</p>
+                </div>
             </div>
 
-            <nav className="flex-1 p-4 space-y-2">
-                {links.map(({ to, icon: Icon, label }) => (
+            <nav className="sidebar-nav">
+                {menu.map((item) => (
                     <NavLink
-                        key={to}
-                        to={to}
-                        end={to === "/"}
+                        key={item.path}
+                        to={item.path}
                         className={({ isActive }) =>
-                            [
-                                "flex items-center gap-3 p-3 rounded-lg transition-colors",
-                                isActive
-                                    ? "bg-slate-700 text-white"
-                                    : "hover:bg-slate-800 text-slate-300",
-                            ].join(" ")
+                            isActive ? "sidebar-link active" : "sidebar-link"
                         }
                     >
-                        <Icon size={20} />
-                        {label}
+                        <item.icon size={18} />
+                        <span>{item.name}</span>
                     </NavLink>
                 ))}
             </nav>
 
+            <div className="sidebar-cta">
+                <strong>Next step</strong>
+                <span>Connect inventory and orders when modules are ready.</span>
+            </div>
         </aside>
     );
 }

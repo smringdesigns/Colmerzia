@@ -10,9 +10,6 @@ class Product extends Model
 {
     use HasFactory, SoftDeletes;
 
-    /**
-     * Campos asignables.
-     */
     protected $fillable = [
         'store_id',
         'category_id',
@@ -21,62 +18,62 @@ class Product extends Model
         'name',
         'slug',
         'sku',
+        'short_description',
         'description',
         'price',
         'compare_price',
-        'cost',
-        'status',
-        'is_featured',
+        'cost_price',
+        'stock',
+        'min_stock',
+        'weight',
+        'length',
+        'width',
+        'height',
+        'featured',
+        'is_active',
+        'has_variants',
+        'meta_title',
+        'meta_description',
     ];
 
-    /**
-     * Conversión automática.
-     */
     protected function casts(): array
     {
         return [
             'price'         => 'decimal:2',
             'compare_price' => 'decimal:2',
-            'cost'          => 'decimal:2',
-            'is_featured'   => 'boolean',
+            'cost_price'    => 'decimal:2',
+            'weight'        => 'decimal:2',
+            'featured'      => 'boolean',
+            'is_active'     => 'boolean',
+            'has_variants'  => 'boolean',
         ];
     }
 
-    /**
-     * El producto pertenece a una tienda.
-     */
+    /** El producto pertenece a una tienda. */
     public function store()
     {
         return $this->belongsTo(Store::class);
     }
 
-    /**
-     * El producto pertenece a una categoría.
-     */
+    /** El producto pertenece a una categoría. */
     public function category()
     {
         return $this->belongsTo(Category::class);
     }
 
-    /**
-     * El producto pertenece a una marca.
-     */
+    /** El producto pertenece a una marca. */
     public function brand()
     {
         return $this->belongsTo(Brand::class);
     }
 
-    /**
-     * Variantes del producto.
-     */
+    /** Variantes del producto. */
     public function variants()
     {
         return $this->hasMany(ProductVariant::class);
     }
 
-    /**
-     * Imágenes del producto.
-     */
+    /** Imágenes del producto. */
     public function images()
     {
         return $this->hasMany(ProductImage::class);

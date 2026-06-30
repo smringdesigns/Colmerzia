@@ -2,25 +2,25 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\Auth\AuthController;
+use App\Http\Controllers\Api\V1\ProductController;
+use App\Http\Controllers\Api\V1\CustomerController;
 
 Route::prefix('v1')->group(function () {
 
-    Route::post(
-        '/login',
-        [AuthController::class,'login']
-    );
+    // Autenticación pública
+    Route::post('/login', [AuthController::class, 'login']);
 
-    Route::middleware('auth:sanctum')
-        ->group(function () {
+    // Rutas protegidas
+    Route::middleware('auth:sanctum')->group(function () {
 
-            Route::get(
-                '/me',
-                [AuthController::class,'me']
-            );
+        // Auth
+        Route::get('/me',      [AuthController::class, 'me']);
+        Route::post('/logout', [AuthController::class, 'logout']);
 
-            Route::post(
-                '/logout',
-                [AuthController::class,'logout']
-            );
-        });
+        // Productos
+        Route::apiResource('products',  ProductController::class);
+
+        // Clientes
+        Route::apiResource('customers', CustomerController::class);
+    });
 });

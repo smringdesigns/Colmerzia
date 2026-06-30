@@ -22,8 +22,9 @@ class Customer extends Model
         'phone',
         'document_type',
         'document_number',
+        'company',
         'birth_date',
-        'gender',
+        'notes',
         'is_active',
     ];
 

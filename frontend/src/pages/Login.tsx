@@ -1,28 +1,27 @@
-import { useNavigate } from "react-router-dom";
+import { Lock, Mail, Store } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
+import Button from "../components/ui/Button";
+import TextField from "../components/ui/TextField";
 import { login } from "../features/auth/authApi";
 import { useAuthStore } from "../store/authStore";
 
-// ── Schema ────────────────────────────────────────────────
 const schema = z.object({
     email: z
         .string()
         .min(1, "El correo es obligatorio")
         .email("Ingresa un correo válido"),
-    password: z
-        .string()
-        .min(1, "La contraseña es obligatoria"),
+    password: z.string().min(1, "La contraseña es obligatoria"),
 });
 
 type LoginForm = z.infer<typeof schema>;
 
-// ── Componente ────────────────────────────────────────────
 export default function Login() {
     const navigate = useNavigate();
-    const setUser  = useAuthStore((s) => s.setUser);
+    const setUser = useAuthStore((s) => s.setUser);
     const setToken = useAuthStore((s) => s.setToken);
 
     const {
@@ -41,8 +40,6 @@ export default function Login() {
             setToken(res.token);
             navigate("/", { replace: true });
         } catch {
-            // Error del servidor — lo mostramos en el campo password
-            // para no revelar si el email existe o no
             setError("password", {
                 message: "Correo o contraseña incorrectos",
             });
@@ -50,232 +47,76 @@ export default function Login() {
     }
 
     return (
-        <div style={{
-            display: "flex",
-            minHeight: "100vh",
-            fontFamily: "'Inter', system-ui, sans-serif",
-        }}>
-
-            {/* Panel izquierdo — branding */}
-            <div style={{
-                flex: "0 0 45%",
-                background: "#0F1117",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                padding: "64px",
-                position: "relative",
-                overflow: "hidden",
-            }}>
-
-                {/* Textura de puntos */}
-                <div style={{
-                    position: "absolute",
-                    inset: 0,
-                    backgroundImage: "radial-gradient(circle, #ffffff12 1px, transparent 1px)",
-                    backgroundSize: "28px 28px",
-                    pointerEvents: "none",
-                }} />
-
-                {/* Acento superior */}
-                <div style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    height: "3px",
-                    background: "linear-gradient(90deg, #6366F1, #818CF8)",
-                }} />
-
-                <div style={{ position: "relative", zIndex: 1 }}>
-                    <div style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: "10px",
-                        marginBottom: "48px",
-                    }}>
-                        <div style={{
-                            width: "36px",
-                            height: "36px",
-                            background: "#6366F1",
-                            borderRadius: "8px",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                        }}>
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
-                                <line x1="3" y1="6" x2="21" y2="6"/>
-                                <path d="M16 10a4 4 0 01-8 0"/>
-                            </svg>
+        <main className="auth-page">
+            <section className="auth-card">
+                <div className="auth-media" aria-hidden="true">
+                    <img src="/auth/login-office.jpeg" alt="" />
+                    <div className="auth-media-overlay">
+                        <div className="auth-logo large">
+                            <Store size={26} />
                         </div>
-                        <span style={{
-                            color: "#FFFFFF",
-                            fontSize: "22px",
-                            fontWeight: "700",
-                            letterSpacing: "-0.5px",
-                        }}>
-                            Commerzia
-                        </span>
+                        <p>Commerce operations</p>
+                        <h1>Manage your store with calm, clear control.</h1>
+                        <span>Products, customers, inventory and orders in one workspace.</span>
+                    </div>
+                </div>
+
+                <div className="auth-form-panel">
+                    <div className="auth-form-heading">
+                        <div className="auth-logo">
+                            <Store size={22} />
+                        </div>
+                        <div>
+                            <strong>Commerzia</strong>
+                            <span>Admin dashboard</span>
+                        </div>
                     </div>
 
-                    <h1 style={{
-                        color: "#FFFFFF",
-                        fontSize: "36px",
-                        fontWeight: "700",
-                        lineHeight: "1.2",
-                        letterSpacing: "-1px",
-                        marginBottom: "16px",
-                    }}>
-                        Tu tienda,<br />
-                        bajo control.
-                    </h1>
+                    <div className="auth-copy">
+                        <p className="eyebrow">Welcome back</p>
+                        <h2>Login</h2>
+                        <p>Enter your credentials to continue managing your store.</p>
+                    </div>
 
-                    <p style={{
-                        color: "#6B7280",
-                        fontSize: "15px",
-                        lineHeight: "1.6",
-                        maxWidth: "320px",
-                    }}>
-                        Panel de administración para gestionar productos,
-                        pedidos e inventario en un solo lugar.
-                    </p>
-                </div>
-            </div>
+                    <form className="auth-form" onSubmit={handleSubmit(onSubmit)} noValidate>
+                        <TextField
+                            autoComplete="email"
+                            error={errors.email?.message}
+                            icon={<Mail size={17} />}
+                            label="Email"
+                            placeholder="admin@commerzia.com"
+                            type="email"
+                            {...register("email")}
+                        />
 
-            {/* Panel derecho — formulario */}
-            <div style={{
-                flex: 1,
-                background: "#FFFFFF",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                padding: "64px",
-            }}>
-                <div style={{ width: "100%", maxWidth: "380px" }}>
+                        <TextField
+                            autoComplete="current-password"
+                            error={errors.password?.message}
+                            icon={<Lock size={17} />}
+                            label="Password"
+                            placeholder="********"
+                            type="password"
+                            {...register("password")}
+                        />
 
-                    <h2 style={{
-                        color: "#0F1117",
-                        fontSize: "24px",
-                        fontWeight: "700",
-                        letterSpacing: "-0.5px",
-                        marginBottom: "8px",
-                    }}>
-                        Iniciar sesión
-                    </h2>
-
-                    <p style={{
-                        color: "#6B7280",
-                        fontSize: "14px",
-                        marginBottom: "36px",
-                    }}>
-                        Ingresa tus credenciales para continuar
-                    </p>
-
-                    <form onSubmit={handleSubmit(onSubmit)} noValidate>
-
-                        {/* Campo email */}
-                        <div style={{ marginBottom: "20px" }}>
-                            <label style={{
-                                display: "block",
-                                fontSize: "13px",
-                                fontWeight: "500",
-                                color: "#374151",
-                                marginBottom: "6px",
-                            }}>
-                                Correo electrónico
+                        <div className="auth-row">
+                            <label className="check-row">
+                                <input type="checkbox" />
+                                <span>Remember me</span>
                             </label>
-                            <input
-                                type="email"
-                                placeholder="admin@tienda.com"
-                                {...register("email")}
-                                style={{
-                                    width: "100%",
-                                    padding: "10px 14px",
-                                    fontSize: "14px",
-                                    border: `1.5px solid ${errors.email ? "#EF4444" : "#E5E7EB"}`,
-                                    borderRadius: "8px",
-                                    outline: "none",
-                                    color: "#0F1117",
-                                    background: "#FAFAFA",
-                                    boxSizing: "border-box",
-                                    transition: "border-color 0.15s",
-                                }}
-                            />
-                            {errors.email && (
-                                <p style={{
-                                    color: "#EF4444",
-                                    fontSize: "12px",
-                                    marginTop: "5px",
-                                }}>
-                                    {errors.email.message}
-                                </p>
-                            )}
+                            <Link to="/forgot-password">Forgot password?</Link>
                         </div>
 
-                        {/* Campo password */}
-                        <div style={{ marginBottom: "28px" }}>
-                            <label style={{
-                                display: "block",
-                                fontSize: "13px",
-                                fontWeight: "500",
-                                color: "#374151",
-                                marginBottom: "6px",
-                            }}>
-                                Contraseña
-                            </label>
-                            <input
-                                type="password"
-                                placeholder="••••••••"
-                                {...register("password")}
-                                style={{
-                                    width: "100%",
-                                    padding: "10px 14px",
-                                    fontSize: "14px",
-                                    border: `1.5px solid ${errors.password ? "#EF4444" : "#E5E7EB"}`,
-                                    borderRadius: "8px",
-                                    outline: "none",
-                                    color: "#0F1117",
-                                    background: "#FAFAFA",
-                                    boxSizing: "border-box",
-                                    transition: "border-color 0.15s",
-                                }}
-                            />
-                            {errors.password && (
-                                <p style={{
-                                    color: "#EF4444",
-                                    fontSize: "12px",
-                                    marginTop: "5px",
-                                }}>
-                                    {errors.password.message}
-                                </p>
-                            )}
-                        </div>
-
-                        {/* Botón */}
-                        <button
-                            type="submit"
-                            disabled={isSubmitting}
-                            style={{
-                                width: "100%",
-                                padding: "11px",
-                                background: isSubmitting ? "#818CF8" : "#6366F1",
-                                color: "#FFFFFF",
-                                fontSize: "14px",
-                                fontWeight: "600",
-                                border: "none",
-                                borderRadius: "8px",
-                                cursor: isSubmitting ? "not-allowed" : "pointer",
-                                transition: "background 0.15s",
-                                letterSpacing: "0.1px",
-                            }}
-                        >
-                            {isSubmitting ? "Verificando..." : "Entrar al panel"}
-                        </button>
-
+                        <Button fullWidth type="submit" disabled={isSubmitting}>
+                            {isSubmitting ? "Checking..." : "Log in"}
+                        </Button>
                     </form>
+
+                    <p className="auth-footer-text">
+                        Need a store account? <Link to="/create-account">Create account</Link>
+                    </p>
                 </div>
-            </div>
-        </div>
+            </section>
+        </main>
     );
 }
