@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom";
 import {
     LayoutDashboard,
     Package,
@@ -6,6 +7,15 @@ import {
     Boxes,
     Settings,
 } from "lucide-react";
+
+const links = [
+    { to: "/",            icon: LayoutDashboard, label: "Dashboard"     },
+    { to: "/productos",   icon: Package,          label: "Productos"     },
+    { to: "/inventario",  icon: Boxes,            label: "Inventario"    },
+    { to: "/clientes",    icon: Users,             label: "Clientes"      },
+    { to: "/pedidos",     icon: ShoppingCart,      label: "Pedidos"       },
+    { to: "/ajustes",     icon: Settings,          label: "Configuración" },
+];
 
 export default function Sidebar() {
     return (
@@ -18,37 +28,24 @@ export default function Sidebar() {
             </div>
 
             <nav className="flex-1 p-4 space-y-2">
-
-                <a className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800">
-                    <LayoutDashboard size={20} />
-                    Dashboard
-                </a>
-
-                <a className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800">
-                    <Package size={20} />
-                    Productos
-                </a>
-
-                <a className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800">
-                    <Boxes size={20} />
-                    Inventario
-                </a>
-
-                <a className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800">
-                    <Users size={20} />
-                    Clientes
-                </a>
-
-                <a className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800">
-                    <ShoppingCart size={20} />
-                    Pedidos
-                </a>
-
-                <a className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800">
-                    <Settings size={20} />
-                    Configuración
-                </a>
-
+                {links.map(({ to, icon: Icon, label }) => (
+                    <NavLink
+                        key={to}
+                        to={to}
+                        end={to === "/"}
+                        className={({ isActive }) =>
+                            [
+                                "flex items-center gap-3 p-3 rounded-lg transition-colors",
+                                isActive
+                                    ? "bg-slate-700 text-white"
+                                    : "hover:bg-slate-800 text-slate-300",
+                            ].join(" ")
+                        }
+                    >
+                        <Icon size={20} />
+                        {label}
+                    </NavLink>
+                ))}
             </nav>
 
         </aside>
