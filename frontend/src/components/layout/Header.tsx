@@ -30,7 +30,7 @@ export default function Header() {
                     </span>
                     <div>
                         <strong>Admin</strong>
-                        <span>Store manager</span>
+                        <span>Gerencia</span>
                     </div>
                 </div>
 
@@ -40,7 +40,7 @@ export default function Header() {
                     type="button"
                 >
                     <LogOut size={16} />
-                    Logout
+                    Cerrar Sesión
                 </button>
             </div>
         </header>

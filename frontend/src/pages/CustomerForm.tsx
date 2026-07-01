@@ -194,7 +194,7 @@ export default function CustomerForm() {
                 <Panel className="form-section">
                     <div className="form-section-heading">
                         <h2>Documento de identidad</h2>
-                        <p>Informacion fiscal o documento personal.</p>
+                        <p>Ingrese su documento de identidad o NIT.</p>
                     </div>
 
                     <div className="form-grid document">

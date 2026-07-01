@@ -48,8 +48,8 @@ export default function Sidebar() {
             <div className="sidebar-brand">
                 <div className="sidebar-logo">C</div>
                 <div>
-                    <h1>Commerzia</h1>
-                    <p>Commerce admin</p>
+                    <h1>Colmerzia</h1>
+                    <p>Panel Administrativo</p>
                 </div>
             </div>
 
@@ -69,8 +69,8 @@ export default function Sidebar() {
             </nav>
 
             <div className="sidebar-cta">
-                <strong>Next step</strong>
-                <span>Connect inventory and orders when modules are ready.</span>
+                <strong>Bienvenido a Colmerzia</strong>
+                <span>Administra productos, pedidos y usuarios desde un solo lugar.</span>
             </div>
         </aside>
     );

@@ -47,16 +47,16 @@ export default function Dashboard() {
                     <h1>Dashboard</h1>
                 </div>
                 <button className="primary-action" type="button">
-                    Generate report
+                    Generar informe
                 </button>
             </div>
 
             <section className="welcome-panel">
                 <div>
-                    <p>Good afternoon</p>
-                    <h2>Here is what is happening with your store today.</h2>
+                    <p>Buenas tardes</p>
+                    <h2>Esto es lo que está sucediendo con tu tienda hoy.</h2>
                 </div>
-                <span>Updated a moment ago</span>
+                <span>Actualizado hace un momento</span>
             </section>
 
             <section className="stats-grid">
@@ -78,18 +78,18 @@ export default function Dashboard() {
                 <article className="panel-card">
                     <div className="panel-header">
                         <div>
-                            <h2>Recent orders</h2>
-                            <p>Latest commercial activity</p>
+                            <h2>Órdenes recientes</h2>
+                            <p>Actividad comercial más reciente</p>
                         </div>
                     </div>
                     <div className="data-table">
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Customer</th>
-                                    <th>Amount</th>
-                                    <th>Status</th>
-                                    <th>Date</th>
+                                    <th>Cliente</th>
+                                    <th>Cantidad</th>
+                                    <th>Estado</th>
+                                    <th>Fecha</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -111,16 +111,16 @@ export default function Dashboard() {
                 </article>
 
                 <article className="panel-card compact-panel">
-                    <h2>Store health</h2>
+                    <h2>Salud de la tienda</h2>
                     <div className="health-row">
-                        <span>Catalog completeness</span>
+                        <span>Estado del catálogo</span>
                         <strong>74%</strong>
                     </div>
                     <div className="progress-track">
                         <span style={{ width: "74%" }} />
                     </div>
                     <div className="health-row">
-                        <span>Customer retention</span>
+                        <span>Retención de clientes</span>
                         <strong>62%</strong>
                     </div>
                     <div className="progress-track">

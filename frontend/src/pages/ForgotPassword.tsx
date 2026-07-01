@@ -14,34 +14,34 @@ export default function ForgotPassword() {
                         <div className="auth-logo large">
                             <Store size={26} />
                         </div>
-                        <p>Account recovery</p>
-                        <h1>Get back into your commerce workspace.</h1>
-                        <span>We will connect this flow to email delivery when auth recovery is ready.</span>
+                        <p>Recupera tu cuenta</p>
+                        <h1>Recupera el acceso a tu espacio de trabajo.</h1>
+                        <span>Te enviaremos un enlace seguro para restablecer tu contraseña.</span>
                     </div>
                 </div>
 
                 <div className="auth-form-panel">
                     <div className="auth-copy">
-                        <p className="eyebrow">Password help</p>
-                        <h2>Forgot password</h2>
-                        <p>Enter your email and we will prepare the recovery flow for your account.</p>
+                        <p className="eyebrow">Recuperación de acceso</p>
+                        <h2>¿Olvidaste tu contraseña?</h2>
+                        <p>Ingresa el correo asociado a tu cuenta y te enviaremos instrucciones para restablecerla.</p>
                     </div>
 
                     <form className="auth-form">
                         <TextField
                             icon={<Mail size={17} />}
                             label="Email"
-                            placeholder="admin@commerzia.com"
+                            placeholder="tienda@correo.com"
                             type="email"
                         />
 
                         <Button fullWidth type="button">
-                            Send recovery link
+                            Enviar enlace de recuperación
                         </Button>
                     </form>
 
                     <p className="auth-footer-text">
-                        Remembered it? <Link to="/login">Back to login</Link>
+                        ¿Recordaste tu contraseña? <Link to="/login">Volver al inicio de sesión</Link>
                     </p>
                 </div>
             </section>

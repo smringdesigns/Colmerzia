@@ -55,9 +55,9 @@ export default function Login() {
                         <div className="auth-logo large">
                             <Store size={26} />
                         </div>
-                        <p>Commerce operations</p>
-                        <h1>Manage your store with calm, clear control.</h1>
-                        <span>Products, customers, inventory and orders in one workspace.</span>
+                        <p>Gestión comercial</p>
+                        <h1>Administra tu tienda con control y claridad.</h1>
+                        <span>Productos, clientes, inventario y pedidos en un solo lugar.</span>
                     </div>
                 </div>
 
@@ -67,15 +67,15 @@ export default function Login() {
                             <Store size={22} />
                         </div>
                         <div>
-                            <strong>Commerzia</strong>
-                            <span>Admin dashboard</span>
+                            <strong>Colmerzia</strong>
+                            <span>Panel de administración</span>
                         </div>
                     </div>
 
                     <div className="auth-copy">
-                        <p className="eyebrow">Welcome back</p>
-                        <h2>Login</h2>
-                        <p>Enter your credentials to continue managing your store.</p>
+                        <p className="eyebrow">Bienvenido de vuelta</p>
+                        <h2>Iniciar sesión</h2>
+                        <p>Ingresa tus credenciales para continuar gestionando tu tienda.</p>
                     </div>
 
                     <form className="auth-form" onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -84,7 +84,7 @@ export default function Login() {
                             error={errors.email?.message}
                             icon={<Mail size={17} />}
                             label="Email"
-                            placeholder="admin@commerzia.com"
+                            placeholder="tienda@correo.com"
                             type="email"
                             {...register("email")}
                         />
@@ -93,7 +93,7 @@ export default function Login() {
                             autoComplete="current-password"
                             error={errors.password?.message}
                             icon={<Lock size={17} />}
-                            label="Password"
+                            label="Contraseña"
                             placeholder="********"
                             type="password"
                             {...register("password")}
@@ -102,18 +102,18 @@ export default function Login() {
                         <div className="auth-row">
                             <label className="check-row">
                                 <input type="checkbox" />
-                                <span>Remember me</span>
+                                <span>Recordarme</span>
                             </label>
-                            <Link to="/forgot-password">Forgot password?</Link>
+                            <Link to="/forgot-password">¿Olvidaste tu contraseña?</Link>
                         </div>
 
                         <Button fullWidth type="submit" disabled={isSubmitting}>
-                            {isSubmitting ? "Checking..." : "Log in"}
+                            {isSubmitting ? "Checking..." : "Iniciar sesión"}
                         </Button>
                     </form>
 
                     <p className="auth-footer-text">
-                        Need a store account? <Link to="/create-account">Create account</Link>
+                        ¿Necesitas una cuenta de tienda? <Link to="/create-account">Crear cuenta</Link>
                     </p>
                 </div>
             </section>
