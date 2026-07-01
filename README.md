@@ -1,7 +1,7 @@
-# Commerzia
+# Colmerzia
 Plataforma E-Commerce
 
-Commerzia es una plataforma eCommerce construida con:
+Colmerzia es una plataforma eCommerce construida con:
 
 * **Backend:** Laravel 13 + PostgreSQL
 * **Frontend:** React 19 + Vite + TypeScript
