@@ -1,109 +1,91 @@
 import { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ArrowLeft, Save } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { useNavigate, useParams } from "react-router-dom";
 import { z } from "zod";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft } from "lucide-react";
+
+import Button from "../components/ui/Button";
+import PageHeader from "../components/ui/PageHeader";
+import Panel from "../components/ui/Panel";
+import TextField from "../components/ui/TextField";
+import { useToast } from "../components/ui/useToast";
 import {
-    getCustomer,
     createCustomer,
+    getCustomer,
     updateCustomer,
+    type CustomerPayload,
 } from "../features/customers/customersApi";
 
-// Schema
-
 const schema = z.object({
-    first_name:      z.string().min(1, "El nombre es obligatorio"),
-    last_name:       z.string().optional(),
-    email:           z.string().min(1, "El correo es obligatorio").email("Correo inválido"),
-    phone:           z.string().optional(),
-    document_type:   z.enum(["CC", "CE", "NIT", "PPN", "TI", ""]).optional(),
+    birth_date: z.string().optional(),
+    company: z.string().optional(),
     document_number: z.string().optional(),
-    company:         z.string().optional(),
-    birth_date:      z.string().optional(),
-    notes:           z.string().optional(),
-    is_active:       z.boolean().optional(),
+    document_type: z.enum(["CC", "CE", "NIT", "PPN", "TI", ""]).optional(),
+    email: z.string().min(1, "El correo es obligatorio").email("Correo invalido"),
+    first_name: z.string().min(1, "El nombre es obligatorio"),
+    is_active: z.boolean().optional(),
+    last_name: z.string().optional(),
+    notes: z.string().optional(),
+    phone: z.string().optional(),
 });
 
 type CustomerFormData = z.infer<typeof schema>;
 
-// UI helpers
-
-function Field({ label, error, children }: {
-    label: string;
-    error?: string;
-    children: React.ReactNode;
-}) {
-    return (
-        <div style={{ marginBottom: "20px" }}>
-            <label style={{
-                display: "block", fontSize: "13px",
-                fontWeight: "500", color: "#374151", marginBottom: "6px",
-            }}>
-                {label}
-            </label>
-            {children}
-            {error && (
-                <p style={{ color: "#EF4444", fontSize: "12px", marginTop: "5px" }}>
-                    {error}
-                </p>
-            )}
-        </div>
-    );
+function cleanCustomerPayload(data: CustomerFormData): CustomerPayload {
+    return {
+        birth_date: data.birth_date || undefined,
+        company: data.company || undefined,
+        document_number: data.document_number || undefined,
+        document_type: data.document_type || undefined,
+        email: data.email,
+        first_name: data.first_name,
+        is_active: data.is_active,
+        last_name: data.last_name || undefined,
+        notes: data.notes || undefined,
+        phone: data.phone || undefined,
+    };
 }
 
-const inputStyle = (hasError?: boolean): React.CSSProperties => ({
-    width: "100%",
-    padding: "10px 14px",
-    fontSize: "14px",
-    border: `1.5px solid ${hasError ? "#EF4444" : "#E5E7EB"}`,
-    borderRadius: "8px",
-    outline: "none",
-    color: "#0F1117",
-    background: "#FAFAFA",
-    boxSizing: "border-box",
-});
-
-// Componente
-
 export default function CustomerForm() {
-    const { id }      = useParams<{ id: string }>();
-    const isEditing   = Boolean(id);
-    const navigate    = useNavigate();
+    const { id } = useParams<{ id: string }>();
+    const isEditing = Boolean(id);
+    const navigate = useNavigate();
     const queryClient = useQueryClient();
+    const { notify } = useToast();
 
     const {
-        register,
-        handleSubmit,
-        reset,
         formState: { errors, isSubmitting },
+        handleSubmit,
+        register,
+        reset,
     } = useForm<CustomerFormData>({
-        resolver: zodResolver(schema),
         defaultValues: { is_active: true },
+        resolver: zodResolver(schema),
     });
 
     const { data: customer, isLoading } = useQuery({
+        enabled: isEditing,
+        queryFn: () => getCustomer(Number(id)),
         queryKey: ["customer", id],
-        queryFn:  () => getCustomer(Number(id)),
-        enabled:  isEditing,
     });
 
     useEffect(() => {
-        if (customer) {
-            reset({
-                first_name:      customer.first_name,
-                last_name:       customer.last_name       ?? "",
-                email:           customer.email,
-                phone:           customer.phone           ?? "",
-                document_type:   (customer.document_type as CustomerFormData["document_type"]) ?? "",
-                document_number: customer.document_number ?? "",
-                company:         customer.company         ?? "",
-                birth_date:      customer.birth_date      ?? "",
-                notes:           customer.notes           ?? "",
-                is_active:       customer.is_active,
-            });
-        }
+        if (!customer) return;
+
+        reset({
+            birth_date: customer.birth_date ?? "",
+            company: customer.company ?? "",
+            document_number: customer.document_number ?? "",
+            document_type: (customer.document_type as CustomerFormData["document_type"]) ?? "",
+            email: customer.email,
+            first_name: customer.first_name,
+            is_active: customer.is_active,
+            last_name: customer.last_name ?? "",
+            notes: customer.notes ?? "",
+            phone: customer.phone ?? "",
+        });
     }, [customer, reset]);
 
     const { mutateAsync: create } = useMutation({
@@ -112,7 +94,7 @@ export default function CustomerForm() {
     });
 
     const { mutateAsync: update } = useMutation({
-        mutationFn: ({ id, data }: { id: number; data: CustomerFormData }) =>
+        mutationFn: ({ data, id }: { data: CustomerPayload; id: number }) =>
             updateCustomer(id, data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["customers"] });
@@ -121,173 +103,154 @@ export default function CustomerForm() {
     });
 
     async function onSubmit(data: CustomerFormData) {
+        const payload = cleanCustomerPayload(data);
+
         try {
             if (isEditing) {
-                await update({ id: Number(id), data });
+                await update({ data: payload, id: Number(id) });
             } else {
-                await create(data);
+                await create(payload);
             }
+
+            notify({
+                message: isEditing
+                    ? "Los cambios del cliente se guardaron correctamente."
+                    : "El cliente fue creado correctamente.",
+                title: isEditing ? "Cliente actualizado" : "Cliente creado",
+                tone: "success",
+            });
             navigate("/customers");
         } catch (err: unknown) {
             const error = err as { response?: { data?: { errors?: Record<string, string[]> } } };
             console.error("Errores del servidor:", error?.response?.data?.errors);
+            notify({
+                message: "Revisa los datos e intentalo nuevamente.",
+                title: "No se pudo guardar",
+                tone: "error",
+            });
         }
     }
 
     if (isEditing && isLoading) {
-        return (
-            <div style={{ padding: "40px", color: "#9CA3AF", fontFamily: "'Inter', system-ui, sans-serif" }}>
-                Cargando cliente...
-            </div>
-        );
+        return <div className="empty-state">Cargando cliente...</div>;
     }
 
     return (
-        <div style={{ fontFamily: "'Inter', system-ui, sans-serif", maxWidth: "720px" }}>
+        <div className="form-page">
+            <PageHeader
+                eyebrow="CRM"
+                title={isEditing ? "Editar cliente" : "Nuevo cliente"}
+                subtitle={
+                    isEditing
+                        ? `Editando: ${customer?.first_name ?? ""} ${customer?.last_name ?? ""}`
+                        : "Completa los datos principales del cliente."
+                }
+                action={
+                    <Button type="button" variant="secondary" onClick={() => navigate("/customers")}>
+                        <ArrowLeft size={16} />
+                        Volver
+                    </Button>
+                }
+            />
 
-            {/* Encabezado */}
-            <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "28px" }}>
-                <button
-                    onClick={() => navigate("/customers")}
-                    style={{
-                        padding: "8px", border: "1px solid #E5E7EB", borderRadius: "8px",
-                        background: "#fff", cursor: "pointer", display: "flex", color: "#6B7280",
-                    }}
-                >
-                    <ArrowLeft size={16} />
-                </button>
-                <div>
-                    <h1 style={{
-                        fontSize: "22px", fontWeight: "700", color: "#0F1117",
-                        letterSpacing: "-0.5px", margin: 0,
-                    }}>
-                        {isEditing ? "Editar cliente" : "Nuevo cliente"}
-                    </h1>
-                    <p style={{ color: "#6B7280", fontSize: "14px", margin: "4px 0 0" }}>
-                        {isEditing
-                            ? `Editando: ${customer?.first_name} ${customer?.last_name ?? ""}`
-                            : "Completa los datos del cliente"}
-                    </p>
-                </div>
-            </div>
-
-            <form onSubmit={handleSubmit(onSubmit)} noValidate>
-
-                {/* Información personal */}
-                <section style={{
-                    background: "#fff", border: "1px solid #E5E7EB",
-                    borderRadius: "12px", padding: "24px", marginBottom: "20px",
-                }}>
-                    <h2 style={{ fontSize: "15px", fontWeight: "600", color: "#0F1117", marginBottom: "20px", marginTop: 0 }}>
-                        Información personal
-                    </h2>
-
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
-                        <Field label="Nombre *" error={errors.first_name?.message}>
-                            <input {...register("first_name")} placeholder="Ej: María" style={inputStyle(!!errors.first_name)} />
-                        </Field>
-                        <Field label="Apellido" error={errors.last_name?.message}>
-                            <input {...register("last_name")} placeholder="Ej: García" style={inputStyle(!!errors.last_name)} />
-                        </Field>
+            <form className="stack-form" onSubmit={handleSubmit(onSubmit)} noValidate>
+                <Panel className="form-section">
+                    <div className="form-section-heading">
+                        <h2>Informacion personal</h2>
+                        <p>Datos de contacto y perfil comercial.</p>
                     </div>
 
-                    <Field label="Correo electrónico *" error={errors.email?.message}>
-                        <input type="email" {...register("email")} placeholder="cliente@correo.com" style={inputStyle(!!errors.email)} />
-                    </Field>
-
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
-                        <Field label="Teléfono">
-                            <input {...register("phone")} placeholder="3001234567" style={inputStyle()} />
-                        </Field>
-                        <Field label="Empresa">
-                            <input {...register("company")} placeholder="Nombre de la empresa" style={inputStyle()} />
-                        </Field>
+                    <div className="form-grid two">
+                        <TextField
+                            error={errors.first_name?.message}
+                            label="Nombre *"
+                            placeholder="Ej: Maria"
+                            {...register("first_name")}
+                        />
+                        <TextField
+                            error={errors.last_name?.message}
+                            label="Apellido"
+                            placeholder="Ej: Garcia"
+                            {...register("last_name")}
+                        />
                     </div>
 
-                    <Field label="Fecha de nacimiento">
-                        <input type="date" {...register("birth_date")} style={inputStyle()} />
-                    </Field>
-                </section>
+                    <TextField
+                        error={errors.email?.message}
+                        label="Correo electronico *"
+                        placeholder="cliente@correo.com"
+                        type="email"
+                        {...register("email")}
+                    />
 
-                {/* Documento */}
-                <section style={{
-                    background: "#fff", border: "1px solid #E5E7EB",
-                    borderRadius: "12px", padding: "24px", marginBottom: "20px",
-                }}>
-                    <h2 style={{ fontSize: "15px", fontWeight: "600", color: "#0F1117", marginBottom: "20px", marginTop: 0 }}>
-                        Documento de identidad
-                    </h2>
+                    <div className="form-grid two">
+                        <TextField label="Telefono" placeholder="3001234567" {...register("phone")} />
+                        <TextField label="Empresa" placeholder="Nombre de la empresa" {...register("company")} />
+                    </div>
 
-                    <div style={{ display: "grid", gridTemplateColumns: "180px 1fr", gap: "16px" }}>
-                        <Field label="Tipo">
-                            <select {...register("document_type")} style={{ ...inputStyle(), cursor: "pointer" }}>
-                                <option value="">— Selecciona —</option>
-                                <option value="CC">Cédula (CC)</option>
-                                <option value="CE">Cédula extranjería (CE)</option>
+                    <TextField label="Fecha de nacimiento" type="date" {...register("birth_date")} />
+                </Panel>
+
+                <Panel className="form-section">
+                    <div className="form-section-heading">
+                        <h2>Documento de identidad</h2>
+                        <p>Informacion fiscal o documento personal.</p>
+                    </div>
+
+                    <div className="form-grid document">
+                        <label className="ui-field">
+                            <span>Tipo</span>
+                            <select className="ui-select" {...register("document_type")}>
+                                <option value="">Selecciona</option>
+                                <option value="CC">Cedula (CC)</option>
+                                <option value="CE">Cedula extranjeria (CE)</option>
                                 <option value="NIT">NIT</option>
                                 <option value="PPN">Pasaporte (PPN)</option>
                                 <option value="TI">Tarjeta identidad (TI)</option>
                             </select>
-                        </Field>
-                        <Field label="Número">
-                            <input {...register("document_number")} placeholder="Número de documento" style={inputStyle()} />
-                        </Field>
+                        </label>
+                        <TextField
+                            label="Numero"
+                            placeholder="Numero de documento"
+                            {...register("document_number")}
+                        />
                     </div>
-                </section>
+                </Panel>
 
-                {/* Notas y opciones */}
-                <section style={{
-                    background: "#fff", border: "1px solid #E5E7EB",
-                    borderRadius: "12px", padding: "24px", marginBottom: "28px",
-                }}>
-                    <h2 style={{ fontSize: "15px", fontWeight: "600", color: "#0F1117", marginBottom: "20px", marginTop: 0 }}>
-                        Notas y opciones
-                    </h2>
+                <Panel className="form-section">
+                    <div className="form-section-heading">
+                        <h2>Notas y opciones</h2>
+                        <p>Observaciones internas y estado del cliente.</p>
+                    </div>
 
-                    <Field label="Notas internas">
+                    <label className="ui-field">
+                        <span>Notas internas</span>
                         <textarea
-                            {...register("notes")}
+                            className="ui-textarea"
                             rows={3}
                             placeholder="Observaciones visibles solo para el equipo..."
-                            style={{ ...inputStyle(), resize: "vertical", fontFamily: "inherit" }}
+                            {...register("notes")}
                         />
-                    </Field>
-
-                    <label style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer" }}>
-                        <input type="checkbox" {...register("is_active")} />
-                        <span style={{ fontSize: "14px", color: "#374151" }}>Cliente activo</span>
                     </label>
-                </section>
 
-                {/* Acciones */}
-                <div style={{ display: "flex", gap: "12px" }}>
-                    <button
-                        type="button"
-                        onClick={() => navigate("/customers")}
-                        style={{
-                            padding: "10px 20px", border: "1.5px solid #E5E7EB", borderRadius: "8px",
-                            background: "#fff", fontSize: "14px", fontWeight: "500",
-                            cursor: "pointer", color: "#374151",
-                        }}
-                    >
+                    <label className="check-row">
+                        <input type="checkbox" {...register("is_active")} />
+                        <span>Cliente activo</span>
+                    </label>
+                </Panel>
+
+                <div className="form-actions">
+                    <Button type="button" variant="secondary" onClick={() => navigate("/customers")}>
                         Cancelar
-                    </button>
-
-                    <button
-                        type="submit"
-                        disabled={isSubmitting}
-                        style={{
-                            padding: "10px 24px",
-                            background: isSubmitting ? "#818CF8" : "#6366F1",
-                            color: "#fff", border: "none", borderRadius: "8px",
-                            fontSize: "14px", fontWeight: "600",
-                            cursor: isSubmitting ? "not-allowed" : "pointer",
-                        }}
-                    >
+                    </Button>
+                    <Button type="submit" disabled={isSubmitting}>
+                        <Save size={16} />
                         {isSubmitting
                             ? "Guardando..."
-                            : isEditing ? "Guardar cambios" : "Crear cliente"}
-                    </button>
+                            : isEditing
+                              ? "Guardar cambios"
+                              : "Crear cliente"}
+                    </Button>
                 </div>
             </form>
         </div>

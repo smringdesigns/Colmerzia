@@ -1,160 +1,89 @@
 import { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ArrowLeft, Save } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { useNavigate, useParams } from "react-router-dom";
 import { z } from "zod";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft } from "lucide-react";
+
+import Button from "../components/ui/Button";
+import PageHeader from "../components/ui/PageHeader";
+import Panel from "../components/ui/Panel";
+import TextField from "../components/ui/TextField";
+import { useToast } from "../components/ui/useToast";
 import {
-    getProduct,
     createProduct,
+    getProduct,
     updateProduct,
 } from "../features/products/services/productsApi";
 
-// Schema
-
 const schema = z.object({
     name: z.string().min(1, "El nombre es obligatorio"),
-
     sku: z.string().min(1, "El SKU es obligatorio"),
-
-    price: z.coerce
-        .number()
-        .min(0, "No puede ser negativo"),
-
-    compare_price: z.coerce
-        .number()
-        .nullable()
-        .optional(),
-
-    cost_price: z.coerce
-        .number()
-        .nullable()
-        .optional(),
-
-    stock: z.coerce
-        .number()
-        .int()
-        .min(0)
-        .optional(),
-
-    short_description: z.string()
-        .max(500)
-        .optional(),
-
-    description: z.string()
-        .optional(),
-
-    featured: z.boolean()
-        .optional(),
-
-    is_active: z.boolean()
-        .optional(),
+    price: z.coerce.number().min(0, "No puede ser negativo"),
+    compare_price: z.coerce.number().nullable().optional(),
+    cost_price: z.coerce.number().nullable().optional(),
+    stock: z.coerce.number().int().min(0).optional(),
+    short_description: z.string().max(500).optional(),
+    description: z.string().optional(),
+    featured: z.boolean().optional(),
+    is_active: z.boolean().optional(),
 });
 
 type ProductFormInput = z.input<typeof schema>;
 export type ProductFormData = z.output<typeof schema>;
 
-// Helpers UI
-
-function Field({
-    label,
-    error,
-    children,
-}: {
-    label: string;
-    error?: string;
-    children: React.ReactNode;
-}) {
-    return (
-        <div style={{ marginBottom: "20px" }}>
-            <label style={{
-                display: "block",
-                fontSize: "13px",
-                fontWeight: "500",
-                color: "#374151",
-                marginBottom: "6px",
-            }}>
-                {label}
-            </label>
-            {children}
-            {error && (
-                <p style={{ color: "#EF4444", fontSize: "12px", marginTop: "5px" }}>
-                    {error}
-                </p>
-            )}
-        </div>
-    );
-}
-
-const inputStyle = (hasError?: boolean): React.CSSProperties => ({
-    width: "100%",
-    padding: "10px 14px",
-    fontSize: "14px",
-    border: `1.5px solid ${hasError ? "#EF4444" : "#E5E7EB"}`,
-    borderRadius: "8px",
-    outline: "none",
-    color: "#0F1117",
-    background: "#FAFAFA",
-    boxSizing: "border-box",
-});
-
-// Componente
-
 export default function ProductForm() {
-    const { id }      = useParams<{ id: string }>();
-    const isEditing   = Boolean(id);
-    const navigate    = useNavigate();
+    const { id } = useParams<{ id: string }>();
+    const isEditing = Boolean(id);
+    const navigate = useNavigate();
     const queryClient = useQueryClient();
+    const { notify } = useToast();
 
     const {
-        register,
-        handleSubmit,
-        reset,
         formState: { errors, isSubmitting },
+        handleSubmit,
+        register,
+        reset,
     } = useForm<ProductFormInput, unknown, ProductFormData>({
-        resolver: zodResolver(schema),
         defaultValues: {
+            featured: false,
             is_active: true,
-            featured:  false,
-            stock:     0,
+            stock: 0,
         },
+        resolver: zodResolver(schema),
     });
 
-    // Carga el producto si estamos editando
     const { data: product, isLoading } = useQuery({
+        enabled: isEditing,
+        queryFn: () => getProduct(Number(id)),
         queryKey: ["product", id],
-        queryFn:  () => getProduct(Number(id)),
-        enabled:  isEditing,
     });
 
-    // Cuando llegan los datos del producto, rellena el form
     useEffect(() => {
-        if (product) {
-            reset({
-                name:              product.name,
-                sku:               product.sku,
-                price:             Number(product.price),
-                compare_price:     product.compare_price ? Number(product.compare_price) : null,
-                cost_price:        product.cost_price    ? Number(product.cost_price)    : null,
-                stock:             product.stock,
-                short_description: product.short_description ?? "",
-                description:       product.description       ?? "",
-                featured:          product.featured,
-                is_active:         product.is_active,
-            });
-        }
+        if (!product) return;
+
+        reset({
+            compare_price: product.compare_price ? Number(product.compare_price) : null,
+            cost_price: product.cost_price ? Number(product.cost_price) : null,
+            description: product.description ?? "",
+            featured: product.featured,
+            is_active: product.is_active,
+            name: product.name,
+            price: Number(product.price),
+            short_description: product.short_description ?? "",
+            sku: product.sku,
+            stock: product.stock,
+        });
     }, [product, reset]);
 
     const { mutateAsync: create } = useMutation({
         mutationFn: createProduct,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["products"] });
-        },
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: ["products"] }),
     });
 
     const { mutateAsync: update } = useMutation({
-        mutationFn: ({ id, data }: { id: number; data: ProductFormData }) =>
+        mutationFn: ({ data, id }: { data: ProductFormData; id: number }) =>
             updateProduct(id, data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["products"] });
@@ -165,234 +94,168 @@ export default function ProductForm() {
     async function onSubmit(data: ProductFormData) {
         try {
             if (isEditing) {
-                await update({ id: Number(id), data });
+                await update({ data, id: Number(id) });
             } else {
                 await create(data);
             }
+
+            notify({
+                message: isEditing
+                    ? "Los cambios del producto se guardaron correctamente."
+                    : "El producto fue creado correctamente.",
+                title: isEditing ? "Producto actualizado" : "Producto creado",
+                tone: "success",
+            });
             navigate("/products");
         } catch (err: unknown) {
-            // Errores de validación del servidor (422)
             const error = err as { response?: { data?: { errors?: Record<string, string[]> } } };
-            const serverErrors = error?.response?.data?.errors;
-            if (serverErrors) {
-                console.error("Errores del servidor:", serverErrors);
-            }
+            console.error("Errores del servidor:", error?.response?.data?.errors);
+            notify({
+                message: "Revisa los datos e intentalo nuevamente.",
+                title: "No se pudo guardar",
+                tone: "error",
+            });
         }
     }
 
     if (isEditing && isLoading) {
-        return (
-            <div style={{ padding: "40px", color: "#9CA3AF", fontFamily: "'Inter', system-ui, sans-serif" }}>
-                Cargando producto...
-            </div>
-        );
+        return <div className="empty-state">Cargando producto...</div>;
     }
 
     return (
-        <div style={{ fontFamily: "'Inter', system-ui, sans-serif", maxWidth: "720px" }}>
+        <div className="form-page">
+            <PageHeader
+                eyebrow="Catalog"
+                title={isEditing ? "Editar producto" : "Nuevo producto"}
+                subtitle={
+                    isEditing
+                        ? `Editando: ${product?.name ?? ""}`
+                        : "Completa los datos principales del producto."
+                }
+                action={
+                    <Button type="button" variant="secondary" onClick={() => navigate("/products")}>
+                        <ArrowLeft size={16} />
+                        Volver
+                    </Button>
+                }
+            />
 
-            {/* Encabezado */}
-            <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "28px" }}>
-                <button
-                    onClick={() => navigate("/products")}
-                    style={{
-                        padding: "8px",
-                        border: "1px solid #E5E7EB",
-                        borderRadius: "8px",
-                        background: "#fff",
-                        cursor: "pointer",
-                        display: "flex",
-                        color: "#6B7280",
-                    }}
-                >
-                    <ArrowLeft size={16} />
-                </button>
-                <div>
-                    <h1 style={{
-                        fontSize: "22px",
-                        fontWeight: "700",
-                        color: "#0F1117",
-                        letterSpacing: "-0.5px",
-                        margin: 0,
-                    }}>
-                        {isEditing ? "Editar producto" : "Nuevo producto"}
-                    </h1>
-                    <p style={{ color: "#6B7280", fontSize: "14px", margin: "4px 0 0" }}>
-                        {isEditing ? `Editando: ${product?.name}` : "Completa los datos del producto"}
-                    </p>
-                </div>
-            </div>
-
-            <form onSubmit={handleSubmit(onSubmit)} noValidate>
-
-                {/* Sección: Información básica */}
-                <section style={{
-                    background: "#fff",
-                    border: "1px solid #E5E7EB",
-                    borderRadius: "12px",
-                    padding: "24px",
-                    marginBottom: "20px",
-                }}>
-                    <h2 style={{ fontSize: "15px", fontWeight: "600", color: "#0F1117", marginBottom: "20px", marginTop: 0 }}>
-                        Información básica
-                    </h2>
-
-                    <Field label="Nombre *" error={errors.name?.message}>
-                        <input
-                            {...register("name")}
-                            placeholder="Ej: Camiseta manga corta negra"
-                            style={inputStyle(!!errors.name)}
-                        />
-                    </Field>
-
-                    <Field label="SKU *" error={errors.sku?.message}>
-                        <input
-                            {...register("sku")}
-                            placeholder="Ej: CAM-001-NEG"
-                            style={inputStyle(!!errors.sku)}
-                        />
-                    </Field>
-
-                    <Field label="Descripción corta" error={errors.short_description?.message}>
-                        <input
-                            {...register("short_description")}
-                            placeholder="Máximo 500 caracteres"
-                            style={inputStyle(!!errors.short_description)}
-                        />
-                    </Field>
-
-                    <Field label="Descripción completa">
-                        <textarea
-                            {...register("description")}
-                            rows={4}
-                            placeholder="Descripción detallada del producto..."
-                            style={{
-                                ...inputStyle(),
-                                resize: "vertical",
-                                fontFamily: "inherit",
-                            }}
-                        />
-                    </Field>
-                </section>
-
-                {/* Sección: Precios */}
-                <section style={{
-                    background: "#fff",
-                    border: "1px solid #E5E7EB",
-                    borderRadius: "12px",
-                    padding: "24px",
-                    marginBottom: "20px",
-                }}>
-                    <h2 style={{ fontSize: "15px", fontWeight: "600", color: "#0F1117", marginBottom: "20px", marginTop: 0 }}>
-                        Precios e inventario
-                    </h2>
-
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "16px" }}>
-                        <Field label="Precio de venta *" error={errors.price?.message}>
-                            <input
-                                type="number"
-                                step="0.01"
-                                min="0"
-                                {...register("price")}
-                                placeholder="0"
-                                style={inputStyle(!!errors.price)}
-                            />
-                        </Field>
-
-                        <Field label="Precio comparado" error={errors.compare_price?.message}>
-                            <input
-                                type="number"
-                                step="0.01"
-                                min="0"
-                                {...register("compare_price")}
-                                placeholder="0"
-                                style={inputStyle(!!errors.compare_price)}
-                            />
-                        </Field>
-
-                        <Field label="Costo" error={errors.cost_price?.message}>
-                            <input
-                                type="number"
-                                step="0.01"
-                                min="0"
-                                {...register("cost_price")}
-                                placeholder="0"
-                                style={inputStyle(!!errors.cost_price)}
-                            />
-                        </Field>
+            <form className="stack-form" onSubmit={handleSubmit(onSubmit)} noValidate>
+                <Panel className="form-section">
+                    <div className="form-section-heading">
+                        <h2>Informacion basica</h2>
+                        <p>Nombre, SKU y descripcion comercial.</p>
                     </div>
 
-                    <Field label="Stock" error={errors.stock?.message}>
-                        <input
-                            type="number"
-                            min="0"
-                            {...register("stock")}
-                            placeholder="0"
-                            style={{ ...inputStyle(!!errors.stock), maxWidth: "160px" }}
+                    <div className="form-grid two">
+                        <TextField
+                            error={errors.name?.message}
+                            label="Nombre *"
+                            placeholder="Ej: Camiseta manga corta negra"
+                            {...register("name")}
                         />
-                    </Field>
-                </section>
+                        <TextField
+                            error={errors.sku?.message}
+                            label="SKU *"
+                            placeholder="Ej: CAM-001-NEG"
+                            {...register("sku")}
+                        />
+                    </div>
 
-                {/* Sección: Opciones */}
-                <section style={{
-                    background: "#fff",
-                    border: "1px solid #E5E7EB",
-                    borderRadius: "12px",
-                    padding: "24px",
-                    marginBottom: "28px",
-                }}>
-                    <h2 style={{ fontSize: "15px", fontWeight: "600", color: "#0F1117", marginBottom: "20px", marginTop: 0 }}>
-                        Opciones
-                    </h2>
+                    <TextField
+                        error={errors.short_description?.message}
+                        label="Descripcion corta"
+                        placeholder="Maximo 500 caracteres"
+                        {...register("short_description")}
+                    />
 
-                    <label style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer", marginBottom: "12px" }}>
-                        <input type="checkbox" {...register("is_active")} />
-                        <span style={{ fontSize: "14px", color: "#374151" }}>Producto activo (visible en tienda)</span>
+                    <label className="ui-field">
+                        <span>Descripcion completa</span>
+                        <textarea
+                            className="ui-textarea"
+                            rows={4}
+                            placeholder="Descripcion detallada del producto..."
+                            {...register("description")}
+                        />
                     </label>
+                </Panel>
 
-                    <label style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer" }}>
-                        <input type="checkbox" {...register("featured")} />
-                        <span style={{ fontSize: "14px", color: "#374151" }}>Destacar en portada</span>
-                    </label>
-                </section>
+                <Panel className="form-section">
+                    <div className="form-section-heading">
+                        <h2>Precios e inventario</h2>
+                        <p>Valores de venta, costo y disponibilidad.</p>
+                    </div>
 
-                {/* Acciones */}
-                <div style={{ display: "flex", gap: "12px" }}>
-                    <button
-                        type="button"
-                        onClick={() => navigate("/products")}
-                        style={{
-                            padding: "10px 20px",
-                            border: "1.5px solid #E5E7EB",
-                            borderRadius: "8px",
-                            background: "#fff",
-                            fontSize: "14px",
-                            fontWeight: "500",
-                            cursor: "pointer",
-                            color: "#374151",
-                        }}
-                    >
+                    <div className="form-grid three">
+                        <TextField
+                            error={errors.price?.message}
+                            label="Precio de venta *"
+                            min="0"
+                            placeholder="0"
+                            step="0.01"
+                            type="number"
+                            {...register("price")}
+                        />
+                        <TextField
+                            error={errors.compare_price?.message}
+                            label="Precio comparado"
+                            min="0"
+                            placeholder="0"
+                            step="0.01"
+                            type="number"
+                            {...register("compare_price")}
+                        />
+                        <TextField
+                            error={errors.cost_price?.message}
+                            label="Costo"
+                            min="0"
+                            placeholder="0"
+                            step="0.01"
+                            type="number"
+                            {...register("cost_price")}
+                        />
+                    </div>
+
+                    <TextField
+                        error={errors.stock?.message}
+                        label="Stock"
+                        min="0"
+                        placeholder="0"
+                        type="number"
+                        {...register("stock")}
+                    />
+                </Panel>
+
+                <Panel className="form-section">
+                    <div className="form-section-heading">
+                        <h2>Opciones</h2>
+                        <p>Visibilidad del producto y presencia en portada.</p>
+                    </div>
+
+                    <div className="check-list">
+                        <label className="check-row">
+                            <input type="checkbox" {...register("is_active")} />
+                            <span>Producto activo visible en tienda</span>
+                        </label>
+                        <label className="check-row">
+                            <input type="checkbox" {...register("featured")} />
+                            <span>Destacar en portada</span>
+                        </label>
+                    </div>
+                </Panel>
+
+                <div className="form-actions">
+                    <Button type="button" variant="secondary" onClick={() => navigate("/products")}>
                         Cancelar
-                    </button>
-
-                    <button
-                        type="submit"
-                        disabled={isSubmitting}
-                        style={{
-                            padding: "10px 24px",
-                            background: isSubmitting ? "#818CF8" : "#6366F1",
-                            color: "#fff",
-                            border: "none",
-                            borderRadius: "8px",
-                            fontSize: "14px",
-                            fontWeight: "600",
-                            cursor: isSubmitting ? "not-allowed" : "pointer",
-                        }}
-                    >
+                    </Button>
+                    <Button type="submit" disabled={isSubmitting}>
+                        <Save size={16} />
                         {isSubmitting
                             ? "Guardando..."
-                            : isEditing ? "Guardar cambios" : "Crear producto"}
-                    </button>
+                            : isEditing
+                              ? "Guardar cambios"
+                              : "Crear producto"}
+                    </Button>
                 </div>
             </form>
         </div>
