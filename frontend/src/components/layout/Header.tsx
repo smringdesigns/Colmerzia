@@ -1,14 +1,28 @@
+import { useState } from "react";
 import { Bell, LogOut, Search, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { logout as logoutRequest } from "../../features/auth/authApi";
 import { useAuthStore } from "../../store/authStore";
 
 export default function Header() {
     const navigate = useNavigate();
     const clearSession = useAuthStore((state) => state.logout);
+    const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-    function logout() {
-        clearSession();
-        navigate("/login", { replace: true });
+    async function logout() {
+        setIsLoggingOut(true);
+
+        try {
+            // Revoca el token en el backend (borra el personal access token).
+            // Si falla (token ya vencido, sin red, etc.) igual cerramos la
+            // sesion localmente para no dejar al usuario atascado.
+            await logoutRequest();
+        } catch (error) {
+            console.error("No se pudo revocar el token en el servidor:", error);
+        } finally {
+            clearSession();
+            navigate("/login", { replace: true });
+        }
     }
 
     return (
@@ -38,9 +52,10 @@ export default function Header() {
                     onClick={logout}
                     className="logout-button"
                     type="button"
+                    disabled={isLoggingOut}
                 >
                     <LogOut size={16} />
-                    Cerrar Sesión
+                    {isLoggingOut ? "Cerrando..." : "Cerrar Sesión"}
                 </button>
             </div>
         </header>

@@ -55,8 +55,8 @@ input {
   height: 100vh;
   flex-shrink: 0;
   flex-direction: column;
-  border-right: 1px solid #e5e7eb;
-  background: #ffffff;
+  border-right:1px solid #eef1f5;
+  background:#ffffffcc;
 }
 
 .sidebar-brand {
@@ -1206,6 +1206,19 @@ input {
   margin-top: 4px;
   color: #9ca3af;
   font-size: 12px;
+}
+
+.stat-card-muted {
+  opacity: 0.6;
+}
+
+.stat-card-muted .stat-icon {
+  background: #f3f4f6;
+  color: #9ca3af;
+}
+
+.stat-card-muted strong {
+  color: #9ca3af;
 }
 
 .dashboard-grid {

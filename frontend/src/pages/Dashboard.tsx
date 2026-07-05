@@ -1,42 +1,77 @@
+import { useQuery } from "@tanstack/react-query";
 import { Package, ShoppingCart, TrendingUp, Users } from "lucide-react";
 
+import { getCustomers } from "../features/customers/customersApi";
+import { getProducts } from "../features/products/services/productsApi";
+
 export default function Dashboard() {
+    // Pedimos per_page: 1 porque solo nos interesa el "total" que trae
+    // la paginacion de Laravel, no la lista completa de registros.
+    const { data: productsTotal, isLoading: loadingProductsTotal } = useQuery({
+        queryFn: () => getProducts({ per_page: 1 }),
+        queryKey: ["dashboard", "products", "total"],
+    });
+
+    const { data: productsActive, isLoading: loadingProductsActive } = useQuery({
+        queryFn: () => getProducts({ is_active: true, per_page: 1 }),
+        queryKey: ["dashboard", "products", "active"],
+    });
+
+    const { data: customersTotal, isLoading: loadingCustomersTotal } = useQuery({
+        queryFn: () => getCustomers({ per_page: 1 }),
+        queryKey: ["dashboard", "customers", "total"],
+    });
+
+    const { data: customersActive, isLoading: loadingCustomersActive } = useQuery({
+        queryFn: () => getCustomers({ is_active: true, per_page: 1 }),
+        queryKey: ["dashboard", "customers", "active"],
+    });
+
+    const catalogHealth =
+        productsTotal && productsTotal.total > 0
+            ? Math.round(((productsActive?.total ?? 0) / productsTotal.total) * 100)
+            : 0;
+
+    const activeCustomersPct =
+        customersTotal && customersTotal.total > 0
+            ? Math.round(((customersActive?.total ?? 0) / customersTotal.total) * 100)
+            : 0;
+
     const cards = [
         {
             title: "Productos",
-            value: "100",
-            caption: "12 low stock",
+            value: loadingProductsTotal ? "…" : String(productsTotal?.total ?? 0),
+            caption: loadingProductsActive
+                ? "Cargando..."
+                : `${productsActive?.total ?? 0} activos`,
             icon: Package,
             tone: "orange",
         },
         {
             title: "Clientes",
-            value: "50",
-            caption: "8 new this week",
+            value: loadingCustomersTotal ? "…" : String(customersTotal?.total ?? 0),
+            caption: loadingCustomersActive
+                ? "Cargando..."
+                : `${customersActive?.total ?? 0} activos`,
             icon: Users,
             tone: "blue",
         },
         {
             title: "Pedidos",
-            value: "25",
-            caption: "5 pending",
+            value: "—",
+            caption: "Módulo en construcción",
             icon: ShoppingCart,
             tone: "green",
+            muted: true,
         },
         {
             title: "Ventas",
-            value: "$5.2M",
-            caption: "18% vs last month",
+            value: "—",
+            caption: "Módulo en construcción",
             icon: TrendingUp,
             tone: "purple",
+            muted: true,
         },
-    ];
-
-    const recentOrders = [
-        { customer: "Maria Garcia", amount: "$450.000", status: "Paid", date: "Today" },
-        { customer: "Andres Lopez", amount: "$210.000", status: "Pending", date: "Yesterday" },
-        { customer: "Comercial Norte", amount: "$1.250.000", status: "Paid", date: "Jun 28" },
-        { customer: "Laura Perez", amount: "$89.000", status: "Canceled", date: "Jun 27" },
     ];
 
     return (
@@ -61,7 +96,10 @@ export default function Dashboard() {
 
             <section className="stats-grid">
                 {cards.map((card) => (
-                    <article className="stat-card" key={card.title}>
+                    <article
+                        className={`stat-card${card.muted ? " stat-card-muted" : ""}`}
+                        key={card.title}
+                    >
                         <span className={`stat-icon ${card.tone}`}>
                             <card.icon size={22} />
                         </span>
@@ -82,49 +120,27 @@ export default function Dashboard() {
                             <p>Actividad comercial más reciente</p>
                         </div>
                     </div>
-                    <div className="data-table">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Cliente</th>
-                                    <th>Cantidad</th>
-                                    <th>Estado</th>
-                                    <th>Fecha</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {recentOrders.map((order) => (
-                                    <tr key={`${order.customer}-${order.date}`}>
-                                        <td>{order.customer}</td>
-                                        <td>{order.amount}</td>
-                                        <td>
-                                            <span className={`status-badge ${order.status.toLowerCase()}`}>
-                                                {order.status}
-                                            </span>
-                                        </td>
-                                        <td>{order.date}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                    <div className="empty-state">
+                        El módulo de pedidos todavía no está conectado al backend.
+                        En cuanto exista el endpoint de órdenes, esta tabla se llena sola.
                     </div>
                 </article>
 
                 <article className="panel-card compact-panel">
                     <h2>Salud de la tienda</h2>
                     <div className="health-row">
-                        <span>Estado del catálogo</span>
-                        <strong>74%</strong>
+                        <span>Productos activos sobre el total</span>
+                        <strong>{catalogHealth}%</strong>
                     </div>
                     <div className="progress-track">
-                        <span style={{ width: "74%" }} />
+                        <span style={{ width: `${catalogHealth}%` }} />
                     </div>
                     <div className="health-row">
-                        <span>Retención de clientes</span>
-                        <strong>62%</strong>
+                        <span>Clientes activos sobre el total</span>
+                        <strong>{activeCustomersPct}%</strong>
                     </div>
                     <div className="progress-track">
-                        <span style={{ width: "62%" }} />
+                        <span style={{ width: `${activeCustomersPct}%` }} />
                     </div>
                 </article>
             </section>
