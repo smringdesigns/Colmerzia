@@ -1,0 +1,92 @@
+services:
+
+  backend:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+
+    container_name: colmerzia_backend
+
+    working_dir: /var/www/html
+
+    volumes:
+      - ./backend:/var/www/html
+
+    depends_on:
+      - postgres
+      - redis
+
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/node/Dockerfile
+
+    container_name: colmerzia_frontend
+
+    working_dir: /app
+
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+    ports:
+      - "5173:5173"
+
+    command: sh -c "npm install && npm run dev -- --host"
+
+  nginx:
+    image: nginx:latest
+
+    container_name: colmerzia_nginx
+
+    ports:
+      - "8080:80"
+
+    volumes:
+      - ./backend:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+
+    depends_on:
+      - backend
+
+  postgres:
+    image: postgres:17
+
+    container_name: colmerzia_postgres
+
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: colmerzia
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+
+    container_name: colmerzia_redis
+
+    ports:
+      - "6379:6379"
+
+    volumes:
+      - redis_data:/data
+
+  mailpit:
+    image: axllent/mailpit
+
+    container_name: colmerzia_mailpit
+
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+volumes:
+  postgres_data:
+  redis_data:

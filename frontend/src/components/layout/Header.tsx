@@ -29,7 +29,7 @@ export default function Header() {
         <header className="topbar">
             <div className="topbar-search">
                 <Search size={18} />
-                <input type="search" placeholder="Search products, customers, orders..." />
+                <input type="search" placeholder="Buscar productos, clientes, pedidos..." />
             </div>
 
             <div className="topbar-actions">
