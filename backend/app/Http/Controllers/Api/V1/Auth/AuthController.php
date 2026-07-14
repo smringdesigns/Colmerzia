@@ -2,63 +2,45 @@
 
 namespace App\Http\Controllers\Api\V1\Auth;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
+use App\Contracts\Auth\AuthServiceInterface;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Resources\Auth\LoginResource;
+use App\Http\Resources\User\UserResource;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
-    {
-        $validated = $request->validate([
-            'email'    => ['required','email'],
-            'password' => ['required'],
-        ]);
-
-        $user = User::where(
-            'email',
-            $validated['email']
-        )->first();
-
-        if (
-            !$user ||
-            !Hash::check(
-                $validated['password'],
-                $user->password
-            )
-        ) {
-            return response()->json([
-                'message' => 'Credenciales inválidas'
-            ],401);
-        }
-
-        $token = $user
-            ->createToken('commerzia')
-            ->plainTextToken;
-
-        return response()->json([
-            'user'  => $user,
-            'token' => $token,
-        ]);
+    public function __construct(
+        private readonly AuthServiceInterface $authService
+    ) {
     }
 
-    public function me(Request $request)
+    public function login(LoginRequest $request): LoginResource
     {
-        return response()->json(
+        return new LoginResource(
+            $this->authService->login(
+                $request->email,
+                $request->password
+            )
+        );
+    }
+
+    public function me(Request $request): UserResource
+    {
+        return new UserResource(
             $request->user()
         );
     }
 
     public function logout(Request $request)
     {
-        $request
-            ->user()
-            ->currentAccessToken()
-            ->delete();
+        $this->authService->logout(
+            $request->user()
+        );
 
         return response()->json([
-            'message' => 'Logout exitoso'
+            'message' => 'Sesión cerrada correctamente.',
         ]);
     }
 }

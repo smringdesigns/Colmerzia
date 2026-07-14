@@ -7,14 +7,21 @@ services:
 
     container_name: colmerzia_backend
 
+    restart: unless-stopped
+
     working_dir: /var/www/html
 
     volumes:
       - ./backend:/var/www/html
 
     depends_on:
-      - postgres
-      - redis
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+    networks:
+      - colmerzia
 
   frontend:
     build:
@@ -23,21 +30,36 @@ services:
 
     container_name: colmerzia_frontend
 
+    restart: unless-stopped
+
     working_dir: /app
 
     volumes:
       - ./frontend:/app
-      - /app/node_modules
 
     ports:
       - "5173:5173"
 
-    command: sh -c "npm install && npm run dev -- --host"
+    depends_on:
+      - backend
+
+    command: >
+      sh -c "
+      if [ ! -d node_modules ]; then
+        npm install;
+      fi &&
+      npm run dev -- --host
+      "
+
+    networks:
+      - colmerzia
 
   nginx:
-    image: nginx:latest
+    image: nginx:1.28-alpine
 
     container_name: colmerzia_nginx
+
+    restart: unless-stopped
 
     ports:
       - "8080:80"
@@ -49,6 +71,9 @@ services:
     depends_on:
       - backend
 
+    networks:
+      - colmerzia
+
   postgres:
     image: postgres:17
 
@@ -57,9 +82,9 @@ services:
     restart: unless-stopped
 
     environment:
-      POSTGRES_DB: colmerzia
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
 
     ports:
       - "5433:5432"
@@ -67,10 +92,21 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+    networks:
+      - colmerzia
+
   redis:
-    image: redis:7
+    image: redis:7-alpine
 
     container_name: colmerzia_redis
+
+    restart: unless-stopped
 
     ports:
       - "6379:6379"
@@ -78,15 +114,27 @@ services:
     volumes:
       - redis_data:/data
 
+    networks:
+      - colmerzia
+
   mailpit:
-    image: axllent/mailpit
+    image: axllent/mailpit:latest
 
     container_name: colmerzia_mailpit
+
+    restart: unless-stopped
 
     ports:
       - "1025:1025"
       - "8025:8025"
 
+    networks:
+      - colmerzia
+
 volumes:
   postgres_data:
   redis_data:
+
+networks:
+  colmerzia:
+    driver: bridge

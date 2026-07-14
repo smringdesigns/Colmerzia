@@ -1,9 +1,59 @@
-backend/vendor
-backend/.env
+# ===========================
+# Laravel
+# ===========================
 
-frontend/node_modules
-frontend/dist
+backend/vendor/
+backend/.env
+backend/storage/logs/*
+backend/storage/framework/cache/*
+backend/storage/framework/sessions/*
+backend/storage/framework/views/*
+backend/bootstrap/cache/*.php
+
+# ===========================
+# React / Vite
+# ===========================
+
+frontend/node_modules/
+frontend/dist/
+
+# ===========================
+# Docker
+# ===========================
 
 .env
-.idea
-.vscode
+
+# ===========================
+# IDE
+# ===========================
+
+.idea/
+.vscode/
+
+# ===========================
+# Sistema Operativo
+# ===========================
+
+.DS_Store
+Thumbs.db
+
+# ===========================
+# Logs
+# ===========================
+
+*.log
+
+# ===========================
+# Coverage
+# ===========================
+
+coverage/
+
+# ===========================
+# Environment
+# ===========================
+
+*.env.local
+*.env.production.local
+*.env.development.local
+*.env.test.local
