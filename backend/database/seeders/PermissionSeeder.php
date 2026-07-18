@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Permission;
-use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class PermissionSeeder extends Seeder
 {
@@ -12,70 +12,73 @@ class PermissionSeeder extends Seeder
     {
         $permissions = [
 
-            // usuarios
+            // Usuarios
             'users.view',
             'users.create',
             'users.update',
             'users.delete',
 
-            // roles
+            // Roles
             'roles.view',
             'roles.create',
             'roles.update',
             'roles.delete',
 
-            // productos
+            // Productos
             'products.view',
             'products.create',
             'products.update',
             'products.delete',
 
-            // categorías
+            // Categorías
             'categories.view',
             'categories.create',
             'categories.update',
             'categories.delete',
 
-            // marcas
+            // Marcas
             'brands.view',
             'brands.create',
             'brands.update',
             'brands.delete',
 
-            // inventario
+            // Inventario
             'inventory.view',
             'inventory.create',
             'inventory.update',
 
-            // clientes
+            // Clientes
             'customers.view',
             'customers.create',
             'customers.update',
             'customers.delete',
 
-            // pedidos
+            // Pedidos
             'orders.view',
             'orders.create',
             'orders.update',
             'orders.delete',
 
-            // pagos
+            // Pagos
             'payments.view',
             'payments.create',
             'payments.update',
 
-            // configuración
+            // Configuración
             'settings.view',
             'settings.update',
         ];
 
         foreach ($permissions as $permission) {
-            Permission::firstOrCreate([
-                'slug' => $permission,
-            ], [
-                'uuid' => Str::uuid(),
-                'name' => ucwords(str_replace('.', ' ', $permission)),
-            ]);
+            Permission::firstOrCreate(
+                [
+                    'slug' => $permission,
+                ],
+                [
+                    'uuid' => Str::uuid(),
+                    'name' => ucwords(str_replace('.', ' ', $permission)),
+                ]
+            );
         }
     }
 }

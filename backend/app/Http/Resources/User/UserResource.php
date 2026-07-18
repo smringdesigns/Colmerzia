@@ -29,6 +29,45 @@ class UserResource extends BaseResource
 
             'updated_at' => $this->updated_at,
 
+            /*
+            |--------------------------------------------------------------------------
+            | Roles
+            |--------------------------------------------------------------------------
+            */
+
+            'roles' => $this->whenLoaded('roles', function () {
+                return $this->roles->map(function ($role) {
+                    return [
+                        'id' => $role->id,
+                        'name' => $role->name,
+                        'slug' => $role->slug,
+                    ];
+                });
+            }),
+
+            /*
+            |--------------------------------------------------------------------------
+            | Permissions
+            |--------------------------------------------------------------------------
+            */
+
+            'permissions' => $this->whenLoaded('roles', function () {
+
+                return $this->roles
+                    ->flatMap(function ($role) {
+                        return $role->permissions;
+                    })
+                    ->unique('id')
+                    ->values()
+                    ->map(function ($permission) {
+                        return [
+                            'id' => $permission->id,
+                            'name' => $permission->name,
+                            'slug' => $permission->slug,
+                        ];
+                    });
+            }),
+
         ];
     }
 }

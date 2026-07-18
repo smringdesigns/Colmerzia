@@ -14,11 +14,27 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
 
         // Auth
-        Route::get('/me',      [AuthController::class, 'me']);
+        Route::get('/me', [AuthController::class, 'me']);
         Route::post('/logout', [AuthController::class, 'logout']);
 
         // Productos
-        Route::apiResource('products',  ProductController::class);
+        Route::get('/products', [ProductController::class, 'index'])
+            ->middleware('can:products.view');
+
+        Route::post('/products', [ProductController::class, 'store'])
+            ->middleware('can:products.create');
+
+        Route::get('/products/{product}', [ProductController::class, 'show'])
+            ->middleware('can:products.view');
+
+        Route::put('/products/{product}', [ProductController::class, 'update'])
+            ->middleware('can:products.update');
+
+        Route::patch('/products/{product}', [ProductController::class, 'update'])
+            ->middleware('can:products.update');
+
+        Route::delete('/products/{product}', [ProductController::class, 'destroy'])
+            ->middleware('can:products.delete');
 
         // Clientes
         Route::apiResource('customers', CustomerController::class);

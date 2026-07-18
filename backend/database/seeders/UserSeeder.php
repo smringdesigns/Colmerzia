@@ -14,17 +14,17 @@ class UserSeeder extends Seeder
     {
         $store = Store::first();
 
+        $role = Role::where('slug', 'super-admin')->firstOrFail();
+
         $user = User::create([
             'store_id' => $store->id,
             'uuid' => Str::uuid(),
-            'name' => 'Administrador',
-            'email' => 'admin@commerzia.com',
-            'password' => bcrypt('password'),
+            'name' => 'Super Administrador',
+            'email' => 'elmusdevops@gmail.com',
+            'password' => bcrypt('Root123'),
             'is_active' => true,
         ]);
 
-        $user->roles()->attach(
-            Role::where('slug', 'super-admin')->first()
-        );
+        $user->roles()->attach($role);
     }
 }

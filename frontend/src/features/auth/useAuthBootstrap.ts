@@ -5,29 +5,39 @@ import { useAuthStore } from "../../store/authStore";
 
 export function useAuthBootstrap() {
 
-    const token = useAuthStore((state) => state.token);
-    const setUser = useAuthStore((state) => state.setUser);
+    const token = useAuthStore(
+        (state) => state.token
+    );
+
+    const setUser = useAuthStore(
+        (state) => state.setUser
+    );
 
     const [isReady, setIsReady] = useState(false);
 
     useEffect(() => {
 
         if (!token) {
+
             setIsReady(true);
+
             return;
         }
 
         me()
-            .then((res) => {
+            .then((user) => {
 
-                console.log("ME:", res);
+                console.log("ME:", user);
 
-                setUser(res.data);
+                setUser(user);
 
             })
-            .catch((err) => {
+            .catch((error) => {
 
-                console.log(err);
+                console.error(
+                    "Error cargando el usuario:",
+                    error
+                );
 
             })
             .finally(() => {
