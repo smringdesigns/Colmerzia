@@ -13,10 +13,32 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+
+        /*
+        |--------------------------------------------------------------------------
+        | API: No redirigir usuarios no autenticados al login web
+        |--------------------------------------------------------------------------
+        */
+
+        $middleware->redirectGuestsTo(function (Request $request) {
+
+            if ($request->is('api/*')) {
+                return null;
+            }
+
+            return route('login');
+        });
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+
+        /*
+        |--------------------------------------------------------------------------
+        | Las rutas API siempre responden en formato JSON
+        |--------------------------------------------------------------------------
+        */
+
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*'),
         );
-    })->create();
+    })
+    ->create();

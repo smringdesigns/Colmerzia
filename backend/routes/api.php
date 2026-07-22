@@ -37,6 +37,24 @@ Route::prefix('v1')->group(function () {
             ->middleware('can:products.delete');
 
         // Clientes
-        Route::apiResource('customers', CustomerController::class);
+        Route::get('/customers', [CustomerController::class, 'index'])
+            ->middleware('can:customers.view');
+
+        Route::post('/customers', [CustomerController::class, 'store'])
+            ->middleware('can:customers.create');
+
+        Route::get('/customers/{customer}', [CustomerController::class, 'show'])
+            ->middleware('can:customers.view');
+
+        Route::put('/customers/{customer}', [CustomerController::class, 'update'])
+            ->middleware('can:customers.update');
+
+        Route::patch('/customers/{customer}', [CustomerController::class, 'update'])
+            ->middleware('can:customers.update');
+
+        Route::delete('/customers/{customer}', [CustomerController::class, 'destroy'])
+            ->middleware('can:customers.delete');
+
     });
+
 });

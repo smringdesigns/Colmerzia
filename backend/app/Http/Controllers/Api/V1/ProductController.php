@@ -13,39 +13,87 @@ class ProductController extends Controller
 {
     /**
      * Lista paginada de productos de la tienda.
-     * Soporta búsqueda por nombre o SKU y filtro por estado.
+     * Soporta búsqueda por nombre o SKU y filtros.
      */
     public function index(Request $request)
     {
         $storeId = $request->user()->store_id;
 
-        $query = Product::with(['category:id,name', 'brand:id,name'])
+        $query = Product::with([
+                'category:id,name',
+                'brand:id,name'
+            ])
             ->where('store_id', $storeId);
 
-        // Búsqueda por nombre o SKU
-        if ($search = $request->query('search')) {
+        /*
+        |--------------------------------------------------------------------------
+        | Búsqueda
+        |--------------------------------------------------------------------------
+        */
+
+        if ($request->filled('search')) {
+
+            $search = $request->query('search');
+
             $query->where(function ($q) use ($search) {
+
                 $q->where('name', 'ilike', "%{$search}%")
                   ->orWhere('sku', 'ilike', "%{$search}%");
+
             });
         }
 
-        // Filtro por estado activo
+        /*
+        |--------------------------------------------------------------------------
+        | Filtro por estado
+        |--------------------------------------------------------------------------
+        */
+
         if ($request->has('is_active')) {
-            $query->where(
-                'is_active',
-                filter_var($request->query('is_active'), FILTER_VALIDATE_BOOLEAN)
+
+            $isActive = filter_var(
+                $request->query('is_active'),
+                FILTER_VALIDATE_BOOLEAN,
+                FILTER_NULL_ON_FAILURE
             );
+
+            if ($isActive !== null) {
+                $query->where('is_active', $isActive);
+            }
         }
 
-        // Filtro por categoría
-        if ($categoryId = $request->query('category_id')) {
-            $query->where('category_id', $categoryId);
+        /*
+        |--------------------------------------------------------------------------
+        | Filtro por categoría
+        |--------------------------------------------------------------------------
+        */
+
+        if ($request->filled('category_id')) {
+
+            $categoryId = filter_var(
+                $request->query('category_id'),
+                FILTER_VALIDATE_INT
+            );
+
+            if ($categoryId !== false && $categoryId > 0) {
+                $query->where('category_id', $categoryId);
+            }
         }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Paginación
+        |--------------------------------------------------------------------------
+        */
+
+        $perPage = min(
+            max((int) $request->query('per_page', 15), 1),
+            100
+        );
 
         $products = $query
             ->orderBy('created_at', 'desc')
-            ->paginate($request->query('per_page', 15));
+            ->paginate($perPage);
 
         return response()->json($products);
     }
@@ -58,17 +106,16 @@ class ProductController extends Controller
         $data = $request->validated();
 
         $data['store_id'] = $request->user()->store_id;
-        $data['uuid']     = Str::uuid();
-        $data['slug']     = Str::slug($data['name']);
+        $data['uuid'] = Str::uuid();
+        $data['slug'] = Str::slug($data['name']);
 
-        // Si el slug ya existe en la tienda, le agrega un sufijo único
         $baseSlug = $data['slug'];
-        $count    = 1;
+        $count = 1;
 
         while (
             Product::where('store_id', $data['store_id'])
-                   ->where('slug', $data['slug'])
-                   ->exists()
+                ->where('slug', $data['slug'])
+                ->exists()
         ) {
             $data['slug'] = "{$baseSlug}-{$count}";
             $count++;
@@ -84,7 +131,10 @@ class ProductController extends Controller
      */
     public function show(Request $request, int $id)
     {
-        $product = Product::with(['category:id,name', 'brand:id,name'])
+        $product = Product::with([
+                'category:id,name',
+                'brand:id,name'
+            ])
             ->where('store_id', $request->user()->store_id)
             ->findOrFail($id);
 
@@ -94,24 +144,31 @@ class ProductController extends Controller
     /**
      * Actualiza un producto existente.
      */
-    public function update(UpdateProductRequest $request, int $id)
-    {
-        $product = Product::where('store_id', $request->user()->store_id)
+    public function update(
+        UpdateProductRequest $request,
+        int $id
+    ) {
+        $product = Product::where(
+                'store_id',
+                $request->user()->store_id
+            )
             ->findOrFail($id);
 
         $data = $request->validated();
 
-        // Regenera el slug solo si cambió el nombre
-        if ($data['name'] !== $product->name) {
-            $baseSlug     = Str::slug($data['name']);
+        if (
+            isset($data['name']) &&
+            $data['name'] !== $product->name
+        ) {
+            $baseSlug = Str::slug($data['name']);
             $data['slug'] = $baseSlug;
-            $count        = 1;
+            $count = 1;
 
             while (
                 Product::where('store_id', $product->store_id)
-                       ->where('slug', $data['slug'])
-                       ->where('id', '!=', $product->id)
-                       ->exists()
+                    ->where('slug', $data['slug'])
+                    ->where('id', '!=', $product->id)
+                    ->exists()
             ) {
                 $data['slug'] = "{$baseSlug}-{$count}";
                 $count++;
@@ -126,9 +183,14 @@ class ProductController extends Controller
     /**
      * Elimina (soft delete) un producto.
      */
-    public function destroy(Request $request, int $id)
-    {
-        $product = Product::where('store_id', $request->user()->store_id)
+    public function destroy(
+        Request $request,
+        int $id
+    ) {
+        $product = Product::where(
+                'store_id',
+                $request->user()->store_id
+            )
             ->findOrFail($id);
 
         $product->delete();

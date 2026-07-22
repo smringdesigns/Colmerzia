@@ -41,8 +41,9 @@ return new class extends Migration
             $table->string('slug');
 
             // SKU principal
-            $table->string('sku')
-                  ->unique();
+            // Puede repetirse entre tiendas,
+            // pero no dentro de la misma tienda.
+            $table->string('sku');
 
             // Descripción corta
             $table->text('short_description')
@@ -105,9 +106,22 @@ return new class extends Migration
             $table->softDeletes();
 
             // Restricciones
+            // El slug debe ser único dentro de cada tienda.
             $table->unique([
                 'store_id',
                 'slug'
+            ]);
+
+            // El SKU debe ser único dentro de cada tienda.
+            // Ejemplo:
+            //
+            // Tienda A -> SKU-001 ✅
+            // Tienda B -> SKU-001 ✅
+            // Tienda A -> SKU-001 ❌
+            //
+            $table->unique([
+                'store_id',
+                'sku'
             ]);
 
             // Índices

@@ -13,7 +13,7 @@ class CustomerController extends Controller
 {
     /**
      * Lista paginada de clientes.
-     * Soporta búsqueda por nombre, correo o documento.
+     * Soporta búsqueda, filtros y paginación.
      */
     public function index(Request $request)
     {
@@ -22,25 +22,63 @@ class CustomerController extends Controller
         $query = Customer::withCount('orders')
             ->where('store_id', $storeId);
 
-        if ($search = $request->query('search')) {
+        /*
+        |--------------------------------------------------------------------------
+        | Búsqueda
+        |--------------------------------------------------------------------------
+        */
+
+        if ($request->filled('search')) {
+
+            $search = $request->query('search');
+
             $query->where(function ($q) use ($search) {
+
                 $q->where('first_name', 'ilike', "%{$search}%")
-                  ->orWhere('last_name',  'ilike', "%{$search}%")
-                  ->orWhere('email',      'ilike', "%{$search}%")
-                  ->orWhere('document_number', 'ilike', "%{$search}%");
+                  ->orWhere('last_name', 'ilike', "%{$search}%")
+                  ->orWhere('email', 'ilike', "%{$search}%")
+                  ->orWhere(
+                      'document_number',
+                      'ilike',
+                      "%{$search}%"
+                  );
+
             });
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | Filtro por estado
+        |--------------------------------------------------------------------------
+        */
+
         if ($request->has('is_active')) {
-            $query->where(
-                'is_active',
-                filter_var($request->query('is_active'), FILTER_VALIDATE_BOOLEAN)
+
+            $isActive = filter_var(
+                $request->query('is_active'),
+                FILTER_VALIDATE_BOOLEAN,
+                FILTER_NULL_ON_FAILURE
             );
+
+            if ($isActive !== null) {
+                $query->where('is_active', $isActive);
+            }
         }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Paginación
+        |--------------------------------------------------------------------------
+        */
+
+        $perPage = min(
+            max((int) $request->query('per_page', 15), 1),
+            100
+        );
 
         $customers = $query
             ->orderBy('created_at', 'desc')
-            ->paginate($request->query('per_page', 15));
+            ->paginate($perPage);
 
         return response()->json($customers);
     }
@@ -53,7 +91,7 @@ class CustomerController extends Controller
         $data = $request->validated();
 
         $data['store_id'] = $request->user()->store_id;
-        $data['uuid']     = Str::uuid();
+        $data['uuid'] = Str::uuid();
 
         $customer = Customer::create($data);
 
@@ -63,11 +101,18 @@ class CustomerController extends Controller
     /**
      * Detalle de un cliente con sus direcciones.
      */
-    public function show(Request $request, int $id)
-    {
-        $customer = Customer::with(['addresses'])
+    public function show(
+        Request $request,
+        int $id
+    ) {
+        $customer = Customer::with([
+                'addresses'
+            ])
             ->withCount('orders')
-            ->where('store_id', $request->user()->store_id)
+            ->where(
+                'store_id',
+                $request->user()->store_id
+            )
             ->findOrFail($id);
 
         return response()->json($customer);
@@ -76,12 +121,19 @@ class CustomerController extends Controller
     /**
      * Actualiza un cliente.
      */
-    public function update(UpdateCustomerRequest $request, int $id)
-    {
-        $customer = Customer::where('store_id', $request->user()->store_id)
+    public function update(
+        UpdateCustomerRequest $request,
+        int $id
+    ) {
+        $customer = Customer::where(
+                'store_id',
+                $request->user()->store_id
+            )
             ->findOrFail($id);
 
-        $customer->update($request->validated());
+        $customer->update(
+            $request->validated()
+        );
 
         return response()->json($customer);
     }
@@ -89,9 +141,14 @@ class CustomerController extends Controller
     /**
      * Elimina (soft delete) un cliente.
      */
-    public function destroy(Request $request, int $id)
-    {
-        $customer = Customer::where('store_id', $request->user()->store_id)
+    public function destroy(
+        Request $request,
+        int $id
+    ) {
+        $customer = Customer::where(
+                'store_id',
+                $request->user()->store_id
+            )
             ->findOrFail($id);
 
         $customer->delete();
