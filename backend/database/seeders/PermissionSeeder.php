@@ -1,89 +1,84 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\V1\Auth\AuthController;
-use App\Http\Controllers\Api\V1\ProductController;
-use App\Http\Controllers\Api\V1\CustomerController;
+namespace Database\Seeders;
 
-Route::prefix('v1')->group(function () {
+use App\Models\Permission;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
-    /*
-    |--------------------------------------------------------------------------
-    | Autenticación pública
-    |--------------------------------------------------------------------------
-    */
+class PermissionSeeder extends Seeder
+{
+    public function run(): void
+    {
+        $permissions = [
 
-    Route::post('/login', [AuthController::class, 'login']);
+            // Usuarios
+            'users.view',
+            'users.create',
+            'users.update',
+            'users.delete',
 
+            // Roles
+            'roles.view',
+            'roles.create',
+            'roles.update',
+            'roles.delete',
 
-    /*
-    |--------------------------------------------------------------------------
-    | Rutas protegidas
-    |--------------------------------------------------------------------------
-    */
+            // Productos
+            'products.view',
+            'products.create',
+            'products.update',
+            'products.delete',
 
-    Route::middleware('auth:sanctum')->group(function () {
+            // Categorías
+            'categories.view',
+            'categories.create',
+            'categories.update',
+            'categories.delete',
 
-        /*
-        |--------------------------------------------------------------------------
-        | Autenticación
-        |--------------------------------------------------------------------------
-        */
+            // Marcas
+            'brands.view',
+            'brands.create',
+            'brands.update',
+            'brands.delete',
 
-        Route::get('/me', [AuthController::class, 'me']);
+            // Inventario
+            'inventory.view',
+            'inventory.create',
+            'inventory.update',
 
-        Route::post('/logout', [AuthController::class, 'logout']);
+            // Clientes
+            'customers.view',
+            'customers.create',
+            'customers.update',
+            'customers.delete',
 
+            // Pedidos
+            'orders.view',
+            'orders.create',
+            'orders.update',
+            'orders.delete',
 
-        /*
-        |--------------------------------------------------------------------------
-        | Productos
-        |--------------------------------------------------------------------------
-        */
+            // Pagos
+            'payments.view',
+            'payments.create',
+            'payments.update',
 
-        Route::get('/products', [ProductController::class, 'index'])
-            ->middleware('can:products.view');
+            // Configuración
+            'settings.view',
+            'settings.update',
+        ];
 
-        Route::post('/products', [ProductController::class, 'store'])
-            ->middleware('can:products.create');
-
-        Route::get('/products/{product}', [ProductController::class, 'show'])
-            ->middleware('can:products.view');
-
-        Route::put('/products/{product}', [ProductController::class, 'update'])
-            ->middleware('can:products.update');
-
-        Route::patch('/products/{product}', [ProductController::class, 'update'])
-            ->middleware('can:products.update');
-
-        Route::delete('/products/{product}', [ProductController::class, 'destroy'])
-            ->middleware('can:products.delete');
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Clientes
-        |--------------------------------------------------------------------------
-        */
-
-        Route::get('/customers', [CustomerController::class, 'index'])
-            ->middleware('can:customers.view');
-
-        Route::post('/customers', [CustomerController::class, 'store'])
-            ->middleware('can:customers.create');
-
-        Route::get('/customers/{customer}', [CustomerController::class, 'show'])
-            ->middleware('can:customers.view');
-
-        Route::put('/customers/{customer}', [CustomerController::class, 'update'])
-            ->middleware('can:customers.update');
-
-        Route::patch('/customers/{customer}', [CustomerController::class, 'update'])
-            ->middleware('can:customers.update');
-
-        Route::delete('/customers/{customer}', [CustomerController::class, 'destroy'])
-            ->middleware('can:customers.delete');
-
-    });
-
-});
+        foreach ($permissions as $permission) {
+            Permission::firstOrCreate(
+                [
+                    'slug' => $permission,
+                ],
+                [
+                    'uuid' => Str::uuid(),
+                    'name' => ucwords(str_replace('.', ' ', $permission)),
+                ]
+            );
+        }
+    }
+}
