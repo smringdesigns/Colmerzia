@@ -5,7 +5,7 @@ use App\Http\Controllers\Api\V1\Auth\AuthController;
 use App\Http\Controllers\Api\V1\ProductController;
 use App\Http\Controllers\Api\V1\CustomerController;
 
-Route::prefix('v1')->group(function () {
+Route::prefix('v1')->middleware(['tenant', 'store.active'])->group(function () {
 
     // Autenticación pública
     Route::post('/login', [AuthController::class, 'login']);

@@ -16,6 +16,17 @@ return Application::configure(basePath: dirname(__DIR__))
 
         /*
         |--------------------------------------------------------------------------
+        | Tenancy: alias de middleware para resolver la tienda por subdominio
+        |--------------------------------------------------------------------------
+        */
+
+        $middleware->alias([
+            'tenant' => \App\Http\Middleware\ResolveTenantBySubdomain::class,
+            'store.active' => \App\Http\Middleware\EnsureStoreIsActive::class,
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
         | API: No redirigir usuarios no autenticados al login web
         |--------------------------------------------------------------------------
         */
