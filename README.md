@@ -145,7 +145,7 @@ Para ejecutar el proyecto se requiere tener instalado:
 ### 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/USUARIO/colmerzia.git
+git clone https://github.com/smringdesigns/Colmerzia.git
 cd colmerzia
 ```
 
