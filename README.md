@@ -1,261 +1,491 @@
-# Colmerzia
-Plataforma E-Commerce
+# 🛒 Colmerzia
 
-Colmerzia es una plataforma eCommerce construida con:
+Colmerzia es una plataforma web para la gestión comercial y administrativa de tiendas y negocios.
 
-* **Backend:** Laravel 13 + PostgreSQL
-* **Frontend:** React 19 + Vite + TypeScript
-* **Estado global:** Zustand
-* **Fetching:** React Query
-* **Formularios:** React Hook Form + Zod
+El proyecto busca centralizar diferentes procesos de una operación comercial, incluyendo la gestión de productos, categorías, marcas, inventario, clientes, ventas, usuarios y otros módulos administrativos.
 
----
+La aplicación está construida con una arquitectura separada entre **Backend** y **Frontend**, comunicados mediante una API REST.
 
-# Requisitos previos
-
-Instalar previamente:
-
-* Git
-* PHP 8.5+
-* Composer 2+
-* Node.js 22+
-* PostgreSQL 16+
-* Extensiones PHP necesarias para Laravel
-
-Verificar:
-
-```bash
-php -v
-composer -V
-node -v
-npm -v
-psql --version
-```
+Todo el entorno de desarrollo se ejecuta utilizando **Docker y Docker Compose**. Docker se encarga de proporcionar el entorno de ejecución de la aplicación, incluyendo las dependencias necesarias para el Backend y el Frontend.
 
 ---
 
-# 1. Clonar el repositorio
+## 📌 Estado del proyecto
 
-```bash
-git clone https://github.com/TU-USUARIO/Commerzia.git
+> 🚧 Colmerzia se encuentra actualmente en desarrollo activo.
 
-cd Commerzia
-```
+Actualmente se está construyendo la base de la plataforma, incluyendo:
+
+- Arquitectura de la aplicación.
+- Infraestructura Docker.
+- Sistema de autenticación.
+- Gestión de usuarios.
+- Arquitectura multiempresa.
+- Gestión de tiendas.
+- API REST.
+- Gestión de productos.
+- Categorías.
+- Marcas.
+- Frontend administrativo.
+- Persistencia de datos en PostgreSQL.
 
 ---
 
-# 2. Instalar Backend (Laravel)
+## 🏗️ Arquitectura del proyecto
 
-Entrar al backend:
+Colmerzia utiliza una arquitectura desacoplada entre Backend y Frontend.
 
-```bash
-cd backend
+```text
+┌──────────────────────────────────────┐
+│                                      │
+│               FRONTEND               │
+│                                      │
+│          React + TypeScript          │
+│               + Vite                 │
+│                                      │
+└──────────────────┬───────────────────┘
+                   │
+                   │ HTTP / REST API
+                   │
+┌──────────────────▼───────────────────┐
+│               BACKEND                │
+│                                      │
+│               Laravel                │
+│                 PHP                  │
+│                                      │
+└───────────────┬───────────┬──────────┘
+                │           │
+                │           │
+      ┌─────────▼──────┐ ┌──▼──────────┐
+      │                │ │             │
+      │   PostgreSQL   │ │    Redis    │
+      │                │ │             │
+      └────────────────┘ └─────────────┘
 ```
 
-Instalar dependencias:
+Los servicios son administrados mediante: **Docker Compose**
+
+---
+
+## 🧰 Tecnologías utilizadas
+
+### Backend
+- PHP
+- Laravel
+- Laravel Sanctum
+- Spatie Permission
+- Eloquent ORM
+- REST API
+
+### Frontend
+- React
+- TypeScript
+- Vite
+- Material UI
+- TanStack Query
+- Zustand
+- React Hook Form
+- Zod
+
+### Base de datos
+- PostgreSQL
+
+### Infraestructura
+- Docker
+- Docker Compose
+- Nginx
+- Redis
+- Mailpit
+
+### Herramientas
+- Git
+- GitHub
+- Visual Studio Code
+- Postman
+
+---
+
+## 🐳 Docker
+
+El proyecto utiliza Docker para ejecutar los diferentes servicios de la aplicación. La configuración principal se encuentra en: `docker-compose.yml`
+
+Docker se encarga de proporcionar el entorno de ejecución completo del proyecto. Esto incluye:
+
+- **Entorno de ejecución del Backend:** PHP, Composer, Dependencias de Laravel.
+- **Entorno de ejecución del Frontend:** Node.js, npm, Dependencias de React.
+- **Servicios adicionales:** PostgreSQL, Redis, Nginx, Mailpit.
+
+**Los principales servicios son:**
+
+| Servicio | Descripción |
+|----------|-------------|
+| `backend` | API desarrollada con Laravel |
+| `frontend` | Aplicación web desarrollada con React |
+| `postgres` | Base de datos PostgreSQL |
+| `redis` | Sistema de cache y colas |
+| `nginx` | Servidor web y proxy |
+| `mailpit` | Servidor de correo electrónico para desarrollo |
+
+---
+
+## 📋 Requisitos
+
+Para ejecutar el proyecto se requiere tener instalado:
+
+- Docker Desktop
+- Git
+- Visual Studio Code (opcional)
+
+**No es necesario instalar directamente en el sistema local:** PHP, Composer, Node.js, npm, PostgreSQL o Redis. Estas herramientas y servicios son gestionados mediante los contenedores Docker del proyecto.
+
+---
+
+## 🚀 Instalación
+
+### 1. Clonar el repositorio
 
 ```bash
-composer install
+git clone https://github.com/USUARIO/colmerzia.git
+cd colmerzia
 ```
 
-Copiar variables de entorno:
+### 2. Configurar las variables de entorno
 
-```bash
-cp .env.example .env
-```
+Configurar los archivos `.env` requeridos por el proyecto. El Backend utiliza `backend/.env`.
 
-Generar clave:
+Las variables de entorno deben coincidir con los servicios definidos en `docker-compose.yml`.
 
-```bash
-php artisan key:generate
-```
-
-Configurar la conexión PostgreSQL en `.env`:
-
+**Ejemplo de configuración:**
 ```env
+APP_NAME=Colmerzia
+APP_ENV=local
+APP_DEBUG=true
+
 DB_CONNECTION=pgsql
-DB_HOST=127.0.0.1
+DB_HOST=postgres
 DB_PORT=5432
-DB_DATABASE=dbcommerzia
+DB_DATABASE=colmerzia
 DB_USERNAME=postgres
-DB_PASSWORD=tu_password
-```
+DB_PASSWORD=postgres
 
-Crear el enlace de almacenamiento:
+REDIS_HOST=redis
+```
+*(Los valores reales pueden variar según la configuración definida en el archivo docker-compose.yml).*
+
+### 3. Construir y levantar el proyecto
+
+Desde la raíz del proyecto ejecutar:
 
 ```bash
-php artisan storage:link
+docker compose up -d --build
 ```
 
-Limpiar caché:
+Este comando se encarga de construir las imágenes Docker, crear la red y volúmenes, instalar dependencias de Backend y Frontend, e iniciar los servicios.
+
+### 4. Verificar los contenedores
 
 ```bash
-php artisan optimize:clear
+docker compose ps
 ```
+Los servicios deben aparecer activos y funcionando.
 
-Ejecutar migraciones y seeders:
+### 5. Ver los logs
 
+Para ver los logs de todos los servicios:
 ```bash
-php artisan migrate:fresh --seed
+docker compose logs -f
 ```
-
-Levantar servidor:
-
+Para ver los logs del Backend:
 ```bash
-php artisan serve
+docker compose logs -f backend
 ```
-
-El backend quedará disponible en:
-
-```
-http://localhost:8000
+Para ver los logs del Frontend:
+```bash
+docker compose logs -f frontend
 ```
 
 ---
 
-# 3. Instalar Frontend (React)
+## ⚙️ Backend
 
-Abrir otra terminal:
+El Backend de Colmerzia está desarrollado utilizando **Laravel + PHP**.
 
-```bash
-cd frontend
-```
+Su responsabilidad principal es gestionar la lógica de negocio, autenticación, usuarios, permisos, tiendas, productos, categorías, marcas, la base de datos, y exponer la API REST.
 
-Instalar dependencias:
-
-```bash
-npm install
-```
-
-Verificar que se instalaron correctamente:
-
-```bash
-npm list
-```
-
-Ejecutar servidor de desarrollo:
-
-```bash
-npm run dev
-```
-
-El frontend quedará disponible en:
-
-```
-http://localhost:5173
-```
-
----
-
-# Estructura del proyecto
-
-```
-Commerzia
+### 📂 Estructura del Backend
+```text
+backend/
 │
-├── backend
-│   ├── app
-│   ├── database
-│   ├── routes
-│   └── storage
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/Api/V1/
+│   │   ├── Requests/
+│   │   └── Resources/
+│   ├── Models/
+│   └── Services/
+├── database/
+│   ├── factories/
+│   ├── migrations/
+│   └── seeders/
+├── routes/
+│   ├── api.php
+│   └── web.php
+├── config/
+├── storage/
+├── Dockerfile
+├── composer.json
+└── .env
+```
+
+### 🔐 Autenticación
+
+La autenticación de la API se realiza mediante **Laravel Sanctum**. El usuario autenticado puede acceder a los recursos autorizados de la aplicación.
+La arquitectura utiliza el concepto de tienda: `store_id`. Esto permite relacionar los usuarios y los recursos con una tienda específica.
+
+### 🏪 Arquitectura Multiempresa
+
+Colmerzia está diseñada para soportar múltiples tiendas. Los datos pertenecientes a una tienda se filtran mediante `store_id`.
+
+**Ejemplo:**
+```text
+Usuario
+   │
+   └── store_id = 1
+          │
+          ├── Productos
+          ├── Categorías
+          ├── Clientes
+          └── Pedidos
+```
+Esto permite evitar que los datos de una tienda sean visibles para otra tienda.
+
+### 🛍️ Módulo de productos
+
+Actualmente el Backend cuenta con un módulo de productos que permite: Crear, consultar (específico o listado), actualizar, eliminar, buscar, filtrar y paginar productos.
+
+**Endpoints de productos:**
+```http
+GET    /api/v1/products
+POST   /api/v1/products
+GET    /api/v1/products/{id}
+PUT    /api/v1/products/{id}
+DELETE /api/v1/products/{id}
+```
+
+**Funcionalidades del listado:**
+- **Búsqueda (name, sku):** `/api/v1/products?search=laptop`
+- **Filtro por estado:** `/api/v1/products?is_active=true`
+- **Filtro por categoría:** `/api/v1/products?category_id=1`
+- **Paginación:** `/api/v1/products?per_page=15`
+
+**Slugs:** Los productos generan automáticamente un slug único por tienda.
+- `Laptop Lenovo IdeaPad` ➡️ `laptop-lenovo-ideapad`
+- Si existe ➡️ `laptop-lenovo-ideapad-1`
+
+---
+
+## 🖥️ Frontend
+
+El Frontend está desarrollado utilizando **React + TypeScript + Vite**. Su responsabilidad es proporcionar la interfaz visual de la plataforma.
+
+### 📂 Estructura del Frontend
+```text
+frontend/
 │
-└── frontend
-    ├── src
-    ├── public
-    └── package.json
+├── src/
+│   ├── components/  (Componentes reutilizables)
+│   ├── features/    (Funcionalidades agrupadas por módulo)
+│   ├── hooks/       (Hooks personalizados)
+│   ├── layouts/     (Layouts de la aplicación)
+│   ├── pages/       (Páginas de la aplicación)
+│   ├── services/    (Comunicación con la API)
+│   ├── stores/      (Estados globales)
+│   ├── types/       (Tipos TypeScript)
+│   └── App.tsx
+│
+├── Dockerfile
+├── package.json
+├── tsconfig.json
+└── vite.config.ts
 ```
 
 ---
 
-# Dependencias Frontend
+## 🗄️ Base de datos (PostgreSQL)
 
-El proyecto utiliza:
+La base de datos se ejecuta dentro de un contenedor Docker. El Backend se conecta al servicio mediante: `DB_HOST=postgres`.
 
-```json
-{
-  "react": "^19",
-  "react-dom": "^19",
-  "react-router-dom": "^7",
-  "@tanstack/react-query": "^5",
-  "axios": "^1",
-  "zustand": "^5",
-  "react-hook-form": "^7",
-  "zod": "^4",
-  "lucide-react": "^1",
-  "clsx": "^2",
-  "tailwindcss": "^4"
-}
-```
-
-Instalación manual:
-
+**Migraciones y Seeders:**
 ```bash
-npm install \
-react-router-dom \
-axios \
-@tanstack/react-query \
-react-hook-form \
-zod \
-zustand \
-lucide-react \
-clsx
+# Migraciones
+docker compose exec backend php artisan migrate
+
+# Migraciones y seeders
+docker compose exec backend php artisan migrate --seed
+
+# Solo seeders
+docker compose exec backend php artisan db:seed
 ```
 
 ---
 
-# Comandos útiles
+## 🔴 Otros Servicios Auxiliares
 
-## Backend
+### Redis
+Se utiliza como servicio auxiliar para cache, colas y procesamiento de tareas en segundo plano. Se ejecuta mediante Docker.
 
-```bash
-php artisan serve
-php artisan migrate:fresh --seed
-php artisan optimize:clear
-php artisan route:list
-php artisan about
-```
+### 📧 Mailpit
+Se utiliza durante el desarrollo para capturar los correos enviados por la aplicación (recuperación de contraseña, notificaciones, etc.) sin necesidad de enviar correos reales.
 
-## Frontend
+### 🌐 Nginx
+Funciona como servidor web y proxy. Recibe solicitudes, redirige peticiones, sirve la aplicación y comunica el Frontend con el Backend.
 
-```bash
-npm run dev
-npm run build
-npm run preview
-npm run lint
+---
+
+## 📁 Estructura general del proyecto
+
+```text
+colmerzia/
+│
+├── backend/
+│   ├── app/
+│   ├── config/
+│   ├── database/
+│   ├── routes/
+│   ├── storage/
+│   ├── Dockerfile
+│   ├── composer.json
+│   └── .env
+│
+├── frontend/
+│   ├── src/
+│   ├── public/
+│   ├── Dockerfile
+│   ├── package.json
+│   └── vite.config.ts
+│
+├── docker/
+│   ├── backend/
+│   ├── frontend/
+│   └── nginx/
+│
+├── docker-compose.yml
+├── .gitignore
+└── README.md
 ```
 
 ---
 
-# Stack Tecnológico
+## 🐳 Comandos Útiles
 
-* Laravel 13
-* PHP 8.5
-* PostgreSQL
-* React 19
-* Vite 8
-* TypeScript 6
-* TailwindCSS 4
-* React Query
-* Zustand
-* Axios
-* React Hook Form
-* Zod
+### Docker
+```bash
+# Iniciar los servicios
+docker compose up -d
+
+# Construir y levantar los servicios
+docker compose up -d --build
+
+# Construir las imágenes
+docker compose build
+
+# Ver el estado y logs
+docker compose ps
+docker compose logs -f
+docker compose logs -f backend
+docker compose logs -f frontend
+
+# Detener servicios (y eliminar contenedores/volúmenes)
+docker compose stop
+docker compose down
+docker compose down -v  # ⚠️ Elimina datos persistentes
+docker compose restart
+```
+
+### Backend (Artisan)
+```bash
+docker compose exec backend php artisan
+docker compose exec backend php artisan migrate
+docker compose exec backend php artisan migrate --seed
+docker compose exec backend php artisan optimize:clear
+docker compose exec backend bash
+```
+
+### Frontend (npm)
+```bash
+docker compose exec frontend npm run build
+docker compose exec frontend npm <comando>
+```
 
 ---
 
-# Inicio rápido
+## 🔧 Flujo de desarrollo general
 
+1. Iniciar el entorno: `docker compose up -d` (usar `--build` si hay cambios en configuración).
+2. Verificar: `docker compose ps`
+3. Ejecutar migraciones si es necesario: `docker compose exec backend php artisan migrate`
+4. Limpiar caché si es necesario: `docker compose exec backend php artisan optimize:clear`
+5. Revisar logs en caso de error: `docker compose logs -f`
+
+---
+
+## 🌿 Git y Convenciones
+
+El proyecto utiliza Git para el control de versiones.
+
+### Flujo recomendado
 ```bash
-git clone <repo>
-
-cd backend
-composer install
-cp .env.example .env
-php artisan key:generate
-php artisan storage:link
-php artisan migrate:fresh --seed
-php artisan serve
-
-cd ../frontend
-npm install
-npm run dev
+git checkout -b feature/nombre-de-la-funcionalidad
+git status
+git add .
+git commit -m "feat: descripción del cambio"
+git push origin feature/nombre-de-la-funcionalidad
 ```
+
+### Convención de commits
+- `feat:` agrega nueva funcionalidad (ej. *feat: agrega módulo de productos*)
+- `fix:` corrige un error (ej. *fix: corrige filtro de productos*)
+- `refactor:` reorganiza el código sin cambiar comportamiento
+- `docs:` actualiza documentación
+- `chore:` tareas de mantenimiento (ej. *chore: actualiza configuración de Docker*)
+
+---
+
+## 🔒 Variables de entorno
+
+Los archivos `.env` contienen información sensible y **no deben subirse al repositorio**.
+El `.gitignore` debe incluir `.env` y `.env.*` pero permitir `!.env.example`. 
+Mantén siempre el `.env.example` actualizado con la estructura, pero sin datos reales.
+
+---
+
+## 📌 Funcionalidades actuales y 🚧 Próximos módulos
+
+**Actualmente implementado:**
+- Arquitectura separada (Laravel + React) con Docker Compose.
+- Base de datos en PostgreSQL, Cache en Redis, Proxy Nginx, Mailpit.
+- Autenticación con Laravel Sanctum y Gestión de usuarios.
+- Arquitectura multiempresa (separación por `store_id`).
+- Módulo de productos, categorías y marcas con búsqueda, filtrado, paginación y slugs únicos.
+- Soft Delete y UUIDs.
+
+**Próximos módulos a implementar:**
+- Gestión avanzada de tiendas e inventario (movimientos).
+- Gestión de clientes, pedidos y ventas.
+- Gestión de empleados (roles y permisos avanzados).
+- Configuración de tienda y métodos de pago.
+- Reportes, dashboard con métricas y estadísticas comerciales.
+
+---
+
+## 🤝 Contribución
+Las contribuciones al proyecto son bienvenidas. Sigue el flujo de ramas recomendado, verifica el funcionamiento antes de hacer commit, y crea un Pull Request.
+
+## 📄 Licencia
+Este proyecto se encuentra actualmente en desarrollo. La licencia definitiva del proyecto será definida posteriormente.
+
+---
+
+**🚀 Colmerzia**  
+*Gestión comercial moderna, modular y escalable.*  
+Construido con: Laravel | React | TypeScript | PostgreSQL | Redis | Docker
