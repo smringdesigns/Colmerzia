@@ -1003,5 +1003,70 @@
     "mtime": 1782493190.5713124,
     "ast_hash": "f955ee4eeae138a29188424d174b28b7",
     "semantic_hash": "f955ee4eeae138a29188424d174b28b7"
+  },
+  ".github/copilot-instructions.md": {
+    "mtime": 1784928627.1636434,
+    "ast_hash": "2b23503628bf2ec71d067a85ca8948ab",
+    "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1782945484.417493,
+    "ast_hash": "5f0dd9878ef36aa77228d5bc19d318c3",
+    "semantic_hash": ""
+  },
+  "backend/README.md": {
+    "mtime": 1779743512.0,
+    "ast_hash": "d2661a31fed7f254f5b7d3b6fe19330a",
+    "semantic_hash": ""
+  },
+  "backend/public/robots.txt": {
+    "mtime": 1779743512.0,
+    "ast_hash": "b6216d61c03e6ce0c9aea6ca7808f7ca",
+    "semantic_hash": ""
+  },
+  "docker-compose.yml": {
+    "mtime": 1784661725.4339285,
+    "ast_hash": "2c3da2d8ded6f59eebee7a1736581d5b",
+    "semantic_hash": ""
+  },
+  "frontend/README.md": {
+    "mtime": 1782492773.8158023,
+    "ast_hash": "9b29c5addc63360d0eee180ef76cc5d5",
+    "semantic_hash": ""
+  },
+  "frontend/index.html": {
+    "mtime": 1782922130.8148432,
+    "ast_hash": "31204223dd284f1b78e5d4a220037baa",
+    "semantic_hash": ""
+  },
+  "frontend/public/auth/login-office.jpeg": {
+    "mtime": 1782231612.3129096,
+    "ast_hash": "72742c2e91eb0159f6b65c8eefc13602",
+    "semantic_hash": ""
+  },
+  "frontend/public/favicon.svg": {
+    "mtime": 1782492702.4067628,
+    "ast_hash": "7e840862161341271697daa99a40d76b",
+    "semantic_hash": ""
+  },
+  "frontend/public/icons.svg": {
+    "mtime": 1782492702.4249518,
+    "ast_hash": "3b4fcfcf393eca4d264dca4a4663bc37",
+    "semantic_hash": ""
+  },
+  "frontend/src/assets/hero.png": {
+    "mtime": 1782492702.3714952,
+    "ast_hash": "aead493361b27e7510691c5d7072dfc1",
+    "semantic_hash": ""
+  },
+  "frontend/src/assets/react.svg": {
+    "mtime": 1782492702.4382043,
+    "ast_hash": "f0402b67b6ce880f65666bb49e841696",
+    "semantic_hash": ""
+  },
+  "frontend/src/assets/vite.svg": {
+    "mtime": 1782492702.4503846,
+    "ast_hash": "9960a24288958394ac50e57ff638b036",
+    "semantic_hash": ""
   }
 }
