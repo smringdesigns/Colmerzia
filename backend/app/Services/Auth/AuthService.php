@@ -4,13 +4,54 @@ namespace App\Services\Auth;
 
 use App\Models\User;
 use App\Support\Tenancy\Tenant;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use App\DTOs\Auth\LoginResponseDTO;
 use App\Contracts\Auth\AuthServiceInterface;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Validation\ValidationException;
 
 class AuthService implements AuthServiceInterface
 {
+    public function register(
+        string $name,
+        string $email,
+        string $password
+    ): LoginResponseDTO
+    {
+        // El registro solo tiene sentido dentro del contexto de una
+        // tienda (el nuevo usuario queda asociado a ella). Sin un
+        // tenant resuelto no sabríamos a qué store_id asignarlo.
+        if (!Tenant::check()) {
+            throw ValidationException::withMessages([
+                'email' => 'El registro debe realizarse desde el subdominio de una tienda.',
+            ]);
+        }
+
+        $user = User::create([
+            'uuid' => Str::uuid(),
+            'store_id' => Tenant::id(),
+            'name' => $name,
+            'email' => strtolower(trim($email)),
+            'password' => $password,
+            'is_active' => true,
+        ]);
+
+        // A propósito NO se le asigna ningún rol por defecto: un
+        // usuario recién registrado no debe tener permisos hasta que
+        // alguien con autoridad en la tienda se los asigne. Con
+        // Gate::before() denegando por defecto, esto ya queda cubierto
+        // solo con no adjuntar ningún rol.
+        $token = $user
+            ->createToken('colmerzia')
+            ->plainTextToken;
+
+        return new LoginResponseDTO(
+            user: $user,
+            token: $token
+        );
+    }
+
     public function login(
         string $email,
         string $password

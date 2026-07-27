@@ -7,6 +7,12 @@ use App\Models\User;
 
 interface AuthServiceInterface
 {
+    public function register(
+        string $name,
+        string $email,
+        string $password
+    ): LoginResponseDTO;
+
     public function login(
         string $email,
         string $password

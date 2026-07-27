@@ -8,7 +8,11 @@ use App\Http\Controllers\Api\V1\CustomerController;
 Route::prefix('v1')->middleware(['tenant', 'store.active'])->group(function () {
 
     // Autenticación pública
-    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/register', [AuthController::class, 'register'])
+        ->middleware('throttle:register');
+
+    Route::post('/login', [AuthController::class, 'login'])
+        ->middleware('throttle:login');
 
     // Rutas protegidas
     Route::middleware('auth:sanctum')->group(function () {

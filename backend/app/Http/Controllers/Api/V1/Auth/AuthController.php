@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Contracts\Auth\AuthServiceInterface;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\Auth\LoginResource;
 use App\Http\Resources\User\UserResource;
 
@@ -14,6 +15,19 @@ class AuthController extends Controller
     public function __construct(
         private readonly AuthServiceInterface $authService
     ) {
+    }
+
+    public function register(RegisterRequest $request)
+    {
+        $data = new LoginResource(
+            $this->authService->register(
+                $request->name,
+                $request->email,
+                $request->password
+            )
+        );
+
+        return $data->response()->setStatusCode(201);
     }
 
     public function login(LoginRequest $request): LoginResource
