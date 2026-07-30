@@ -373,7 +373,19 @@ colmerzia/
 ├── .gitignore
 └── README.md
 ```
+# 1. Instalar Spatie Permission para manejar los roles (SuperAdmin, Owner, Manager, etc.)
+composer require spatie/laravel-permission
 
+# 2. Instalar el cliente de Redis (necesario para caché y colas)
+composer require predis/predis
+
+# 3. Instalar y configurar Laravel Horizon (panel de monitoreo de colas)
+composer require laravel/horizon
+php artisan horizon:install
+
+# 4. Instalar y configurar Laravel Telescope (herramienta de depuración)
+composer require laravel/telescope --dev
+php artisan telescope:install
 ---
 
 ## 🐳 Comandos Útiles
