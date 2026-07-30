@@ -23,7 +23,20 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'tenant' => \App\Http\Middleware\ResolveTenantBySubdomain::class,
             'store.active' => \App\Http\Middleware\EnsureStoreIsActive::class,
+            'subscription.writable' => \App\Http\Middleware\EnsureSubscriptionIsWritable::class,
+            'feature' => \App\Http\Middleware\EnsureFeatureAvailable::class,
         ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Rate limiting: activa throttle:api en el grupo de rutas 'api'
+        |--------------------------------------------------------------------------
+        |
+        | El límite en sí (60 req/min por usuario o IP) está definido en
+        | AppServiceProvider::configureRateLimiting(), bajo el nombre 'api'.
+        */
+
+        $middleware->throttleApi();
 
         /*
         |--------------------------------------------------------------------------

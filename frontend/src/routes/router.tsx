@@ -7,6 +7,8 @@ import Products from "../pages/Products";
 import ProductForm from "../pages/ProductForm";
 import Customers from "../pages/Customers";
 import CustomerForm from "../pages/CustomerForm";
+import Orders from "../pages/Orders";
+import OrderDetail from "../pages/OrderDetail";
 import ComingSoon from "../pages/ComingSoon";
 import CreateAccount from "../pages/CreateAccount";
 import ForgotPassword from "../pages/ForgotPassword";
@@ -49,8 +51,10 @@ export const router = createBrowserRouter([
                     { path: "clientes/:id/editar",        element: <CustomerForm /> },
                     { path: "inventory",                  element: <ComingSoon title="Inventario" /> },
                     { path: "inventario",                 element: <ComingSoon title="Inventario" /> },
-                    { path: "orders",                     element: <ComingSoon title="Pedidos" /> },
-                    { path: "pedidos",                    element: <ComingSoon title="Pedidos" /> },
+                    { path: "orders",                     element: <Orders />       },
+                    { path: "orders/:id",                 element: <OrderDetail />  },
+                    { path: "pedidos",                    element: <Orders />       },
+                    { path: "pedidos/:id",                element: <OrderDetail />  },
                     { path: "settings",                   element: <ComingSoon title="Configuración" /> },
                     { path: "configuracion",              element: <ComingSoon title="Configuración" /> },
                     { path: "*",                          element: <NotFound />     },

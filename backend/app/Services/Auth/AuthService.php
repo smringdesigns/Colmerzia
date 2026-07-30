@@ -28,6 +28,18 @@ class AuthService implements AuthServiceInterface
             ]);
         }
 
+        // La tienda no puede sumar más staff del que su plan permite.
+        $subscription = Tenant::subscription();
+
+        if ($subscription && $subscription->hasReachedLimit(
+            'max_staff_users',
+            User::where('store_id', Tenant::id())->count()
+        )) {
+            throw ValidationException::withMessages([
+                'email' => 'Se alcanzó el límite de usuarios de tu plan actual.',
+            ]);
+        }
+
         $user = User::create([
             'uuid' => Str::uuid(),
             'store_id' => Tenant::id(),

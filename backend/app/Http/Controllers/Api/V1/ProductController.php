@@ -103,9 +103,16 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
+        $storeId = $this->currentStoreId($request);
+
+        $this->abortIfPlanLimitReached(
+            'max_products',
+            Product::where('store_id', $storeId)->count()
+        );
+
         $data = $request->validated();
  
-        $data['store_id'] = $this->currentStoreId($request);
+        $data['store_id'] = $storeId;
         $data['uuid'] = Str::uuid();
         $data['slug'] = Str::slug($data['name']);
  

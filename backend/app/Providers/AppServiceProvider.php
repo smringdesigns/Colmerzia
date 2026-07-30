@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 
 use App\Contracts\Auth\AuthServiceInterface;
 use App\Services\Auth\AuthService;
+use App\Contracts\Onboarding\StoreOnboardingServiceInterface;
+use App\Services\Onboarding\StoreOnboardingService;
 use App\Models\User;
 
 class AppServiceProvider extends ServiceProvider

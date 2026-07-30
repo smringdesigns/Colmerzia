@@ -36,4 +36,23 @@ abstract class Controller
 
         return $storeId;
     }
+
+    /**
+     * Corta con 403 si crear un registro más superaría el límite del
+     * plan actual para $limitKey (ver config/plans.php). $currentCount
+     * es el conteo de registros existentes ANTES de crear el nuevo.
+     *
+     * Si no hay suscripción resuelta (no debería pasar en operación
+     * normal), no bloquea — mismo criterio que el resto de los
+     * middlewares de plan: preferir no bloquear ante un dato faltante,
+     * no castigar al usuario por un problema interno.
+     */
+    protected function abortIfPlanLimitReached(string $limitKey, int $currentCount): void
+    {
+        $subscription = Tenant::subscription();
+
+        if ($subscription && $subscription->hasReachedLimit($limitKey, $currentCount)) {
+            abort(403, 'Alcanzaste el límite de tu plan actual. Actualiza tu plan para agregar más.');
+        }
+    }
 }

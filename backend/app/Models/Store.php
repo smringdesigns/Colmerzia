@@ -2,11 +2,9 @@
 
 namespace App\Models;
 
-use App\Models\User;
-use App\Models\Role;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Store extends Model
 {
@@ -63,5 +61,16 @@ class Store extends Model
     public function roles()
     {
         return $this->hasMany(Role::class);
+    }
+
+    /**
+     * Relación:
+     * Una tienda tiene una suscripción.
+     *
+     * stores.id -> subscriptions.store_id
+     */
+    public function subscription()
+    {
+        return $this->hasOne(Subscription::class);
     }
 }

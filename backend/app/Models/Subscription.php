@@ -38,13 +38,13 @@ class Subscription extends Model
 
     /**
      * ¿Se puede crear/editar/eliminar bajo esta suscripción?
-     * En read_only y canceled, no; en trialing y active, sí.
+     * Lista blanca: Solo se permite si la tienda está en trial o activa.
      */
     public function isWritable(): bool
     {
-        return !in_array($this->status, [
-            self::STATUS_READ_ONLY,
-            self::STATUS_CANCELED,
+        return in_array($this->status, [
+            self::STATUS_TRIALING,
+            self::STATUS_ACTIVE,
         ], true);
     }
 
@@ -53,16 +53,11 @@ class Subscription extends Model
         return PlanRegistry::hasFeature($this->plan_slug, $feature);
     }
 
-    /** null = sin límite para esa clave en el plan actual. */
     public function limit(string $key): ?int
     {
         return PlanRegistry::limit($this->plan_slug, $key);
     }
 
-    /**
-     * ¿Ya alcanzó (o superó) el límite de $key dado un conteo actual?
-     * Un límite null (sin tope) nunca se alcanza.
-     */
     public function hasReachedLimit(string $key, int $currentCount): bool
     {
         $limit = $this->limit($key);

@@ -51,4 +51,30 @@ class Coupon extends Model
     {
         return $this->belongsTo(Store::class);
     }
+
+    /**
+     * Verifica si el cupón está activo y dentro del rango de fechas válido.
+     */
+    public function isValidNow(): bool
+    {
+        if (!$this->is_active) {
+            return false;
+        }
+
+        $now = now();
+
+        if ($this->starts_at && $this->starts_at > $now) {
+            return false;
+        }
+
+        if ($this->expires_at && $this->expires_at < $now) {
+            return false;
+        }
+
+        if ($this->usage_limit !== null && $this->used_count >= $this->usage_limit) {
+            return false;
+        }
+
+        return true;
+    }
 }
