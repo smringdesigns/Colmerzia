@@ -12,25 +12,36 @@ import OrderDetail from "../pages/OrderDetail";
 import ComingSoon from "../pages/ComingSoon";
 import CreateAccount from "../pages/CreateAccount";
 import ForgotPassword from "../pages/ForgotPassword";
+import ResetPassword from "../pages/ResetPassword";
+import VerifyEmail from "../features/auth/VerifyEmail"; 
 import NotFound from "../pages/NotFound";
 import ProtectedRoute from "../components/auth/ProtectedRoute";
 import PublicRoute from "../components/auth/PublicRoute";
 
 export const router = createBrowserRouter([
-    // Rutas públicas
+    // ==========================================
+    // Rutas Públicas (Usuarios NO autenticados)
+    // ==========================================
     {
         element: <PublicRoute />,
         children: [
             { path: "/login", element: <Login /> },
             { path: "/create-account", element: <CreateAccount /> },
             { path: "/forgot-password", element: <ForgotPassword /> },
+            { path: "/reset-password", element: <ResetPassword /> },
         ],
     },
 
-    // Rutas protegidas
+    // ==========================================
+    // Rutas Protegidas (Requieren inicio de sesión)
+    // ==========================================
     {
         element: <ProtectedRoute />,
         children: [
+            // Pantalla de verificación (Protegida, pero sin el menú del Dashboard)
+            { path: "/verify-email", element: <VerifyEmail /> },
+
+            // Rutas internas del Dashboard (Usan el layout de administrador)
             {
                 path: "/",
                 element: <AdminLayout />,

@@ -31,6 +31,11 @@ Route::prefix('v1')->middleware(['tenant', 'store.active'])->group(function () {
     Route::post('/reset-password', [AuthController::class, 'resetPassword'])
         ->middleware('throttle:6,1');
 
+    // Confirmación de correo (enlace firmado recibido en la bandeja/Mailpit)
+    Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])
+        ->middleware(['signed', 'throttle:6,1'])
+        ->name('verification.verify');
+
     // Storefront público: carrito y checkout de clientes finales.
     // No lleva auth:sanctum (los clientes no son 'User' de staff),
     // se identifican por el header X-Guest-Token. Sí lleva
@@ -54,6 +59,10 @@ Route::prefix('v1')->middleware(['tenant', 'store.active'])->group(function () {
         // Auth
         Route::get('/me', [AuthController::class, 'me']);
         Route::post('/logout', [AuthController::class, 'logout']);
+
+        // Reenviar correo de verificación
+        Route::post('/email/verification-notification', [AuthController::class, 'sendVerificationEmail'])
+            ->middleware('throttle:6,1');
 
         // Productos y Clientes: bloqueados en modo solo-lectura
         // (prueba vencida). Gestionar pedidos que YA existen, en

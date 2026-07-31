@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Role;
 use App\Models\Store;
+use Illuminate\Contracts\Auth\MustVerifyEmail; // <-- ADICIÓN 1: Importación de la interfaz
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -27,7 +28,7 @@ use Laravel\Sanctum\HasApiTokens;
     'password',
     'remember_token',
 ])]
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail // <-- ADICIÓN 2: Implementación en la clase
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 

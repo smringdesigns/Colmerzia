@@ -15,6 +15,7 @@ use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Str;
 use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 class AuthController extends Controller
 {
@@ -73,24 +74,19 @@ class AuthController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        // Por seguridad y buenas prácticas de API, si el usuario no existe 
-        // respondemos con éxito genérico para no revelar qué correos están registrados.
         if (!$user) {
             return response()->json([
                 'message' => 'Si el correo existe en nuestro sistema, te hemos enviado las instrucciones.'
             ]);
         }
 
-        // Creamos el token de recuperación directamente usando el broker de Password
         $token = Password::broker()->createToken($user);
 
-        // Personalizamos la URL de reseteo para que apunte directamente a tu Frontend en React
         ResetPasswordNotification::createUrlUsing(function ($notifiable, string $token) {
             $frontendUrl = env('FRONTEND_URL', 'http://localhost:5173');
             return "{$frontendUrl}/reset-password?token={$token}&email=" . urlencode($notifiable->getEmailForPasswordReset());
         });
 
-        // Enviamos la notificación al usuario
         $user->sendPasswordResetNotification($token);
 
         return response()->json([
@@ -125,5 +121,36 @@ class AuthController extends Controller
         return $status === Password::PASSWORD_RESET
             ? response()->json(['message' => __($status)])
             : response()->json(['message' => __($status)], 400);
+    }
+
+    /**
+     * Reenviar el enlace de verificación de correo.
+     */
+    public function sendVerificationEmail(Request $request)
+    {
+        if ($request->user()->hasVerifiedEmail()) {
+            return response()->json(['message' => 'El correo ya ha sido verificado.'], 400);
+        }
+
+        $request->user()->sendEmailVerificationNotification();
+
+        return response()->json(['message' => '¡Enlace de verificación enviado con éxito!']);
+    }
+
+    /**
+     * Confirmar la verificación del correo mediante enlace firmado.
+     */
+    public function verifyEmail(EmailVerificationRequest $request)
+    {
+        if ($request->user()->hasVerifiedEmail()) {
+            return response()->json(['message' => 'El correo ya está verificado.']);
+        }
+
+        if ($request->user()->markEmailAsVerified()) {
+            event(new \Illuminate\Auth\Events\Verified($request->user()));
+        }
+
+        $frontendUrl = env('FRONTEND_URL', 'http://localhost:5173');
+        return redirect("{$frontendUrl}/dashboard?verified=1");
     }
 }

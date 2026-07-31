@@ -24,8 +24,20 @@ export async function logout() {
     return response.data;
 }
 
-// NUEVA FUNCIÓN: Conexión con Laravel para recuperar contraseña
+// Conexión con Laravel para solicitar el correo de recuperación
 export async function forgotPassword(email: string) {
     const response = await api.post("/v1/forgot-password", { email });
+    return response.data;
+}
+
+// NUEVA FUNCIÓN: Conexión con Laravel para guardar la nueva contraseña
+export async function resetPassword(data: { email: string; token: string; password: string; password_confirmation: string }) {
+    const response = await api.post('/v1/reset-password', data);
+    return response.data;
+}
+
+// NUEVA FUNCIÓN: Conexión con Laravel para reenviar el correo de verificación
+export async function sendVerificationEmail() {
+    const response = await api.post('/v1/email/verification-notification');
     return response.data;
 }
