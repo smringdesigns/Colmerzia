@@ -175,5 +175,8 @@
   "173": "Product",
   "174": "Store",
   "175": "ProductVariant",
-  "176": "Tests\\TestCase"
+  "176": "Tests\\TestCase",
+  "177": "HorizonServiceProvider",
+  "178": "composer.json",
+  "179": "2026_07_30_114428_create_telescope_entries_table.php"
 }

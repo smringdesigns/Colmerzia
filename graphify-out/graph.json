@@ -1187,8 +1187,8 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "backend_app_http_controllers_api_v1_auth_authcontroller_authcontroller_login",
-      "community": 29,
-      "community_name": "Brand",
+      "community": 33,
+      "community_name": "BaseResource",
       "norm_label": ".login()"
     },
     {
@@ -1198,8 +1198,8 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "backend_app_http_controllers_api_v1_auth_authcontroller_authcontroller_me",
-      "community": 29,
-      "community_name": "Brand",
+      "community": 33,
+      "community_name": "BaseResource",
       "norm_label": ".me()"
     },
     {
@@ -1275,8 +1275,8 @@
       "source_location": "L89",
       "_origin": "ast",
       "id": "backend_app_http_controllers_api_v1_customercontroller_customercontroller_store",
-      "community": 16,
-      "community_name": "BaseRequest",
+      "community": 138,
+      "community_name": "OrderItem",
       "norm_label": ".store()"
     },
     {
@@ -1319,8 +1319,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "backend_app_http_controllers_api_v1_onboarding_storeonboardingcontroller",
-      "community": 22,
-      "community_name": "Illuminate\\Http\\Request",
+      "community": 18,
+      "community_name": "PlanRegistry",
       "norm_label": "storeonboardingcontroller.php"
     },
     {
@@ -1330,8 +1330,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "backend_app_http_controllers_api_v1_onboarding_storeonboardingcontroller_storeonboardingcontroller",
-      "community": 22,
-      "community_name": "Illuminate\\Http\\Request",
+      "community": 18,
+      "community_name": "PlanRegistry",
       "norm_label": "storeonboardingcontroller"
     },
     {
@@ -1341,8 +1341,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "backend_app_http_controllers_api_v1_onboarding_storeonboardingcontroller_storeonboardingcontroller_construct",
-      "community": 22,
-      "community_name": "Illuminate\\Http\\Request",
+      "community": 18,
+      "community_name": "PlanRegistry",
       "norm_label": ".__construct()"
     },
     {
@@ -1363,8 +1363,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "backend_app_http_controllers_api_v1_ordercontroller",
-      "community": 123,
-      "community_name": "OrderController.php",
+      "community": 22,
+      "community_name": "Illuminate\\Http\\Request",
       "norm_label": "ordercontroller.php"
     },
     {
@@ -1374,8 +1374,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "backend_app_http_controllers_api_v1_ordercontroller_ordercontroller",
-      "community": 123,
-      "community_name": "OrderController.php",
+      "community": 22,
+      "community_name": "Illuminate\\Http\\Request",
       "norm_label": "ordercontroller"
     },
     {
@@ -1385,8 +1385,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "backend_app_http_controllers_api_v1_ordercontroller_ordercontroller_construct",
-      "community": 123,
-      "community_name": "OrderController.php",
+      "community": 22,
+      "community_name": "Illuminate\\Http\\Request",
       "norm_label": ".__construct()"
     },
     {
@@ -1396,8 +1396,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "backend_app_http_controllers_api_v1_ordercontroller_ordercontroller_index",
-      "community": 123,
-      "community_name": "OrderController.php",
+      "community": 22,
+      "community_name": "Illuminate\\Http\\Request",
       "norm_label": ".index()"
     },
     {
@@ -1407,8 +1407,8 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "backend_app_http_controllers_api_v1_ordercontroller_ordercontroller_show",
-      "community": 123,
-      "community_name": "OrderController.php",
+      "community": 22,
+      "community_name": "Illuminate\\Http\\Request",
       "norm_label": ".show()"
     },
     {
@@ -1429,8 +1429,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "backend_app_http_controllers_api_v1_productcontroller",
-      "community": 26,
-      "community_name": "Illuminate\\Database\\Eloquent\\Factories\\HasFactory",
+      "community": 22,
+      "community_name": "Illuminate\\Http\\Request",
       "norm_label": "productcontroller.php"
     },
     {
@@ -1440,8 +1440,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "backend_app_http_controllers_api_v1_productcontroller_productcontroller",
-      "community": 26,
-      "community_name": "Illuminate\\Database\\Eloquent\\Factories\\HasFactory",
+      "community": 22,
+      "community_name": "Illuminate\\Http\\Request",
       "norm_label": "productcontroller"
     },
     {
@@ -1451,8 +1451,8 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "backend_app_http_controllers_api_v1_productcontroller_productcontroller_index",
-      "community": 26,
-      "community_name": "Illuminate\\Database\\Eloquent\\Factories\\HasFactory",
+      "community": 22,
+      "community_name": "Illuminate\\Http\\Request",
       "norm_label": ".index()"
     },
     {
@@ -1473,8 +1473,8 @@
       "source_location": "L139",
       "_origin": "ast",
       "id": "backend_app_http_controllers_api_v1_productcontroller_productcontroller_show",
-      "community": 26,
-      "community_name": "Illuminate\\Database\\Eloquent\\Factories\\HasFactory",
+      "community": 22,
+      "community_name": "Illuminate\\Http\\Request",
       "norm_label": ".show()"
     },
     {
@@ -1495,8 +1495,8 @@
       "source_location": "L193",
       "_origin": "ast",
       "id": "backend_app_http_controllers_api_v1_productcontroller_productcontroller_destroy",
-      "community": 26,
-      "community_name": "Illuminate\\Database\\Eloquent\\Factories\\HasFactory",
+      "community": 22,
+      "community_name": "Illuminate\\Http\\Request",
       "norm_label": ".destroy()"
     },
     {
@@ -1638,8 +1638,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "backend_app_http_controllers_api_v1_storefront_checkoutcontroller_checkoutcontroller_store",
-      "community": 31,
-      "community_name": "ProductForm.tsx",
+      "community": 123,
+      "community_name": "OrderController.php",
       "norm_label": ".store()"
     },
     {
@@ -1836,8 +1836,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "backend_app_http_requests_auth_loginrequest",
-      "community": 29,
-      "community_name": "Brand",
+      "community": 123,
+      "community_name": "OrderController.php",
       "norm_label": "loginrequest.php"
     },
     {
@@ -1847,8 +1847,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "backend_app_http_requests_auth_loginrequest_loginrequest",
-      "community": 29,
-      "community_name": "Brand",
+      "community": 123,
+      "community_name": "OrderController.php",
       "norm_label": "loginrequest"
     },
     {
@@ -1858,8 +1858,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "backend_app_http_requests_auth_loginrequest_loginrequest_prepareforvalidation",
-      "community": 29,
-      "community_name": "Brand",
+      "community": 123,
+      "community_name": "OrderController.php",
       "norm_label": ".prepareforvalidation()"
     },
     {
@@ -1869,8 +1869,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "backend_app_http_requests_auth_loginrequest_loginrequest_rules",
-      "community": 29,
-      "community_name": "Brand",
+      "community": 123,
+      "community_name": "OrderController.php",
       "norm_label": ".rules()"
     },
     {
@@ -1880,8 +1880,8 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "backend_app_http_requests_auth_loginrequest_loginrequest_messages",
-      "community": 29,
-      "community_name": "Brand",
+      "community": 123,
+      "community_name": "OrderController.php",
       "norm_label": ".messages()"
     },
     {
@@ -1891,8 +1891,8 @@
       "source_location": "L47",
       "_origin": "ast",
       "id": "backend_app_http_requests_auth_loginrequest_loginrequest_attributes",
-      "community": 29,
-      "community_name": "Brand",
+      "community": 123,
+      "community_name": "OrderController.php",
       "norm_label": ".attributes()"
     },
     {
@@ -1979,8 +1979,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "backend_app_http_requests_baserequest_baserequest",
-      "community": 31,
-      "community_name": "ProductForm.tsx",
+      "community": 123,
+      "community_name": "OrderController.php",
       "norm_label": "baserequest"
     },
     {
@@ -1990,8 +1990,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "backend_app_http_requests_baserequest_baserequest_authorize",
-      "community": 31,
-      "community_name": "ProductForm.tsx",
+      "community": 123,
+      "community_name": "OrderController.php",
       "norm_label": ".authorize()"
     },
     {
@@ -2001,8 +2001,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "backend_app_http_requests_baserequest_baserequest_sanitizestring",
-      "community": 31,
-      "community_name": "ProductForm.tsx",
+      "community": 123,
+      "community_name": "OrderController.php",
       "norm_label": ".sanitizestring()"
     },
     {
@@ -2012,8 +2012,8 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "backend_app_http_requests_baserequest_baserequest_sanitizeemail",
-      "community": 31,
-      "community_name": "ProductForm.tsx",
+      "community": 123,
+      "community_name": "OrderController.php",
       "norm_label": ".sanitizeemail()"
     },
     {
@@ -2023,8 +2023,8 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "backend_app_http_requests_baserequest_baserequest_sanitizephone",
-      "community": 31,
-      "community_name": "ProductForm.tsx",
+      "community": 123,
+      "community_name": "OrderController.php",
       "norm_label": ".sanitizephone()"
     },
     {
@@ -2034,8 +2034,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "backend_app_http_requests_customer_storecustomerrequest",
-      "community": 16,
-      "community_name": "BaseRequest",
+      "community": 138,
+      "community_name": "OrderItem",
       "norm_label": "storecustomerrequest.php"
     },
     {
@@ -2045,8 +2045,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "backend_app_http_requests_customer_storecustomerrequest_storecustomerrequest",
-      "community": 16,
-      "community_name": "BaseRequest",
+      "community": 138,
+      "community_name": "OrderItem",
       "norm_label": "storecustomerrequest"
     },
     {
@@ -2056,8 +2056,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "backend_app_http_requests_customer_storecustomerrequest_storecustomerrequest_authorize",
-      "community": 16,
-      "community_name": "BaseRequest",
+      "community": 138,
+      "community_name": "OrderItem",
       "norm_label": ".authorize()"
     },
     {
@@ -2067,8 +2067,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "backend_app_http_requests_customer_storecustomerrequest_storecustomerrequest_rules",
-      "community": 16,
-      "community_name": "BaseRequest",
+      "community": 138,
+      "community_name": "OrderItem",
       "norm_label": ".rules()"
     },
     {
@@ -2078,8 +2078,8 @@
       "source_location": "L81",
       "_origin": "ast",
       "id": "backend_app_http_requests_customer_storecustomerrequest_storecustomerrequest_messages",
-      "community": 16,
-      "community_name": "BaseRequest",
+      "community": 138,
+      "community_name": "OrderItem",
       "norm_label": ".messages()"
     },
     {
@@ -2529,8 +2529,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "backend_app_http_requests_storefront_checkoutrequest",
-      "community": 31,
-      "community_name": "ProductForm.tsx",
+      "community": 123,
+      "community_name": "OrderController.php",
       "norm_label": "checkoutrequest.php"
     },
     {
@@ -2540,8 +2540,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "backend_app_http_requests_storefront_checkoutrequest_checkoutrequest",
-      "community": 31,
-      "community_name": "ProductForm.tsx",
+      "community": 123,
+      "community_name": "OrderController.php",
       "norm_label": "checkoutrequest"
     },
     {
@@ -2551,8 +2551,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "backend_app_http_requests_storefront_checkoutrequest_checkoutrequest_rules",
-      "community": 31,
-      "community_name": "ProductForm.tsx",
+      "community": 123,
+      "community_name": "OrderController.php",
       "norm_label": ".rules()"
     },
     {
@@ -2606,8 +2606,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "backend_app_http_resources_auth_loginresource_loginresource",
-      "community": 29,
-      "community_name": "Brand",
+      "community": 33,
+      "community_name": "BaseResource",
       "norm_label": "loginresource"
     },
     {
@@ -2617,8 +2617,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "backend_app_http_resources_auth_loginresource_loginresource_toarray",
-      "community": 29,
-      "community_name": "Brand",
+      "community": 33,
+      "community_name": "BaseResource",
       "norm_label": ".toarray()"
     },
     {
@@ -2628,8 +2628,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "backend_app_http_resources_baseresource",
-      "community": 26,
-      "community_name": "Illuminate\\Database\\Eloquent\\Factories\\HasFactory",
+      "community": 33,
+      "community_name": "BaseResource",
       "norm_label": "baseresource.php"
     },
     {
@@ -2881,8 +2881,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "backend_app_http_resources_storefront_cartresource_cartresource",
-      "community": 31,
-      "community_name": "ProductForm.tsx",
+      "community": 26,
+      "community_name": "Illuminate\\Database\\Eloquent\\Factories\\HasFactory",
       "norm_label": "cartresource"
     },
     {
@@ -2892,8 +2892,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "backend_app_http_resources_storefront_cartresource_cartresource_construct",
-      "community": 31,
-      "community_name": "ProductForm.tsx",
+      "community": 26,
+      "community_name": "Illuminate\\Database\\Eloquent\\Factories\\HasFactory",
       "norm_label": ".__construct()"
     },
     {
@@ -3420,8 +3420,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "backend_app_models_cartitem",
-      "community": 25,
-      "community_name": "BaseApiException",
+      "community": 46,
+      "community_name": "Dashboard.tsx",
       "norm_label": "cartitem.php"
     },
     {
@@ -3431,8 +3431,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "backend_app_models_cartitem_cartitem",
-      "community": 25,
-      "community_name": "BaseApiException",
+      "community": 46,
+      "community_name": "Dashboard.tsx",
       "norm_label": "cartitem"
     },
     {
@@ -3442,8 +3442,8 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "backend_app_models_cartitem_cartitem_uniqueids",
-      "community": 25,
-      "community_name": "BaseApiException",
+      "community": 46,
+      "community_name": "Dashboard.tsx",
       "norm_label": ".uniqueids()"
     },
     {
@@ -3453,8 +3453,8 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "backend_app_models_cartitem_cartitem_casts",
-      "community": 25,
-      "community_name": "BaseApiException",
+      "community": 46,
+      "community_name": "Dashboard.tsx",
       "norm_label": ".casts()"
     },
     {
@@ -3464,8 +3464,8 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "backend_app_models_cartitem_cartitem_cart",
-      "community": 25,
-      "community_name": "BaseApiException",
+      "community": 46,
+      "community_name": "Dashboard.tsx",
       "norm_label": ".cart()"
     },
     {
@@ -3475,8 +3475,8 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "backend_app_models_cartitem_cartitem_productvariant",
-      "community": 25,
-      "community_name": "BaseApiException",
+      "community": 46,
+      "community_name": "Dashboard.tsx",
       "norm_label": ".productvariant()"
     },
     {
@@ -3486,8 +3486,8 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "backend_app_models_cartitem_cartitem_product",
-      "community": 25,
-      "community_name": "BaseApiException",
+      "community": 46,
+      "community_name": "Dashboard.tsx",
       "norm_label": ".product()"
     },
     {
@@ -3871,8 +3871,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "backend_app_models_inventory",
-      "community": 17,
-      "community_name": "Illuminate\\Database\\Eloquent\\Model",
+      "community": 15,
+      "community_name": "App\\Models\\Concerns\\BelongsToStore",
       "norm_label": "inventory.php"
     },
     {
@@ -3937,8 +3937,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "backend_app_models_inventorymovement",
-      "community": 17,
-      "community_name": "Illuminate\\Database\\Eloquent\\Model",
+      "community": 15,
+      "community_name": "App\\Models\\Concerns\\BelongsToStore",
       "norm_label": "inventorymovement.php"
     },
     {
@@ -3948,8 +3948,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "backend_app_models_inventorymovement_inventorymovement",
-      "community": 17,
-      "community_name": "Illuminate\\Database\\Eloquent\\Model",
+      "community": 15,
+      "community_name": "App\\Models\\Concerns\\BelongsToStore",
       "norm_label": "inventorymovement"
     },
     {
@@ -3959,8 +3959,8 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "backend_app_models_inventorymovement_inventorymovement_casts",
-      "community": 17,
-      "community_name": "Illuminate\\Database\\Eloquent\\Model",
+      "community": 15,
+      "community_name": "App\\Models\\Concerns\\BelongsToStore",
       "norm_label": ".casts()"
     },
     {
@@ -3970,8 +3970,8 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "backend_app_models_inventorymovement_inventorymovement_inventory",
-      "community": 17,
-      "community_name": "Illuminate\\Database\\Eloquent\\Model",
+      "community": 15,
+      "community_name": "App\\Models\\Concerns\\BelongsToStore",
       "norm_label": ".inventory()"
     },
     {
@@ -3981,8 +3981,8 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "backend_app_models_inventorymovement_inventorymovement_user",
-      "community": 17,
-      "community_name": "Illuminate\\Database\\Eloquent\\Model",
+      "community": 15,
+      "community_name": "App\\Models\\Concerns\\BelongsToStore",
       "norm_label": ".user()"
     },
     {
@@ -4124,8 +4124,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "backend_app_models_orderitem",
-      "community": 17,
-      "community_name": "Illuminate\\Database\\Eloquent\\Model",
+      "community": 25,
+      "community_name": "BaseApiException",
       "norm_label": "orderitem.php"
     },
     {
@@ -4135,8 +4135,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "backend_app_models_orderitem_orderitem",
-      "community": 17,
-      "community_name": "Illuminate\\Database\\Eloquent\\Model",
+      "community": 25,
+      "community_name": "BaseApiException",
       "norm_label": "orderitem"
     },
     {
@@ -4146,8 +4146,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "backend_app_models_orderitem_orderitem_casts",
-      "community": 17,
-      "community_name": "Illuminate\\Database\\Eloquent\\Model",
+      "community": 25,
+      "community_name": "BaseApiException",
       "norm_label": ".casts()"
     },
     {
@@ -4157,8 +4157,8 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "backend_app_models_orderitem_orderitem_order",
-      "community": 17,
-      "community_name": "Illuminate\\Database\\Eloquent\\Model",
+      "community": 25,
+      "community_name": "BaseApiException",
       "norm_label": ".order()"
     },
     {
@@ -4168,8 +4168,8 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "backend_app_models_orderitem_orderitem_productvariant",
-      "community": 17,
-      "community_name": "Illuminate\\Database\\Eloquent\\Model",
+      "community": 25,
+      "community_name": "BaseApiException",
       "norm_label": ".productvariant()"
     },
     {
@@ -4179,8 +4179,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "backend_app_models_payment",
-      "community": 17,
-      "community_name": "Illuminate\\Database\\Eloquent\\Model",
+      "community": 15,
+      "community_name": "App\\Models\\Concerns\\BelongsToStore",
       "norm_label": "payment.php"
     },
     {
@@ -4190,8 +4190,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "backend_app_models_payment_payment",
-      "community": 17,
-      "community_name": "Illuminate\\Database\\Eloquent\\Model",
+      "community": 15,
+      "community_name": "App\\Models\\Concerns\\BelongsToStore",
       "norm_label": "payment"
     },
     {
@@ -4201,8 +4201,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "backend_app_models_payment_payment_casts",
-      "community": 17,
-      "community_name": "Illuminate\\Database\\Eloquent\\Model",
+      "community": 15,
+      "community_name": "App\\Models\\Concerns\\BelongsToStore",
       "norm_label": ".casts()"
     },
     {
@@ -4212,8 +4212,8 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "backend_app_models_payment_payment_order",
-      "community": 17,
-      "community_name": "Illuminate\\Database\\Eloquent\\Model",
+      "community": 15,
+      "community_name": "App\\Models\\Concerns\\BelongsToStore",
       "norm_label": ".order()"
     },
     {
@@ -4223,8 +4223,8 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "backend_app_models_payment_payment_transactions",
-      "community": 17,
-      "community_name": "Illuminate\\Database\\Eloquent\\Model",
+      "community": 15,
+      "community_name": "App\\Models\\Concerns\\BelongsToStore",
       "norm_label": ".transactions()"
     },
     {
@@ -4355,8 +4355,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "backend_app_models_productimage",
-      "community": 17,
-      "community_name": "Illuminate\\Database\\Eloquent\\Model",
+      "community": 15,
+      "community_name": "App\\Models\\Concerns\\BelongsToStore",
       "norm_label": "productimage.php"
     },
     {
@@ -4366,8 +4366,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "backend_app_models_productimage_productimage",
-      "community": 17,
-      "community_name": "Illuminate\\Database\\Eloquent\\Model",
+      "community": 15,
+      "community_name": "App\\Models\\Concerns\\BelongsToStore",
       "norm_label": "productimage"
     },
     {
@@ -4685,8 +4685,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "backend_app_models_subscription",
-      "community": 17,
-      "community_name": "Illuminate\\Database\\Eloquent\\Model",
+      "community": 15,
+      "community_name": "App\\Models\\Concerns\\BelongsToStore",
       "norm_label": "subscription.php"
     },
     {
@@ -4773,8 +4773,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "backend_app_models_transaction",
-      "community": 17,
-      "community_name": "Illuminate\\Database\\Eloquent\\Model",
+      "community": 15,
+      "community_name": "App\\Models\\Concerns\\BelongsToStore",
       "norm_label": "transaction.php"
     },
     {
@@ -4784,8 +4784,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "backend_app_models_transaction_transaction",
-      "community": 17,
-      "community_name": "Illuminate\\Database\\Eloquent\\Model",
+      "community": 15,
+      "community_name": "App\\Models\\Concerns\\BelongsToStore",
       "norm_label": "transaction"
     },
     {
@@ -4795,8 +4795,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "backend_app_models_transaction_transaction_casts",
-      "community": 17,
-      "community_name": "Illuminate\\Database\\Eloquent\\Model",
+      "community": 15,
+      "community_name": "App\\Models\\Concerns\\BelongsToStore",
       "norm_label": ".casts()"
     },
     {
@@ -4806,8 +4806,8 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "backend_app_models_transaction_transaction_payment",
-      "community": 17,
-      "community_name": "Illuminate\\Database\\Eloquent\\Model",
+      "community": 15,
+      "community_name": "App\\Models\\Concerns\\BelongsToStore",
       "norm_label": ".payment()"
     },
     {
@@ -4817,8 +4817,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "backend_app_models_user",
-      "community": 35,
-      "community_name": "App.tsx",
+      "community": 5,
+      "community_name": "Illuminate\\Database\\Eloquent\\SoftDeletes",
       "norm_label": "user.php"
     },
     {
@@ -4828,8 +4828,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "backend_app_models_user_user",
-      "community": 12,
-      "community_name": "User",
+      "community": 27,
+      "community_name": "Store",
       "norm_label": "user"
     },
     {
@@ -4839,8 +4839,8 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "backend_app_models_user_user_store",
-      "community": 12,
-      "community_name": "User",
+      "community": 27,
+      "community_name": "Store",
       "norm_label": ".store()"
     },
     {
@@ -4850,8 +4850,8 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "backend_app_models_user_user_roles",
-      "community": 12,
-      "community_name": "User",
+      "community": 27,
+      "community_name": "Store",
       "norm_label": ".roles()"
     },
     {
@@ -4861,8 +4861,8 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "backend_app_models_user_user_hasrole",
-      "community": 12,
-      "community_name": "User",
+      "community": 27,
+      "community_name": "Store",
       "norm_label": ".hasrole()"
     },
     {
@@ -4872,8 +4872,8 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "backend_app_models_user_user_haspermission",
-      "community": 12,
-      "community_name": "User",
+      "community": 27,
+      "community_name": "Store",
       "norm_label": ".haspermission()"
     },
     {
@@ -4883,8 +4883,8 @@
       "source_location": "L75",
       "_origin": "ast",
       "id": "backend_app_models_user_user_casts",
-      "community": 12,
-      "community_name": "User",
+      "community": 27,
+      "community_name": "Store",
       "norm_label": ".casts()"
     },
     {
@@ -4894,8 +4894,8 @@
       "source_location": "L91",
       "_origin": "ast",
       "id": "backend_app_models_user_user_sendpasswordresetnotification",
-      "community": 12,
-      "community_name": "User",
+      "community": 27,
+      "community_name": "Store",
       "norm_label": ".sendpasswordresetnotification()"
     },
     {
@@ -5125,8 +5125,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "backend_app_policies_productpolicy",
-      "community": 125,
-      "community_name": "ProductPlanLimitTest",
+      "community": 27,
+      "community_name": "Store",
       "norm_label": "productpolicy.php"
     },
     {
@@ -5136,8 +5136,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "backend_app_policies_productpolicy_productpolicy",
-      "community": 125,
-      "community_name": "ProductPlanLimitTest",
+      "community": 27,
+      "community_name": "Store",
       "norm_label": "productpolicy"
     },
     {
@@ -5147,8 +5147,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "backend_app_policies_productpolicy_productpolicy_viewany",
-      "community": 125,
-      "community_name": "ProductPlanLimitTest",
+      "community": 27,
+      "community_name": "Store",
       "norm_label": ".viewany()"
     },
     {
@@ -5158,8 +5158,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "backend_app_policies_productpolicy_productpolicy_view",
-      "community": 125,
-      "community_name": "ProductPlanLimitTest",
+      "community": 27,
+      "community_name": "Store",
       "norm_label": ".view()"
     },
     {
@@ -5169,8 +5169,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "backend_app_policies_productpolicy_productpolicy_create",
-      "community": 125,
-      "community_name": "ProductPlanLimitTest",
+      "community": 27,
+      "community_name": "Store",
       "norm_label": ".create()"
     },
     {
@@ -5180,8 +5180,8 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "backend_app_policies_productpolicy_productpolicy_update",
-      "community": 125,
-      "community_name": "ProductPlanLimitTest",
+      "community": 27,
+      "community_name": "Store",
       "norm_label": ".update()"
     },
     {
@@ -5191,8 +5191,8 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "backend_app_policies_productpolicy_productpolicy_delete",
-      "community": 125,
-      "community_name": "ProductPlanLimitTest",
+      "community": 27,
+      "community_name": "Store",
       "norm_label": ".delete()"
     },
     {
@@ -5202,8 +5202,8 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "backend_app_policies_productpolicy_productpolicy_restore",
-      "community": 125,
-      "community_name": "ProductPlanLimitTest",
+      "community": 27,
+      "community_name": "Store",
       "norm_label": ".restore()"
     },
     {
@@ -5213,8 +5213,8 @@
       "source_location": "L62",
       "_origin": "ast",
       "id": "backend_app_policies_productpolicy_productpolicy_forcedelete",
-      "community": 125,
-      "community_name": "ProductPlanLimitTest",
+      "community": 27,
+      "community_name": "Store",
       "norm_label": ".forcedelete()"
     },
     {
@@ -5422,8 +5422,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "backend_app_providers_appserviceprovider",
-      "community": 138,
-      "community_name": "OrderItem",
+      "community": 18,
+      "community_name": "PlanRegistry",
       "norm_label": "appserviceprovider.php"
     },
     {
@@ -5433,8 +5433,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "backend_app_providers_appserviceprovider_appserviceprovider",
-      "community": 138,
-      "community_name": "OrderItem",
+      "community": 18,
+      "community_name": "PlanRegistry",
       "norm_label": "appserviceprovider"
     },
     {
@@ -5444,8 +5444,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "backend_app_providers_appserviceprovider_appserviceprovider_register",
-      "community": 138,
-      "community_name": "OrderItem",
+      "community": 18,
+      "community_name": "PlanRegistry",
       "norm_label": ".register()"
     },
     {
@@ -5455,8 +5455,8 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "backend_app_providers_appserviceprovider_appserviceprovider_boot",
-      "community": 138,
-      "community_name": "OrderItem",
+      "community": 18,
+      "community_name": "PlanRegistry",
       "norm_label": ".boot()"
     },
     {
@@ -5466,9 +5466,108 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "backend_app_providers_appserviceprovider_appserviceprovider_configureratelimiting",
-      "community": 138,
-      "community_name": "OrderItem",
+      "community": 18,
+      "community_name": "PlanRegistry",
       "norm_label": ".configureratelimiting()"
+    },
+    {
+      "label": "HorizonServiceProvider.php",
+      "file_type": "code",
+      "source_file": "backend/app/Providers/HorizonServiceProvider.php",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "backend_app_providers_horizonserviceprovider",
+      "community": 177,
+      "community_name": "HorizonServiceProvider",
+      "norm_label": "horizonserviceprovider.php"
+    },
+    {
+      "label": "HorizonServiceProvider",
+      "file_type": "code",
+      "source_file": "backend/app/Providers/HorizonServiceProvider.php",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "backend_app_providers_horizonserviceprovider_horizonserviceprovider",
+      "community": 177,
+      "community_name": "HorizonServiceProvider",
+      "norm_label": "horizonserviceprovider"
+    },
+    {
+      "label": ".boot()",
+      "file_type": "code",
+      "source_file": "backend/app/Providers/HorizonServiceProvider.php",
+      "source_location": "L14",
+      "_origin": "ast",
+      "id": "backend_app_providers_horizonserviceprovider_horizonserviceprovider_boot",
+      "community": 177,
+      "community_name": "HorizonServiceProvider",
+      "norm_label": ".boot()"
+    },
+    {
+      "label": ".gate()",
+      "file_type": "code",
+      "source_file": "backend/app/Providers/HorizonServiceProvider.php",
+      "source_location": "L28",
+      "_origin": "ast",
+      "id": "backend_app_providers_horizonserviceprovider_horizonserviceprovider_gate",
+      "community": 177,
+      "community_name": "HorizonServiceProvider",
+      "norm_label": ".gate()"
+    },
+    {
+      "label": "TelescopeServiceProvider.php",
+      "file_type": "code",
+      "source_file": "backend/app/Providers/TelescopeServiceProvider.php",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "backend_app_providers_telescopeserviceprovider",
+      "community": 125,
+      "community_name": "ProductPlanLimitTest",
+      "norm_label": "telescopeserviceprovider.php"
+    },
+    {
+      "label": "TelescopeServiceProvider",
+      "file_type": "code",
+      "source_file": "backend/app/Providers/TelescopeServiceProvider.php",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "backend_app_providers_telescopeserviceprovider_telescopeserviceprovider",
+      "community": 125,
+      "community_name": "ProductPlanLimitTest",
+      "norm_label": "telescopeserviceprovider"
+    },
+    {
+      "label": ".register()",
+      "file_type": "code",
+      "source_file": "backend/app/Providers/TelescopeServiceProvider.php",
+      "source_location": "L16",
+      "_origin": "ast",
+      "id": "backend_app_providers_telescopeserviceprovider_telescopeserviceprovider_register",
+      "community": 125,
+      "community_name": "ProductPlanLimitTest",
+      "norm_label": ".register()"
+    },
+    {
+      "label": ".hideSensitiveRequestDetails()",
+      "file_type": "code",
+      "source_file": "backend/app/Providers/TelescopeServiceProvider.php",
+      "source_location": "L37",
+      "_origin": "ast",
+      "id": "backend_app_providers_telescopeserviceprovider_telescopeserviceprovider_hidesensitiverequestdetails",
+      "community": 125,
+      "community_name": "ProductPlanLimitTest",
+      "norm_label": ".hidesensitiverequestdetails()"
+    },
+    {
+      "label": ".gate()",
+      "file_type": "code",
+      "source_file": "backend/app/Providers/TelescopeServiceProvider.php",
+      "source_location": "L57",
+      "_origin": "ast",
+      "id": "backend_app_providers_telescopeserviceprovider_telescopeserviceprovider_gate",
+      "community": 125,
+      "community_name": "ProductPlanLimitTest",
+      "norm_label": ".gate()"
     },
     {
       "label": "AuthService.php",
@@ -5664,8 +5763,8 @@
       "source_location": "L202",
       "_origin": "ast",
       "id": "backend_app_services_cart_cartservice_cartservice_automaticdiscountamount",
-      "community": 15,
-      "community_name": "App\\Models\\Concerns\\BelongsToStore",
+      "community": 25,
+      "community_name": "BaseApiException",
       "norm_label": ".automaticdiscountamount()"
     },
     {
@@ -5785,8 +5884,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "backend_app_services_onboarding_storeonboardingservice",
-      "community": 35,
-      "community_name": "App.tsx",
+      "community": 5,
+      "community_name": "Illuminate\\Database\\Eloquent\\SoftDeletes",
       "norm_label": "storeonboardingservice.php"
     },
     {
@@ -5840,8 +5939,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "backend_app_services_order_orderservice_orderservice",
-      "community": 123,
-      "community_name": "OrderController.php",
+      "community": 134,
+      "community_name": "DiscountRuleFactory",
       "norm_label": "orderservice"
     },
     {
@@ -5851,8 +5950,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "backend_app_services_order_orderservice_orderservice_updatestatus",
-      "community": 123,
-      "community_name": "OrderController.php",
+      "community": 134,
+      "community_name": "DiscountRuleFactory",
       "norm_label": ".updatestatus()"
     },
     {
@@ -5862,8 +5961,8 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "backend_app_services_order_orderservice_orderservice_restockitems",
-      "community": 123,
-      "community_name": "OrderController.php",
+      "community": 134,
+      "community_name": "DiscountRuleFactory",
       "norm_label": ".restockitems()"
     },
     {
@@ -6076,7 +6175,7 @@
       "norm_label": "providers.php"
     },
     {
-      "label": "composer.json",
+      "label": "backend/composer.json",
       "file_type": "code",
       "source_file": "backend/composer.json",
       "source_location": "L1",
@@ -6084,7 +6183,7 @@
       "id": "backend_composer",
       "community": 2,
       "community_name": "composer.json",
-      "norm_label": "composer.json"
+      "norm_label": "backend/composer.json"
     },
     {
       "label": "$schema",
@@ -6874,8 +6973,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "backend_config_auth",
-      "community": 35,
-      "community_name": "App.tsx",
+      "community": 5,
+      "community_name": "Illuminate\\Database\\Eloquent\\SoftDeletes",
       "norm_label": "auth.php"
     },
     {
@@ -6921,6 +7020,17 @@
       "community": 98,
       "community_name": "filesystems.php",
       "norm_label": "filesystems.php"
+    },
+    {
+      "label": "horizon.php",
+      "file_type": "code",
+      "source_file": "backend/config/horizon.php",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "backend_config_horizon",
+      "community": 177,
+      "community_name": "HorizonServiceProvider",
+      "norm_label": "horizon.php"
     },
     {
       "label": "logging.php",
@@ -6998,6 +7108,17 @@
       "community": 105,
       "community_name": "session.php",
       "norm_label": "session.php"
+    },
+    {
+      "label": "telescope.php",
+      "file_type": "code",
+      "source_file": "backend/config/telescope.php",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "backend_config_telescope",
+      "community": 125,
+      "community_name": "ProductPlanLimitTest",
+      "norm_label": "telescope.php"
     },
     {
       "label": "tenancy.php",
@@ -8551,6 +8672,50 @@
       "norm_label": "down()"
     },
     {
+      "label": "2026_07_30_114428_create_telescope_entries_table.php",
+      "file_type": "code",
+      "source_file": "backend/database/migrations/2026_07_30_114428_create_telescope_entries_table.php",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "backend_database_migrations_2026_07_30_114428_create_telescope_entries_table",
+      "community": 179,
+      "community_name": "2026_07_30_114428_create_telescope_entries_table.php",
+      "norm_label": "2026_07_30_114428_create_telescope_entries_table.php"
+    },
+    {
+      "label": "getConnection()",
+      "file_type": "code",
+      "source_file": "backend/database/migrations/2026_07_30_114428_create_telescope_entries_table.php",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "backend_database_migrations_2026_07_30_114428_create_telescope_entries_table_getconnection",
+      "community": 179,
+      "community_name": "2026_07_30_114428_create_telescope_entries_table.php",
+      "norm_label": "getconnection()"
+    },
+    {
+      "label": "up()",
+      "file_type": "code",
+      "source_file": "backend/database/migrations/2026_07_30_114428_create_telescope_entries_table.php",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "backend_database_migrations_2026_07_30_114428_create_telescope_entries_table_up",
+      "community": 179,
+      "community_name": "2026_07_30_114428_create_telescope_entries_table.php",
+      "norm_label": "up()"
+    },
+    {
+      "label": "down()",
+      "file_type": "code",
+      "source_file": "backend/database/migrations/2026_07_30_114428_create_telescope_entries_table.php",
+      "source_location": "L62",
+      "_origin": "ast",
+      "id": "backend_database_migrations_2026_07_30_114428_create_telescope_entries_table_down",
+      "community": 179,
+      "community_name": "2026_07_30_114428_create_telescope_entries_table.php",
+      "norm_label": "down()"
+    },
+    {
       "label": "CatalogSeeder.php",
       "file_type": "code",
       "source_file": "backend/database/seeders/CatalogSeeder.php",
@@ -8612,8 +8777,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "backend_database_seeders_customerseeder_customerseeder_run",
-      "community": 20,
-      "community_name": "Customer",
+      "community": 5,
+      "community_name": "Illuminate\\Database\\Eloquent\\SoftDeletes",
       "norm_label": ".run()"
     },
     {
@@ -8744,8 +8909,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "backend_database_seeders_storeseeder_storeseeder_run",
-      "community": 35,
-      "community_name": "App.tsx",
+      "community": 5,
+      "community_name": "Illuminate\\Database\\Eloquent\\SoftDeletes",
       "norm_label": ".run()"
     },
     {
@@ -9404,8 +9569,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "backend_tests_feature_auth_registertest_registertest_setup",
-      "community": 81,
-      "community_name": "TestCase",
+      "community": 10,
+      "community_name": "Product",
       "norm_label": ".setup()"
     },
     {
@@ -9415,8 +9580,8 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "backend_tests_feature_auth_registertest_registertest_teardown",
-      "community": 10,
-      "community_name": "Product",
+      "community": 81,
+      "community_name": "TestCase",
       "norm_label": ".teardown()"
     },
     {
@@ -11059,6 +11224,61 @@
       "norm_label": "vite.config.js"
     },
     {
+      "label": "composer.json",
+      "file_type": "code",
+      "source_file": "composer.json",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "composer",
+      "community": 178,
+      "community_name": "composer.json",
+      "norm_label": "composer.json"
+    },
+    {
+      "label": "require",
+      "file_type": "code",
+      "source_file": "composer.json",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "composer_require",
+      "community": 178,
+      "community_name": "composer.json",
+      "norm_label": "require"
+    },
+    {
+      "label": "predis/predis",
+      "file_type": "code",
+      "source_file": "composer.json",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "composer_require_predis_predis",
+      "community": 178,
+      "community_name": "composer.json",
+      "norm_label": "predis/predis"
+    },
+    {
+      "label": "require-dev",
+      "file_type": "code",
+      "source_file": "composer.json",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "composer_require_dev",
+      "community": 178,
+      "community_name": "composer.json",
+      "norm_label": "require-dev"
+    },
+    {
+      "label": "laravel/telescope",
+      "file_type": "code",
+      "source_file": "composer.json",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "composer_require_dev_laravel_telescope",
+      "community": 178,
+      "community_name": "composer.json",
+      "norm_label": "laravel/telescope"
+    },
+    {
       "label": "frontend/README.md",
       "file_type": "document",
       "source_file": "frontend/README.md",
@@ -11824,8 +12044,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "frontend_src_api_client",
-      "community": 23,
-      "community_name": "Illuminate\\Foundation\\Http\\FormRequest",
+      "community": 32,
+      "community_name": "CustomerForm.tsx",
       "norm_label": "client.ts"
     },
     {
@@ -11835,8 +12055,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "frontend_src_api_client_api",
-      "community": 23,
-      "community_name": "Illuminate\\Foundation\\Http\\FormRequest",
+      "community": 32,
+      "community_name": "CustomerForm.tsx",
       "norm_label": "api"
     },
     {
@@ -11945,8 +12165,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "frontend_src_components_ui_badge",
-      "community": 46,
-      "community_name": "Dashboard.tsx",
+      "community": 23,
+      "community_name": "Illuminate\\Foundation\\Http\\FormRequest",
       "norm_label": "badge.tsx"
     },
     {
@@ -11956,8 +12176,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "frontend_src_components_ui_badge_badgeprops",
-      "community": 46,
-      "community_name": "Dashboard.tsx",
+      "community": 23,
+      "community_name": "Illuminate\\Foundation\\Http\\FormRequest",
       "norm_label": "badgeprops"
     },
     {
@@ -11967,8 +12187,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "frontend_src_components_ui_badge_badge",
-      "community": 46,
-      "community_name": "Dashboard.tsx",
+      "community": 23,
+      "community_name": "Illuminate\\Foundation\\Http\\FormRequest",
       "norm_label": "badge()"
     },
     {
@@ -12088,8 +12308,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "frontend_src_components_ui_pageheader",
-      "community": 46,
-      "community_name": "Dashboard.tsx",
+      "community": 7,
+      "community_name": "Customers.tsx",
       "norm_label": "pageheader.tsx"
     },
     {
@@ -12099,8 +12319,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "frontend_src_components_ui_pageheader_pageheaderprops",
-      "community": 46,
-      "community_name": "Dashboard.tsx",
+      "community": 7,
+      "community_name": "Customers.tsx",
       "norm_label": "pageheaderprops"
     },
     {
@@ -12110,8 +12330,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "frontend_src_components_ui_pageheader_pageheader",
-      "community": 46,
-      "community_name": "Dashboard.tsx",
+      "community": 7,
+      "community_name": "Customers.tsx",
       "norm_label": "pageheader()"
     },
     {
@@ -12121,8 +12341,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "frontend_src_components_ui_panel",
-      "community": 32,
-      "community_name": "CustomerForm.tsx",
+      "community": 7,
+      "community_name": "Customers.tsx",
       "norm_label": "panel.tsx"
     },
     {
@@ -12132,8 +12352,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "frontend_src_components_ui_panel_panelprops",
-      "community": 32,
-      "community_name": "CustomerForm.tsx",
+      "community": 7,
+      "community_name": "Customers.tsx",
       "norm_label": "panelprops"
     },
     {
@@ -12143,8 +12363,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "frontend_src_components_ui_panel_panel",
-      "community": 32,
-      "community_name": "CustomerForm.tsx",
+      "community": 7,
+      "community_name": "Customers.tsx",
       "norm_label": "panel()"
     },
     {
@@ -12286,8 +12506,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "frontend_src_components_ui_usetoast",
-      "community": 32,
-      "community_name": "CustomerForm.tsx",
+      "community": 36,
+      "community_name": "ToastProvider.tsx",
       "norm_label": "usetoast.ts"
     },
     {
@@ -12429,8 +12649,8 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "frontend_src_features_customers_customersapi_getcustomers",
-      "community": 7,
-      "community_name": "Customers.tsx",
+      "community": 32,
+      "community_name": "CustomerForm.tsx",
       "norm_label": "getcustomers()"
     },
     {
@@ -12594,8 +12814,8 @@
       "source_location": "L83",
       "_origin": "ast",
       "id": "frontend_src_features_orders_ordersapi_getorders",
-      "community": 46,
-      "community_name": "Dashboard.tsx",
+      "community": 23,
+      "community_name": "Illuminate\\Foundation\\Http\\FormRequest",
       "norm_label": "getorders()"
     },
     {
@@ -12814,8 +13034,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "frontend_src_features_products_pages_productspage",
-      "community": 38,
-      "community_name": "UpdateCustomerRequest",
+      "community": 7,
+      "community_name": "Customers.tsx",
       "norm_label": "productspage.tsx"
     },
     {
@@ -12836,8 +13056,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "frontend_src_features_products_services_productsapi_product",
-      "community": 38,
-      "community_name": "UpdateCustomerRequest",
+      "community": 7,
+      "community_name": "Customers.tsx",
       "norm_label": "product"
     },
     {
@@ -12913,8 +13133,8 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "frontend_src_features_products_services_productsapi_deleteproduct",
-      "community": 38,
-      "community_name": "UpdateCustomerRequest",
+      "community": 7,
+      "community_name": "Customers.tsx",
       "norm_label": "deleteproduct()"
     },
     {
@@ -13199,8 +13419,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "frontend_src_pages_dashboard",
-      "community": 7,
-      "community_name": "Customers.tsx",
+      "community": 32,
+      "community_name": "CustomerForm.tsx",
       "norm_label": "dashboard.tsx"
     },
     {
@@ -13210,8 +13430,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "frontend_src_pages_dashboard_dashboard",
-      "community": 7,
-      "community_name": "Customers.tsx",
+      "community": 32,
+      "community_name": "CustomerForm.tsx",
       "norm_label": "dashboard()"
     },
     {
@@ -13353,8 +13573,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "frontend_src_pages_orders",
-      "community": 46,
-      "community_name": "Dashboard.tsx",
+      "community": 23,
+      "community_name": "Illuminate\\Foundation\\Http\\FormRequest",
       "norm_label": "orders.tsx"
     },
     {
@@ -13364,8 +13584,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "frontend_src_pages_orders_formatmoney",
-      "community": 46,
-      "community_name": "Dashboard.tsx",
+      "community": 23,
+      "community_name": "Illuminate\\Foundation\\Http\\FormRequest",
       "norm_label": "formatmoney()"
     },
     {
@@ -13375,8 +13595,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "frontend_src_pages_orders_formatdate",
-      "community": 46,
-      "community_name": "Dashboard.tsx",
+      "community": 23,
+      "community_name": "Illuminate\\Foundation\\Http\\FormRequest",
       "norm_label": "formatdate()"
     },
     {
@@ -13386,8 +13606,8 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "frontend_src_pages_orders_orders",
-      "community": 46,
-      "community_name": "Dashboard.tsx",
+      "community": 23,
+      "community_name": "Illuminate\\Foundation\\Http\\FormRequest",
       "norm_label": "orders()"
     },
     {
@@ -13452,8 +13672,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "frontend_src_pages_products",
-      "community": 38,
-      "community_name": "UpdateCustomerRequest",
+      "community": 7,
+      "community_name": "Customers.tsx",
       "norm_label": "products.tsx"
     },
     {
@@ -13463,8 +13683,8 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "frontend_src_pages_products_formatprice",
-      "community": 38,
-      "community_name": "UpdateCustomerRequest",
+      "community": 7,
+      "community_name": "Customers.tsx",
       "norm_label": "formatprice()"
     },
     {
@@ -13474,8 +13694,8 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "frontend_src_pages_products_products",
-      "community": 38,
-      "community_name": "UpdateCustomerRequest",
+      "community": 7,
+      "community_name": "Customers.tsx",
       "norm_label": "products()"
     },
     {
@@ -14134,8 +14354,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "illuminate_http_request",
-      "community": 26,
-      "community_name": "Illuminate\\Database\\Eloquent\\Factories\\HasFactory",
+      "community": 22,
+      "community_name": "Illuminate\\Http\\Request",
       "norm_label": "illuminate\\http\\request"
     },
     {
@@ -14156,8 +14376,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "app_contracts_onboarding_storeonboardingserviceinterface",
-      "community": 22,
-      "community_name": "Illuminate\\Http\\Request",
+      "community": 18,
+      "community_name": "PlanRegistry",
       "norm_label": "app\\contracts\\onboarding\\storeonboardingserviceinterface"
     },
     {
@@ -14277,8 +14497,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "illuminate_database_eloquent_model",
-      "community": 17,
-      "community_name": "Illuminate\\Database\\Eloquent\\Model",
+      "community": 15,
+      "community_name": "App\\Models\\Concerns\\BelongsToStore",
       "norm_label": "illuminate\\database\\eloquent\\model"
     },
     {
@@ -14332,8 +14552,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "illuminate_database_eloquent_concerns_hasuuids",
-      "community": 25,
-      "community_name": "BaseApiException",
+      "community": 46,
+      "community_name": "Dashboard.tsx",
       "norm_label": "illuminate\\database\\eloquent\\concerns\\hasuuids"
     },
     {
@@ -14387,8 +14607,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "illuminate_notifications_notifiable",
-      "community": 12,
-      "community_name": "User",
+      "community": 5,
+      "community_name": "Illuminate\\Database\\Eloquent\\SoftDeletes",
       "norm_label": "illuminate\\notifications\\notifiable"
     },
     {
@@ -14398,8 +14618,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "laravel_sanctum_hasapitokens",
-      "community": 12,
-      "community_name": "User",
+      "community": 5,
+      "community_name": "Illuminate\\Database\\Eloquent\\SoftDeletes",
       "norm_label": "laravel\\sanctum\\hasapitokens"
     },
     {
@@ -14409,8 +14629,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "illuminate_foundation_auth_user",
-      "community": 12,
-      "community_name": "User",
+      "community": 27,
+      "community_name": "Store",
       "norm_label": "illuminate\\foundation\\auth\\user"
     },
     {
@@ -14442,9 +14662,31 @@
       "source_location": "",
       "_origin": "ast",
       "id": "illuminate_support_serviceprovider",
-      "community": 138,
-      "community_name": "OrderItem",
+      "community": 18,
+      "community_name": "PlanRegistry",
       "norm_label": "illuminate\\support\\serviceprovider"
+    },
+    {
+      "label": "Laravel\\Horizon\\HorizonApplicationServiceProvider",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast",
+      "id": "laravel_horizon_horizonapplicationserviceprovider",
+      "community": 177,
+      "community_name": "HorizonServiceProvider",
+      "norm_label": "laravel\\horizon\\horizonapplicationserviceprovider"
+    },
+    {
+      "label": "Laravel\\Telescope\\TelescopeApplicationServiceProvider",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast",
+      "id": "laravel_telescope_telescopeapplicationserviceprovider",
+      "community": 125,
+      "community_name": "ProductPlanLimitTest",
+      "norm_label": "laravel\\telescope\\telescopeapplicationserviceprovider"
     },
     {
       "label": "Illuminate\\Database\\Eloquent\\Factories\\Factory",
@@ -22074,6 +22316,18 @@
       "context": "call",
       "confidence": "INFERRED",
       "confidence_score": 0.8,
+      "source_file": "backend/app/Providers/HorizonServiceProvider.php",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "backend_app_providers_horizonserviceprovider_horizonserviceprovider_boot",
+      "target": "backend_app_models_category_category_parent"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
       "source_file": "backend/tests/Feature/Auth/LoginRateLimitTest.php",
       "source_location": "L25",
       "weight": 1.0,
@@ -27686,6 +27940,18 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "backend/app/Providers/TelescopeServiceProvider.php",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "backend_app_providers_telescopeserviceprovider",
+      "target": "backend_app_models_user",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "backend/app/Services/Onboarding/StoreOnboardingService.php",
       "source_location": "L10",
       "weight": 1.0,
@@ -29333,6 +29599,165 @@
       "_origin": "ast",
       "source": "backend_app_providers_appserviceprovider_appserviceprovider_boot",
       "target": "backend_app_providers_appserviceprovider_appserviceprovider_configureratelimiting",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/app/Providers/HorizonServiceProvider.php",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "backend_app_providers_horizonserviceprovider",
+      "target": "backend_app_providers_horizonserviceprovider_horizonserviceprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/app/Providers/HorizonServiceProvider.php",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "backend_app_providers_horizonserviceprovider",
+      "target": "backend_config_horizon",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/app/Providers/HorizonServiceProvider.php",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "backend_app_providers_horizonserviceprovider",
+      "target": "laravel_horizon_horizonapplicationserviceprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/app/Providers/HorizonServiceProvider.php",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "backend_app_providers_horizonserviceprovider_horizonserviceprovider",
+      "target": "backend_app_providers_horizonserviceprovider_horizonserviceprovider_boot",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/app/Providers/HorizonServiceProvider.php",
+      "source_location": "L28",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "backend_app_providers_horizonserviceprovider_horizonserviceprovider",
+      "target": "backend_app_providers_horizonserviceprovider_horizonserviceprovider_gate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/app/Providers/HorizonServiceProvider.php",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "backend_app_providers_horizonserviceprovider_horizonserviceprovider",
+      "target": "laravel_horizon_horizonapplicationserviceprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/app/Providers/TelescopeServiceProvider.php",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "backend_app_providers_telescopeserviceprovider",
+      "target": "backend_app_providers_telescopeserviceprovider_telescopeserviceprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/app/Providers/TelescopeServiceProvider.php",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "backend_app_providers_telescopeserviceprovider",
+      "target": "laravel_telescope_telescopeapplicationserviceprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/app/Providers/TelescopeServiceProvider.php",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "backend_app_providers_telescopeserviceprovider",
+      "target": "backend_config_telescope",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/app/Providers/TelescopeServiceProvider.php",
+      "source_location": "L57",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "backend_app_providers_telescopeserviceprovider_telescopeserviceprovider",
+      "target": "backend_app_providers_telescopeserviceprovider_telescopeserviceprovider_gate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/app/Providers/TelescopeServiceProvider.php",
+      "source_location": "L37",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "backend_app_providers_telescopeserviceprovider_telescopeserviceprovider",
+      "target": "backend_app_providers_telescopeserviceprovider_telescopeserviceprovider_hidesensitiverequestdetails",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/app/Providers/TelescopeServiceProvider.php",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "backend_app_providers_telescopeserviceprovider_telescopeserviceprovider",
+      "target": "backend_app_providers_telescopeserviceprovider_telescopeserviceprovider_register",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/app/Providers/TelescopeServiceProvider.php",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "backend_app_providers_telescopeserviceprovider_telescopeserviceprovider",
+      "target": "laravel_telescope_telescopeapplicationserviceprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/app/Providers/TelescopeServiceProvider.php",
+      "source_location": "L20",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "backend_app_providers_telescopeserviceprovider_telescopeserviceprovider_register",
+      "target": "backend_app_providers_telescopeserviceprovider_telescopeserviceprovider_hidesensitiverequestdetails",
       "confidence_score": 1.0
     },
     {
@@ -33067,6 +33492,63 @@
       "_origin": "ast",
       "source": "backend_database_migrations_2026_07_28_000001_add_coupon_id_to_carts_table",
       "target": "backend_database_migrations_2026_07_28_000001_add_coupon_id_to_carts_table_up",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/database/migrations/2026_07_30_114428_create_telescope_entries_table.php",
+      "source_location": "L62",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "backend_database_migrations_2026_07_30_114428_create_telescope_entries_table",
+      "target": "backend_database_migrations_2026_07_30_114428_create_telescope_entries_table_down",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/database/migrations/2026_07_30_114428_create_telescope_entries_table.php",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "backend_database_migrations_2026_07_30_114428_create_telescope_entries_table",
+      "target": "backend_database_migrations_2026_07_30_114428_create_telescope_entries_table_getconnection",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/database/migrations/2026_07_30_114428_create_telescope_entries_table.php",
+      "source_location": "L20",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "backend_database_migrations_2026_07_30_114428_create_telescope_entries_table",
+      "target": "backend_database_migrations_2026_07_30_114428_create_telescope_entries_table_up",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/database/migrations/2026_07_30_114428_create_telescope_entries_table.php",
+      "source_location": "L64",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "backend_database_migrations_2026_07_30_114428_create_telescope_entries_table_down",
+      "target": "backend_database_migrations_2026_07_30_114428_create_telescope_entries_table_getconnection",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/database/migrations/2026_07_30_114428_create_telescope_entries_table.php",
+      "source_location": "L22",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "backend_database_migrations_2026_07_30_114428_create_telescope_entries_table_up",
+      "target": "backend_database_migrations_2026_07_30_114428_create_telescope_entries_table_getconnection",
       "confidence_score": 1.0
     },
     {
@@ -37732,6 +38214,50 @@
       "_origin": "ast",
       "source": "backend_tests_unit_exampletest_exampletest",
       "target": "phpunit_framework_testcase",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "composer.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "composer",
+      "target": "composer_require",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "composer.json",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "composer",
+      "target": "composer_require_dev",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "composer.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "composer_require",
+      "target": "composer_require_predis_predis",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "composer.json",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "composer_require_dev",
+      "target": "composer_require_dev_laravel_telescope",
       "confidence_score": 1.0
     },
     {
@@ -42806,5 +43332,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "fc85f18d219765e94c3516e8699b6ca6f2b10a22"
+  "built_at_commit": "af496c0ead801d2d8aeff982127f566ede1fbbc8"
 }
