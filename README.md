@@ -374,6 +374,35 @@ colmerzia/
 └── README.md
 ```
 
+### ✅ Implementado (Esencial para la infraestructura)
+
+* **`predis/predis` (Cliente de Redis)**
+  * **Estado:** Instalado y activo.
+  * **Propósito:** Actúa como el puente de comunicación entre la aplicación (PHP) y el contenedor de Redis en Docker. Es el motor principal para que la caché y el sistema de colas de la plataforma funcionen correctamente.
+  * **Comando de instalación:**
+    ```bash
+    composer require predis/predis
+    ```
+
+* **`laravel/horizon` (Monitor de Colas)**
+  * **Estado:** Instalado, configurado y migrado.
+  * **Propósito:** Panel de control para administrar y monitorear los trabajos en segundo plano (Redis queues). Es vital para manejar tareas pesadas en el SaaS (como envío masivo de correos o procesamiento de pagos) sin congelar la aplicación. 
+  * *Nota de infraestructura: Su funcionamiento requiere que la imagen de Docker de PHP tenga compiladas las extensiones `pcntl` y `posix`.*
+  * **Comandos de instalación:**
+    ```bash
+    composer require laravel/horizon
+    php artisan horizon:install
+    ```
+
+* **`laravel/telescope` (Asistente de Depuración)**
+  * **Estado:** Instalado (Exclusivo para el entorno de desarrollo `--dev`).
+  * **Propósito:** Herramienta de monitoreo local. Intercepta y muestra todas las consultas a la base de datos, errores del sistema, peticiones de red y correos atrapados por Mailpit. Es clave para depurar la comunicación entre la API (Laravel) y el Frontend (React).
+  * **Comandos de instalación:**
+    ```bash
+    composer require laravel/telescope --dev
+    php artisan telescope:install
+    ```
+
 ---
 
 ## 🐳 Comandos Útiles
