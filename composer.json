@@ -1,0 +1,8 @@
+{
+    "require": {
+        "predis/predis": "^3.5"
+    },
+    "require-dev": {
+        "laravel/telescope": "^5.21"
+    }
+}

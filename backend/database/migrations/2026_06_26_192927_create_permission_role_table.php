@@ -1,0 +1,44 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('permission_role', function (Blueprint $table) {
+
+            // PK interna
+            $table->id();
+
+            // Relaciones
+            $table->foreignId('permission_id')
+                  ->constrained()
+                  ->cascadeOnDelete();
+
+            $table->foreignId('role_id')
+                  ->constrained()
+                  ->cascadeOnDelete();
+
+            // Auditoría
+            $table->timestamps();
+
+            // Restricción única
+            $table->unique([
+                'permission_id',
+                'role_id'
+            ]);
+
+            // Índices
+            $table->index('permission_id');
+            $table->index('role_id');
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('permission_role');
+    }
+};

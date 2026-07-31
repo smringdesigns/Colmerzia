@@ -1,0 +1,1522 @@
+{
+  "communities": {
+    "0": [
+      "app_models_store",
+      "backend_app_http_resources_customer_customerresource",
+      "backend_app_http_resources_customer_customerresource_customerresource",
+      "backend_app_http_resources_customer_customerresource_customerresource_toarray",
+      "backend_app_http_resources_product_productresource",
+      "backend_app_http_resources_product_productresource_productresource",
+      "backend_app_http_resources_product_productresource_productresource_toarray",
+      "backend_app_http_resources_store_storeresource",
+      "backend_app_http_resources_store_storeresource_storeresource",
+      "backend_app_http_resources_store_storeresource_storeresource_toarray",
+      "backend_app_models_category_category_parent",
+      "backend_app_support_tenancy_tenant",
+      "backend_tests_feature_auth_loginratelimittest",
+      "backend_tests_feature_auth_loginratelimittest_loginratelimittest",
+      "backend_tests_feature_auth_loginratelimittest_loginratelimittest_loginurl",
+      "backend_tests_feature_auth_loginratelimittest_loginratelimittest_setup",
+      "backend_tests_feature_auth_loginratelimittest_loginratelimittest_teardown",
+      "backend_tests_feature_auth_loginratelimittest_loginratelimittest_test_el_bloqueo_es_por_email_no_global_para_la_misma_ip",
+      "backend_tests_feature_auth_loginratelimittest_loginratelimittest_test_el_sexto_intento_de_login_en_un_minuto_para_el_mismo_email_se_bloquea",
+      "backend_tests_feature_auth_loginratelimittest_loginratelimittest_test_muchos_emails_distintos_desde_la_misma_ip_activan_el_limite_por_ip",
+      "backend_tests_feature_auth_loginratelimittest_php_store",
+      "backend_tests_feature_auth_logintenantisolationtest",
+      "backend_tests_feature_auth_logintenantisolationtest_logintenantisolationtest",
+      "backend_tests_feature_auth_logintenantisolationtest_logintenantisolationtest_loginurl",
+      "backend_tests_feature_auth_logintenantisolationtest_logintenantisolationtest_setup",
+      "backend_tests_feature_auth_logintenantisolationtest_logintenantisolationtest_teardown",
+      "backend_tests_feature_auth_logintenantisolationtest_logintenantisolationtest_test_login_no_filtra_si_el_motivo_del_rechazo_fue_password_o_tienda",
+      "backend_tests_feature_auth_logintenantisolationtest_logintenantisolationtest_test_login_sigue_fallando_con_password_incorrecta",
+      "backend_tests_feature_auth_logintenantisolationtest_logintenantisolationtest_test_login_sigue_fallando_para_usuario_inactivo",
+      "backend_tests_feature_auth_logintenantisolationtest_logintenantisolationtest_test_user_no_puede_loguearse_desde_el_subdominio_de_otra_tienda",
+      "backend_tests_feature_auth_logintenantisolationtest_logintenantisolationtest_test_user_puede_loguearse_desde_el_dominio_central_sin_importar_su_tienda",
+      "backend_tests_feature_auth_logintenantisolationtest_logintenantisolationtest_test_user_puede_loguearse_desde_el_subdominio_de_su_propia_tienda",
+      "backend_tests_feature_auth_logintenantisolationtest_php_store",
+      "backend_tests_feature_auth_registertest",
+      "backend_tests_feature_auth_registertest_php_store",
+      "backend_tests_feature_auth_registertest_registertest",
+      "backend_tests_feature_auth_registertest_registertest_registerurl",
+      "backend_tests_feature_auth_registertest_registertest_setup",
+      "backend_tests_feature_auth_registertest_registertest_teardown",
+      "backend_tests_feature_auth_registertest_registertest_test_el_endpoint_de_registro_tiene_su_propio_limite_de_peticiones",
+      "backend_tests_feature_auth_registertest_registertest_test_el_usuario_registrado_no_tiene_permisos_hasta_que_se_le_asigne_un_rol",
+      "backend_tests_feature_auth_registertest_registertest_test_exige_confirmacion_de_contrasena",
+      "backend_tests_feature_auth_registertest_registertest_test_no_permite_registrar_un_email_ya_existente",
+      "backend_tests_feature_auth_registertest_registertest_test_no_se_puede_registrar_desde_el_dominio_central_sin_tienda",
+      "backend_tests_feature_auth_registertest_registertest_test_registra_un_usuario_nuevo_asociado_a_la_tienda_del_subdominio",
+      "backend_tests_feature_auth_registertest_registertest_validpayload",
+      "backend_tests_feature_http_customercontrollertest",
+      "backend_tests_feature_http_customercontrollertest_customercontrollertest",
+      "backend_tests_feature_http_customercontrollertest_customercontrollertest_setup",
+      "backend_tests_feature_http_customercontrollertest_customercontrollertest_teardown",
+      "backend_tests_feature_http_customercontrollertest_customercontrollertest_test_index_solo_devuelve_clientes_de_la_tienda_del_subdominio",
+      "backend_tests_feature_http_customercontrollertest_customercontrollertest_test_no_puede_eliminar_un_cliente_de_otra_tienda",
+      "backend_tests_feature_http_customercontrollertest_customercontrollertest_test_show_de_cliente_de_otra_tienda_devuelve_404",
+      "backend_tests_feature_http_customercontrollertest_customercontrollertest_test_token_de_tienda_a_no_sirve_en_el_subdominio_de_tienda_b",
+      "backend_tests_feature_http_customercontrollertest_customercontrollertest_test_usuario_con_permiso_crea_cliente_y_queda_en_su_propia_tienda",
+      "backend_tests_feature_http_customercontrollertest_customercontrollertest_url",
+      "backend_tests_feature_http_customercontrollertest_php_store",
+      "backend_tests_feature_http_productcontrollertest",
+      "backend_tests_feature_http_productcontrollertest_php_store",
+      "backend_tests_feature_http_productcontrollertest_productcontrollertest",
+      "backend_tests_feature_http_productcontrollertest_productcontrollertest_setup",
+      "backend_tests_feature_http_productcontrollertest_productcontrollertest_teardown",
+      "backend_tests_feature_http_productcontrollertest_productcontrollertest_test_index_solo_devuelve_productos_de_la_tienda_del_subdominio",
+      "backend_tests_feature_http_productcontrollertest_productcontrollertest_test_no_puede_actualizar_un_producto_de_otra_tienda",
+      "backend_tests_feature_http_productcontrollertest_productcontrollertest_test_no_puede_eliminar_un_producto_de_otra_tienda",
+      "backend_tests_feature_http_productcontrollertest_productcontrollertest_test_show_de_producto_de_otra_tienda_devuelve_404",
+      "backend_tests_feature_http_productcontrollertest_productcontrollertest_test_token_de_tienda_a_no_sirve_en_el_subdominio_de_tienda_b",
+      "backend_tests_feature_http_productcontrollertest_productcontrollertest_test_usuario_con_permiso_crea_producto_y_queda_en_su_propia_tienda",
+      "backend_tests_feature_http_productcontrollertest_productcontrollertest_test_usuario_sin_permiso_products_create_no_puede_crear",
+      "backend_tests_feature_http_productcontrollertest_productcontrollertest_url",
+      "backend_tests_feature_tenancy_storescopingtest",
+      "backend_tests_feature_tenancy_storescopingtest_php_store",
+      "backend_tests_feature_tenancy_storescopingtest_storescopingtest_setup",
+      "illuminate_foundation_testing_refreshdatabase",
+      "illuminate_http_resources_json_jsonresource",
+      "tests_concerns_createsstoreusers",
+      "tests_testcase"
+    ],
+    "1": [
+      "backend_app_events_productcreated",
+      "backend_app_events_productcreated_productcreated",
+      "backend_app_events_productcreated_productcreated_broadcaston",
+      "backend_app_events_productcreated_productcreated_construct",
+      "backend_app_events_storecreated",
+      "backend_app_events_storecreated_storecreated",
+      "backend_app_events_storecreated_storecreated_broadcaston",
+      "backend_app_events_storecreated_storecreated_construct",
+      "backend_app_events_userloggedin",
+      "backend_app_events_userloggedin_userloggedin",
+      "backend_app_events_userloggedin_userloggedin_broadcaston",
+      "backend_app_events_userloggedin_userloggedin_construct",
+      "backend_app_jobs_generateproductimagesjob",
+      "backend_app_jobs_generateproductimagesjob_generateproductimagesjob",
+      "backend_app_jobs_generateproductimagesjob_generateproductimagesjob_construct",
+      "backend_app_jobs_generateproductimagesjob_generateproductimagesjob_handle",
+      "backend_app_jobs_sendwelcomeemailjob",
+      "backend_app_jobs_sendwelcomeemailjob_sendwelcomeemailjob",
+      "backend_app_jobs_sendwelcomeemailjob_sendwelcomeemailjob_construct",
+      "backend_app_jobs_sendwelcomeemailjob_sendwelcomeemailjob_handle",
+      "backend_app_listeners_loguserlogin",
+      "backend_app_listeners_loguserlogin_loguserlogin",
+      "backend_app_listeners_loguserlogin_loguserlogin_construct",
+      "backend_app_listeners_loguserlogin_loguserlogin_handle",
+      "backend_app_listeners_sendwelcomeemail",
+      "backend_app_listeners_sendwelcomeemail_sendwelcomeemail",
+      "backend_app_listeners_sendwelcomeemail_sendwelcomeemail_construct",
+      "backend_app_listeners_sendwelcomeemail_sendwelcomeemail_handle",
+      "backend_app_mail_welcomemail",
+      "backend_app_mail_welcomemail_welcomemail",
+      "backend_app_mail_welcomemail_welcomemail_attachments",
+      "backend_app_mail_welcomemail_welcomemail_construct",
+      "backend_app_mail_welcomemail_welcomemail_content",
+      "backend_app_mail_welcomemail_welcomemail_envelope",
+      "backend_app_notifications_welcomenotification",
+      "backend_app_notifications_welcomenotification_welcomenotification",
+      "backend_app_notifications_welcomenotification_welcomenotification_construct",
+      "backend_app_notifications_welcomenotification_welcomenotification_toarray",
+      "backend_app_notifications_welcomenotification_welcomenotification_tomail",
+      "backend_app_notifications_welcomenotification_welcomenotification_via",
+      "illuminate_broadcasting_interactswithsockets",
+      "illuminate_bus_queueable",
+      "illuminate_contracts_queue_shouldqueue",
+      "illuminate_foundation_events_dispatchable",
+      "illuminate_foundation_queue_queueable",
+      "illuminate_mail_mailable",
+      "illuminate_mail_mailables_content",
+      "illuminate_mail_mailables_envelope",
+      "illuminate_notifications_messages_mailmessage",
+      "illuminate_notifications_notification",
+      "illuminate_queue_serializesmodels"
+    ],
+    "2": [
+      "backend_composer",
+      "backend_composer_allow_plugins_pestphp_pest_plugin",
+      "backend_composer_allow_plugins_php_http_discovery",
+      "backend_composer_autoload",
+      "backend_composer_autoload_dev",
+      "backend_composer_autoload_dev_psr_4",
+      "backend_composer_autoload_psr_4",
+      "backend_composer_config",
+      "backend_composer_config_allow_plugins",
+      "backend_composer_config_optimize_autoloader",
+      "backend_composer_config_preferred_install",
+      "backend_composer_config_sort_packages",
+      "backend_composer_description",
+      "backend_composer_extra",
+      "backend_composer_extra_laravel",
+      "backend_composer_keywords",
+      "backend_composer_laravel_dont_discover",
+      "backend_composer_license",
+      "backend_composer_minimum_stability",
+      "backend_composer_name",
+      "backend_composer_prefer_stable",
+      "backend_composer_psr_4_app",
+      "backend_composer_psr_4_database_factories",
+      "backend_composer_psr_4_database_seeders",
+      "backend_composer_psr_4_tests",
+      "backend_composer_require",
+      "backend_composer_require_dev",
+      "backend_composer_require_dev_fakerphp_faker",
+      "backend_composer_require_dev_laravel_pail",
+      "backend_composer_require_dev_laravel_pao",
+      "backend_composer_require_dev_laravel_pint",
+      "backend_composer_require_dev_mockery_mockery",
+      "backend_composer_require_dev_nunomaduro_collision",
+      "backend_composer_require_dev_phpunit_phpunit",
+      "backend_composer_require_laravel_framework",
+      "backend_composer_require_laravel_sanctum",
+      "backend_composer_require_laravel_tinker",
+      "backend_composer_require_php",
+      "backend_composer_schema",
+      "backend_composer_type",
+      "ref_framework",
+      "ref_laravel"
+    ],
+    "3": [
+      "app_contracts_auth_authserviceinterface",
+      "app_dtos_auth_loginresponsedto",
+      "app_http_controllers_controller",
+      "app_http_requests_auth_loginrequest",
+      "app_http_requests_auth_registerrequest",
+      "app_http_resources_auth_loginresource",
+      "app_http_resources_user_userresource",
+      "app_models_user",
+      "backend_app_contracts_auth_authserviceinterface",
+      "backend_app_contracts_auth_authserviceinterface_login",
+      "backend_app_contracts_auth_authserviceinterface_logout",
+      "backend_app_contracts_auth_authserviceinterface_register",
+      "backend_app_http_controllers_api_v1_auth_authcontroller",
+      "backend_app_http_controllers_api_v1_auth_authcontroller_authcontroller",
+      "backend_app_http_controllers_api_v1_auth_authcontroller_authcontroller_construct",
+      "backend_app_http_controllers_api_v1_auth_authcontroller_authcontroller_login",
+      "backend_app_http_controllers_api_v1_auth_authcontroller_authcontroller_logout",
+      "backend_app_http_controllers_api_v1_auth_authcontroller_authcontroller_me",
+      "backend_app_http_controllers_api_v1_auth_authcontroller_authcontroller_register",
+      "backend_app_providers_appserviceprovider",
+      "backend_app_providers_appserviceprovider_appserviceprovider",
+      "backend_app_providers_appserviceprovider_appserviceprovider_boot",
+      "backend_app_providers_appserviceprovider_appserviceprovider_configureratelimiting",
+      "backend_app_providers_appserviceprovider_appserviceprovider_register",
+      "backend_app_services_auth_authservice",
+      "backend_app_services_auth_authservice_authservice",
+      "backend_app_services_auth_authservice_authservice_login",
+      "backend_app_services_auth_authservice_authservice_logout",
+      "backend_app_services_auth_authservice_authservice_register",
+      "backend_app_services_auth_authservice_php_user",
+      "backend_bootstrap_providers",
+      "backend_tests_concerns_createsstoreusers",
+      "backend_tests_concerns_createsstoreusers_createuserwithpermissions",
+      "backend_tests_concerns_createsstoreusers_php_user",
+      "illuminate_support_serviceprovider"
+    ],
+    "4": [
+      "axios",
+      "clsx",
+      "frontend_package",
+      "frontend_package_dependencies",
+      "frontend_package_dependencies_axios",
+      "frontend_package_dependencies_clsx",
+      "frontend_package_dependencies_hookform_resolvers",
+      "frontend_package_dependencies_lucide_react",
+      "frontend_package_dependencies_react",
+      "frontend_package_dependencies_react_dom",
+      "frontend_package_dependencies_react_hook_form",
+      "frontend_package_dependencies_react_router_dom",
+      "frontend_package_dependencies_tanstack_react_query",
+      "frontend_package_dependencies_zod",
+      "frontend_package_dependencies_zustand",
+      "frontend_package_name",
+      "frontend_package_private",
+      "frontend_package_scripts",
+      "frontend_package_scripts_build",
+      "frontend_package_scripts_dev",
+      "frontend_package_scripts_lint",
+      "frontend_package_scripts_preview",
+      "frontend_package_type",
+      "frontend_package_version",
+      "hookform_resolvers",
+      "lucide_react",
+      "react",
+      "react_dom",
+      "react_hook_form",
+      "react_router_dom",
+      "tanstack_react_query",
+      "zod",
+      "zustand"
+    ],
+    "5": [
+      "backend_app_models_permission",
+      "backend_app_models_permission_permission",
+      "backend_app_models_permission_permission_roles",
+      "backend_app_models_role",
+      "backend_app_models_role_role",
+      "backend_app_models_role_role_casts",
+      "backend_app_models_role_role_permissions",
+      "backend_app_models_role_role_store",
+      "backend_app_models_role_role_users",
+      "backend_app_models_store",
+      "backend_app_models_user",
+      "backend_config_auth",
+      "backend_database_seeders_customerseeder",
+      "backend_database_seeders_customerseeder_customerseeder",
+      "backend_database_seeders_databaseseeder",
+      "backend_database_seeders_databaseseeder_databaseseeder",
+      "backend_database_seeders_databaseseeder_databaseseeder_run",
+      "backend_database_seeders_permissionseeder",
+      "backend_database_seeders_permissionseeder_permissionseeder",
+      "backend_database_seeders_permissionseeder_permissionseeder_run",
+      "backend_database_seeders_roleseeder",
+      "backend_database_seeders_roleseeder_roleseeder",
+      "backend_database_seeders_roleseeder_roleseeder_run",
+      "backend_database_seeders_storeseeder",
+      "backend_database_seeders_storeseeder_storeseeder",
+      "backend_database_seeders_userseeder",
+      "backend_database_seeders_userseeder_userseeder",
+      "backend_database_seeders_userseeder_userseeder_run",
+      "backend_tests_feature_tenancy_storescopingtest_storescopingtest_test_ve_sus_propios_roles_y_los_roles_globales_del_sistema",
+      "illuminate_database_eloquent_softdeletes",
+      "illuminate_database_seeder"
+    ],
+    "6": [
+      "eslint",
+      "eslint_js",
+      "eslint_plugin_react_hooks",
+      "eslint_plugin_react_refresh",
+      "frontend_package_devdependencies",
+      "frontend_package_devdependencies_eslint",
+      "frontend_package_devdependencies_eslint_js",
+      "frontend_package_devdependencies_eslint_plugin_react_hooks",
+      "frontend_package_devdependencies_eslint_plugin_react_refresh",
+      "frontend_package_devdependencies_globals",
+      "frontend_package_devdependencies_tailwindcss",
+      "frontend_package_devdependencies_tailwindcss_vite",
+      "frontend_package_devdependencies_types_node",
+      "frontend_package_devdependencies_types_react",
+      "frontend_package_devdependencies_types_react_dom",
+      "frontend_package_devdependencies_typescript",
+      "frontend_package_devdependencies_typescript_eslint",
+      "frontend_package_devdependencies_vite",
+      "frontend_package_devdependencies_vitejs_plugin_react",
+      "frontend_package_json_tailwindcss",
+      "frontend_package_json_tailwindcss_vite",
+      "frontend_package_json_vite",
+      "globals",
+      "types_node",
+      "types_react",
+      "types_react_dom",
+      "typescript",
+      "typescript_eslint",
+      "vitejs_plugin_react"
+    ],
+    "7": [
+      "frontend_src_components_ui_badge",
+      "frontend_src_components_ui_badge_badge",
+      "frontend_src_components_ui_badge_badgeprops",
+      "frontend_src_components_ui_button",
+      "frontend_src_components_ui_button_button",
+      "frontend_src_components_ui_button_buttonprops",
+      "frontend_src_components_ui_button_buttonvariant",
+      "frontend_src_components_ui_confirmdialog",
+      "frontend_src_components_ui_confirmdialog_confirmdialog",
+      "frontend_src_components_ui_confirmdialog_confirmdialogprops",
+      "frontend_src_components_ui_pageheader",
+      "frontend_src_components_ui_pageheader_pageheader",
+      "frontend_src_components_ui_pageheader_pageheaderprops",
+      "frontend_src_components_ui_panel",
+      "frontend_src_components_ui_panel_panel",
+      "frontend_src_components_ui_panel_panelprops",
+      "frontend_src_components_ui_usetoast_usetoast",
+      "frontend_src_features_customers_customersapi_customer",
+      "frontend_src_features_customers_customersapi_deletecustomer",
+      "frontend_src_features_products_pages_productspage",
+      "frontend_src_features_products_services_productsapi_deleteproduct",
+      "frontend_src_pages_customers",
+      "frontend_src_pages_customers_customers",
+      "frontend_src_pages_customers_formatdate",
+      "frontend_src_pages_customers_fullname",
+      "frontend_src_pages_products",
+      "frontend_src_pages_products_formatprice",
+      "frontend_src_pages_products_products"
+    ],
+    "8": [
+      "backend_composer_scripts",
+      "backend_composer_scripts_dev",
+      "backend_composer_scripts_post_autoload_dump",
+      "backend_composer_scripts_post_create_project_cmd",
+      "backend_composer_scripts_post_root_package_install",
+      "backend_composer_scripts_post_update_cmd",
+      "backend_composer_scripts_pre_package_uninstall",
+      "backend_composer_scripts_setup",
+      "backend_composer_scripts_test",
+      "ref_composer_config_disableprocesstimeout",
+      "ref_composer_install",
+      "ref_illuminate_foundation_composerscripts_postautoloaddump",
+      "ref_illuminate_foundation_composerscripts_prepackageuninstall",
+      "ref_npm_install_ignore_scripts",
+      "ref_npm_run_build",
+      "ref_npx_concurrently_c_93c5fd_c4b5fd_fb7185_fdba74_php_artisan_serve_php_artisan_queue_listen_tries_1_timeout_0_php_artisan_pail_timeout_0_npm_run_dev_names_server_queue_logs_vite_kill_others",
+      "ref_php_artisan_config_clear_ansi_no_additional_args",
+      "ref_php_artisan_key_generate",
+      "ref_php_artisan_key_generate_ansi",
+      "ref_php_artisan_migrate_force",
+      "ref_php_artisan_migrate_graceful_ansi",
+      "ref_php_artisan_package_discover_ansi",
+      "ref_php_artisan_test",
+      "ref_php_artisan_vendor_publish_tag_laravel_assets_ansi_force",
+      "ref_php_r_file_exists_database_database_sqlite_touch_database_database_sqlite",
+      "ref_php_r_file_exists_env_copy_env_example_env"
+    ],
+    "9": [
+      "frontend_src_components_auth_protectedroute",
+      "frontend_src_components_auth_protectedroute_protectedroute",
+      "frontend_src_components_auth_publicroute",
+      "frontend_src_components_auth_publicroute_publicroute",
+      "frontend_src_components_ui_textfield",
+      "frontend_src_components_ui_textfield_textfield",
+      "frontend_src_components_ui_textfield_textfieldprops",
+      "frontend_src_pages_comingsoon",
+      "frontend_src_pages_comingsoon_comingsoon",
+      "frontend_src_pages_createaccount",
+      "frontend_src_pages_createaccount_createaccount",
+      "frontend_src_pages_forgotpassword",
+      "frontend_src_pages_forgotpassword_forgotpassword",
+      "frontend_src_pages_login",
+      "frontend_src_pages_login_login",
+      "frontend_src_pages_login_loginform",
+      "frontend_src_pages_login_schema",
+      "frontend_src_pages_notfound",
+      "frontend_src_pages_notfound_notfound",
+      "frontend_src_routes_router",
+      "frontend_src_store_authstore",
+      "frontend_src_store_authstore_authstate",
+      "frontend_src_store_authstore_permission",
+      "frontend_src_store_authstore_role",
+      "frontend_src_store_authstore_useauthstore",
+      "frontend_src_store_authstore_user"
+    ],
+    "10": [
+      "backend_app_models_product_product",
+      "backend_app_models_product_product_brand",
+      "backend_app_models_product_product_casts",
+      "backend_app_models_product_product_category",
+      "backend_app_models_product_product_images",
+      "backend_app_models_product_product_store",
+      "backend_app_models_product_product_variants",
+      "backend_app_policies_productpolicy",
+      "backend_app_policies_productpolicy_productpolicy",
+      "backend_app_policies_productpolicy_productpolicy_create",
+      "backend_app_policies_productpolicy_productpolicy_delete",
+      "backend_app_policies_productpolicy_productpolicy_forcedelete",
+      "backend_app_policies_productpolicy_productpolicy_restore",
+      "backend_app_policies_productpolicy_productpolicy_update",
+      "backend_app_policies_productpolicy_productpolicy_view",
+      "backend_app_policies_productpolicy_productpolicy_viewany",
+      "backend_tests_feature_tenancy_storescopingtest_storescopingtest",
+      "backend_tests_feature_tenancy_storescopingtest_storescopingtest_teardown",
+      "backend_tests_feature_tenancy_storescopingtest_storescopingtest_test_al_crear_un_producto_sin_store_id_se_autocompleta_con_el_tenant_actual",
+      "backend_tests_feature_tenancy_storescopingtest_storescopingtest_test_no_puede_encontrar_por_id_un_producto_de_otra_tienda",
+      "backend_tests_feature_tenancy_storescopingtest_storescopingtest_test_sin_tenant_resuelto_no_se_restringe_nada",
+      "backend_tests_feature_tenancy_storescopingtest_storescopingtest_test_solo_ve_los_clientes_de_la_tienda_actual",
+      "backend_tests_feature_tenancy_storescopingtest_storescopingtest_test_solo_ve_los_productos_de_la_tienda_actual",
+      "backend_tests_feature_tenancy_storescopingtest_storescopingtest_test_withoutstorescope_permite_cruzar_tiendas_explicitamente"
+    ],
+    "11": [
+      "frontend_tsconfig_app",
+      "frontend_tsconfig_app_compileroptions",
+      "frontend_tsconfig_app_compileroptions_allowimportingtsextensions",
+      "frontend_tsconfig_app_compileroptions_erasablesyntaxonly",
+      "frontend_tsconfig_app_compileroptions_jsx",
+      "frontend_tsconfig_app_compileroptions_lib",
+      "frontend_tsconfig_app_compileroptions_module",
+      "frontend_tsconfig_app_compileroptions_moduledetection",
+      "frontend_tsconfig_app_compileroptions_moduleresolution",
+      "frontend_tsconfig_app_compileroptions_noemit",
+      "frontend_tsconfig_app_compileroptions_nofallthroughcasesinswitch",
+      "frontend_tsconfig_app_compileroptions_nounusedlocals",
+      "frontend_tsconfig_app_compileroptions_nounusedparameters",
+      "frontend_tsconfig_app_compileroptions_skiplibcheck",
+      "frontend_tsconfig_app_compileroptions_target",
+      "frontend_tsconfig_app_compileroptions_tsbuildinfofile",
+      "frontend_tsconfig_app_compileroptions_types",
+      "frontend_tsconfig_app_compileroptions_verbatimmodulesyntax",
+      "frontend_tsconfig_app_include",
+      "frontend_tsconfig_app_json_ref_es2023",
+      "ref_dom",
+      "ref_src",
+      "ref_vite_client"
+    ],
+    "12": [
+      "backend_app_dtos_auth_loginresponsedto",
+      "backend_app_dtos_auth_loginresponsedto_loginresponsedto",
+      "backend_app_dtos_auth_loginresponsedto_loginresponsedto_construct",
+      "backend_app_models_user_user",
+      "backend_app_models_user_user_casts",
+      "backend_app_models_user_user_haspermission",
+      "backend_app_models_user_user_hasrole",
+      "backend_app_models_user_user_roles",
+      "backend_app_models_user_user_store",
+      "backend_app_policies_userpolicy",
+      "backend_app_policies_userpolicy_userpolicy",
+      "backend_app_policies_userpolicy_userpolicy_create",
+      "backend_app_policies_userpolicy_userpolicy_delete",
+      "backend_app_policies_userpolicy_userpolicy_forcedelete",
+      "backend_app_policies_userpolicy_userpolicy_restore",
+      "backend_app_policies_userpolicy_userpolicy_update",
+      "backend_app_policies_userpolicy_userpolicy_view",
+      "backend_app_policies_userpolicy_userpolicy_viewany",
+      "illuminate_foundation_auth_user",
+      "illuminate_notifications_notifiable",
+      "laravel_sanctum_hasapitokens"
+    ],
+    "13": [
+      "frontend_tsconfig_node",
+      "frontend_tsconfig_node_compileroptions",
+      "frontend_tsconfig_node_compileroptions_allowimportingtsextensions",
+      "frontend_tsconfig_node_compileroptions_erasablesyntaxonly",
+      "frontend_tsconfig_node_compileroptions_lib",
+      "frontend_tsconfig_node_compileroptions_module",
+      "frontend_tsconfig_node_compileroptions_moduledetection",
+      "frontend_tsconfig_node_compileroptions_noemit",
+      "frontend_tsconfig_node_compileroptions_nofallthroughcasesinswitch",
+      "frontend_tsconfig_node_compileroptions_nounusedlocals",
+      "frontend_tsconfig_node_compileroptions_nounusedparameters",
+      "frontend_tsconfig_node_compileroptions_skiplibcheck",
+      "frontend_tsconfig_node_compileroptions_target",
+      "frontend_tsconfig_node_compileroptions_tsbuildinfofile",
+      "frontend_tsconfig_node_compileroptions_types",
+      "frontend_tsconfig_node_compileroptions_verbatimmodulesyntax",
+      "frontend_tsconfig_node_include",
+      "frontend_tsconfig_node_json_ref_es2023",
+      "ref_node",
+      "ref_vite_config_ts"
+    ],
+    "14": [
+      "backend_database_factories_brandfactory",
+      "backend_database_factories_brandfactory_brandfactory",
+      "backend_database_factories_brandfactory_brandfactory_definition",
+      "backend_database_factories_categoryfactory",
+      "backend_database_factories_categoryfactory_categoryfactory",
+      "backend_database_factories_categoryfactory_categoryfactory_definition",
+      "backend_database_factories_customerfactory",
+      "backend_database_factories_customerfactory_customerfactory",
+      "backend_database_factories_customerfactory_customerfactory_definition",
+      "backend_database_factories_productfactory",
+      "backend_database_factories_productfactory_productfactory",
+      "backend_database_factories_productfactory_productfactory_definition",
+      "backend_database_factories_productvariantfactory",
+      "backend_database_factories_productvariantfactory_productvariantfactory",
+      "backend_database_factories_productvariantfactory_productvariantfactory_definition",
+      "backend_database_factories_storefactory",
+      "backend_database_factories_storefactory_storefactory",
+      "backend_database_factories_storefactory_storefactory_definition",
+      "illuminate_database_eloquent_factories_factory"
+    ],
+    "15": [
+      "app_models_concerns_belongstostore",
+      "backend_app_models_coupon",
+      "backend_app_models_coupon_coupon",
+      "backend_app_models_coupon_coupon_casts",
+      "backend_app_models_coupon_coupon_store",
+      "backend_app_models_customer",
+      "backend_app_models_discountrule",
+      "backend_app_models_discountrule_discountrule",
+      "backend_app_models_discountrule_discountrule_casts",
+      "backend_app_models_discountrule_discountrule_store",
+      "backend_app_models_order",
+      "backend_app_models_order_order",
+      "backend_app_models_order_order_casts",
+      "backend_app_models_order_order_customer",
+      "backend_app_models_order_order_items",
+      "backend_app_models_order_order_payments",
+      "backend_app_models_order_order_store",
+      "backend_app_models_product"
+    ],
+    "16": [
+      "backend_app_http_requests_auth_loginrequest",
+      "backend_app_http_requests_auth_loginrequest_loginrequest",
+      "backend_app_http_requests_auth_loginrequest_loginrequest_attributes",
+      "backend_app_http_requests_auth_loginrequest_loginrequest_messages",
+      "backend_app_http_requests_auth_loginrequest_loginrequest_prepareforvalidation",
+      "backend_app_http_requests_auth_loginrequest_loginrequest_rules",
+      "backend_app_http_requests_auth_registerrequest",
+      "backend_app_http_requests_auth_registerrequest_registerrequest",
+      "backend_app_http_requests_auth_registerrequest_registerrequest_attributes",
+      "backend_app_http_requests_auth_registerrequest_registerrequest_messages",
+      "backend_app_http_requests_auth_registerrequest_registerrequest_prepareforvalidation",
+      "backend_app_http_requests_auth_registerrequest_registerrequest_rules",
+      "backend_app_http_requests_baserequest",
+      "backend_app_http_requests_baserequest_baserequest",
+      "backend_app_http_requests_baserequest_baserequest_authorize",
+      "backend_app_http_requests_baserequest_baserequest_sanitizeemail",
+      "backend_app_http_requests_baserequest_baserequest_sanitizephone",
+      "backend_app_http_requests_baserequest_baserequest_sanitizestring"
+    ],
+    "17": [
+      "backend_app_models_cartitem",
+      "backend_app_models_cartitem_cartitem",
+      "backend_app_models_cartitem_cartitem_cart",
+      "backend_app_models_cartitem_cartitem_casts",
+      "backend_app_models_cartitem_cartitem_productvariant",
+      "backend_app_models_inventorymovement",
+      "backend_app_models_inventorymovement_inventorymovement",
+      "backend_app_models_inventorymovement_inventorymovement_casts",
+      "backend_app_models_inventorymovement_inventorymovement_inventory",
+      "backend_app_models_inventorymovement_inventorymovement_user",
+      "backend_app_models_orderitem",
+      "backend_app_models_orderitem_orderitem",
+      "backend_app_models_orderitem_orderitem_casts",
+      "backend_app_models_orderitem_orderitem_order",
+      "backend_app_models_orderitem_orderitem_productvariant",
+      "backend_app_models_productimage",
+      "backend_app_models_productimage_productimage",
+      "illuminate_database_eloquent_model"
+    ],
+    "18": [
+      "backend_app_models_subscription",
+      "backend_app_models_subscription_subscription",
+      "backend_app_models_subscription_subscription_casts",
+      "backend_app_models_subscription_subscription_hasfeature",
+      "backend_app_models_subscription_subscription_hasreachedlimit",
+      "backend_app_models_subscription_subscription_iswritable",
+      "backend_app_models_subscription_subscription_limit",
+      "backend_app_models_subscription_subscription_store",
+      "backend_app_support_plans_planregistry",
+      "backend_app_support_plans_planregistry_planregistry",
+      "backend_app_support_plans_planregistry_planregistry_all",
+      "backend_app_support_plans_planregistry_planregistry_exists",
+      "backend_app_support_plans_planregistry_planregistry_get",
+      "backend_app_support_plans_planregistry_planregistry_hasfeature",
+      "backend_app_support_plans_planregistry_planregistry_limit",
+      "backend_app_support_plans_planregistry_planregistry_slugs",
+      "backend_app_support_plans_planregistry_planregistry_trialdays",
+      "backend_database_factories_subscriptionfactory"
+    ],
+    "19": [
+      "backend_package",
+      "backend_package_devdependencies",
+      "backend_package_devdependencies_concurrently",
+      "backend_package_devdependencies_laravel_vite_plugin",
+      "backend_package_devdependencies_tailwindcss",
+      "backend_package_devdependencies_tailwindcss_vite",
+      "backend_package_devdependencies_vite",
+      "backend_package_json_tailwindcss",
+      "backend_package_json_tailwindcss_vite",
+      "backend_package_json_vite",
+      "backend_package_private",
+      "backend_package_schema",
+      "backend_package_scripts",
+      "backend_package_scripts_build",
+      "backend_package_scripts_dev",
+      "backend_package_type",
+      "concurrently",
+      "laravel_vite_plugin"
+    ],
+    "20": [
+      "backend_app_models_customer_customer",
+      "backend_app_models_customer_customer_addresses",
+      "backend_app_models_customer_customer_carts",
+      "backend_app_models_customer_customer_casts",
+      "backend_app_models_customer_customer_getfullnameattribute",
+      "backend_app_models_customer_customer_orders",
+      "backend_app_models_customer_customer_store",
+      "backend_app_policies_customerpolicy",
+      "backend_app_policies_customerpolicy_customerpolicy",
+      "backend_app_policies_customerpolicy_customerpolicy_create",
+      "backend_app_policies_customerpolicy_customerpolicy_delete",
+      "backend_app_policies_customerpolicy_customerpolicy_forcedelete",
+      "backend_app_policies_customerpolicy_customerpolicy_restore",
+      "backend_app_policies_customerpolicy_customerpolicy_update",
+      "backend_app_policies_customerpolicy_customerpolicy_view",
+      "backend_app_policies_customerpolicy_customerpolicy_viewany",
+      "backend_database_seeders_customerseeder_customerseeder_run"
+    ],
+    "21": [
+      "app_models_concerns_belongstostoreornull",
+      "backend_app_models_auditlog",
+      "backend_app_models_auditlog_auditlog",
+      "backend_app_models_auditlog_auditlog_casts",
+      "backend_app_models_auditlog_auditlog_store",
+      "backend_app_models_auditlog_auditlog_user",
+      "backend_app_models_notification",
+      "backend_app_models_notification_notification",
+      "backend_app_models_notification_notification_casts",
+      "backend_app_models_notification_notification_store",
+      "backend_app_models_notification_notification_user",
+      "backend_app_models_setting",
+      "backend_app_models_setting_setting",
+      "backend_app_models_setting_setting_casts",
+      "backend_app_models_setting_setting_store"
+    ],
+    "22": [
+      "backend_app_http_controllers_api_v1_customercontroller",
+      "backend_app_http_controllers_api_v1_customercontroller_customercontroller",
+      "backend_app_http_controllers_api_v1_customercontroller_customercontroller_destroy",
+      "backend_app_http_controllers_api_v1_customercontroller_customercontroller_index",
+      "backend_app_http_controllers_api_v1_customercontroller_customercontroller_show",
+      "backend_app_http_controllers_api_v1_productcontroller",
+      "backend_app_http_controllers_api_v1_productcontroller_productcontroller",
+      "backend_app_http_controllers_api_v1_productcontroller_productcontroller_destroy",
+      "backend_app_http_controllers_api_v1_productcontroller_productcontroller_index",
+      "backend_app_http_controllers_api_v1_productcontroller_productcontroller_show",
+      "backend_app_http_controllers_controller",
+      "backend_app_http_controllers_controller_controller",
+      "backend_app_http_controllers_controller_controller_currentstoreid",
+      "backend_routes_api",
+      "illuminate_http_request"
+    ],
+    "23": [
+      "backend_app_http_controllers_api_v1_customercontroller_customercontroller_store",
+      "backend_app_http_requests_customer_storecustomerrequest",
+      "backend_app_http_requests_customer_storecustomerrequest_storecustomerrequest",
+      "backend_app_http_requests_customer_storecustomerrequest_storecustomerrequest_authorize",
+      "backend_app_http_requests_customer_storecustomerrequest_storecustomerrequest_messages",
+      "backend_app_http_requests_customer_storecustomerrequest_storecustomerrequest_rules",
+      "backend_app_http_requests_store_storestorerequest",
+      "backend_app_http_requests_store_storestorerequest_storestorerequest",
+      "backend_app_http_requests_store_storestorerequest_storestorerequest_authorize",
+      "backend_app_http_requests_store_storestorerequest_storestorerequest_rules",
+      "backend_app_http_requests_store_updatestorerequest",
+      "backend_app_http_requests_store_updatestorerequest_updatestorerequest",
+      "backend_app_http_requests_store_updatestorerequest_updatestorerequest_authorize",
+      "backend_app_http_requests_store_updatestorerequest_updatestorerequest_rules",
+      "illuminate_foundation_http_formrequest"
+    ],
+    "24": [
+      "backend_app_http_middleware_ensurestoreisactive",
+      "backend_app_http_middleware_ensurestoreisactive_ensurestoreisactive",
+      "backend_app_http_middleware_ensurestoreisactive_ensurestoreisactive_handle",
+      "backend_app_http_middleware_resolvetenantbysubdomain",
+      "backend_app_http_middleware_resolvetenantbysubdomain_resolvetenantbysubdomain",
+      "backend_app_http_middleware_resolvetenantbysubdomain_resolvetenantbysubdomain_extractsubdomain",
+      "backend_app_http_middleware_resolvetenantbysubdomain_resolvetenantbysubdomain_handle",
+      "backend_app_support_tenancy_tenant_tenant",
+      "backend_app_support_tenancy_tenant_tenant_check",
+      "backend_app_support_tenancy_tenant_tenant_clear",
+      "backend_app_support_tenancy_tenant_tenant_current",
+      "backend_app_support_tenancy_tenant_tenant_id",
+      "backend_app_support_tenancy_tenant_tenant_set",
+      "closure",
+      "symfony_component_httpfoundation_response"
+    ],
+    "25": [
+      "backend_app_exceptions_api_apiexception",
+      "backend_app_exceptions_api_apiexception_apiexception",
+      "backend_app_exceptions_api_apiexception_apiexception_construct",
+      "backend_app_exceptions_api_apiexception_apiexception_status",
+      "backend_app_exceptions_authentication_inactiveuserexception",
+      "backend_app_exceptions_authentication_inactiveuserexception_inactiveuserexception",
+      "backend_app_exceptions_authentication_inactiveuserexception_inactiveuserexception_construct",
+      "backend_app_exceptions_authentication_invalidcredentialsexception",
+      "backend_app_exceptions_authentication_invalidcredentialsexception_invalidcredentialsexception",
+      "backend_app_exceptions_authentication_invalidcredentialsexception_invalidcredentialsexception_construct",
+      "backend_app_exceptions_baseapiexception",
+      "backend_app_exceptions_baseapiexception_baseapiexception",
+      "backend_app_exceptions_baseapiexception_baseapiexception_status",
+      "exception"
+    ],
+    "26": [
+      "backend_app_models_customeraddress",
+      "backend_app_models_customeraddress_customeraddress",
+      "backend_app_models_customeraddress_customeraddress_casts",
+      "backend_app_models_customeraddress_customeraddress_customer",
+      "backend_app_models_payment",
+      "backend_app_models_payment_payment",
+      "backend_app_models_payment_payment_casts",
+      "backend_app_models_payment_payment_order",
+      "backend_app_models_payment_payment_transactions",
+      "backend_app_models_transaction",
+      "backend_app_models_transaction_transaction",
+      "backend_app_models_transaction_transaction_casts",
+      "backend_app_models_transaction_transaction_payment",
+      "illuminate_database_eloquent_factories_hasfactory"
+    ],
+    "27": [
+      "backend_app_models_store_store",
+      "backend_app_models_store_store_casts",
+      "backend_app_models_store_store_roles",
+      "backend_app_models_store_store_users",
+      "backend_app_policies_storepolicy",
+      "backend_app_policies_storepolicy_storepolicy",
+      "backend_app_policies_storepolicy_storepolicy_create",
+      "backend_app_policies_storepolicy_storepolicy_delete",
+      "backend_app_policies_storepolicy_storepolicy_forcedelete",
+      "backend_app_policies_storepolicy_storepolicy_restore",
+      "backend_app_policies_storepolicy_storepolicy_update",
+      "backend_app_policies_storepolicy_storepolicy_view",
+      "backend_app_policies_storepolicy_storepolicy_viewany",
+      "backend_database_seeders_storeseeder_storeseeder_run"
+    ],
+    "28": [
+      "frontend_src_api_client",
+      "frontend_src_api_client_api",
+      "frontend_src_components_layout_header",
+      "frontend_src_components_layout_header_header",
+      "frontend_src_components_layout_sidebar",
+      "frontend_src_components_layout_sidebar_menu",
+      "frontend_src_components_layout_sidebar_sidebar",
+      "frontend_src_features_auth_authapi",
+      "frontend_src_features_auth_authapi_login",
+      "frontend_src_features_auth_authapi_logout",
+      "frontend_src_layouts_adminlayout",
+      "frontend_src_layouts_adminlayout_adminlayout",
+      "frontend_src_layouts_dashboardlayout",
+      "frontend_src_layouts_dashboardlayout_dashboardlayout"
+    ],
+    "29": [
+      "backend_app_models_brand",
+      "backend_app_models_brand_brand",
+      "backend_app_models_brand_brand_casts",
+      "backend_app_models_brand_brand_products",
+      "backend_app_models_brand_brand_store",
+      "backend_app_models_productvariant",
+      "backend_app_models_productvariant_productvariant",
+      "backend_app_models_productvariant_productvariant_casts",
+      "backend_app_models_productvariant_productvariant_product",
+      "backend_database_seeders_catalogseeder",
+      "backend_database_seeders_catalogseeder_catalogseeder",
+      "backend_database_seeders_catalogseeder_catalogseeder_run"
+    ],
+    "30": [
+      "backend_app_models_concerns_belongstostore",
+      "backend_app_models_concerns_belongstostore_bootbelongstostore",
+      "backend_app_models_concerns_belongstostore_store",
+      "backend_database_factories_subscriptionfactory_subscriptionfactory",
+      "backend_database_factories_subscriptionfactory_subscriptionfactory_definition",
+      "backend_database_factories_subscriptionfactory_subscriptionfactory_plan",
+      "backend_database_factories_subscriptionfactory_subscriptionfactory_readonly",
+      "backend_database_factories_userfactory",
+      "backend_database_factories_userfactory_userfactory",
+      "backend_database_factories_userfactory_userfactory_definition",
+      "backend_database_factories_userfactory_userfactory_unverified",
+      "static"
+    ],
+    "31": [
+      "frontend_src_features_products_services_productsapi",
+      "frontend_src_features_products_services_productsapi_createproduct",
+      "frontend_src_features_products_services_productsapi_getproduct",
+      "frontend_src_features_products_services_productsapi_product",
+      "frontend_src_features_products_services_productsapi_productpayload",
+      "frontend_src_features_products_services_productsapi_productsresponse",
+      "frontend_src_features_products_services_productsapi_updateproduct",
+      "frontend_src_pages_productform",
+      "frontend_src_pages_productform_productform",
+      "frontend_src_pages_productform_productformdata",
+      "frontend_src_pages_productform_productforminput",
+      "frontend_src_pages_productform_schema"
+    ],
+    "32": [
+      "frontend_src_features_customers_customersapi",
+      "frontend_src_features_customers_customersapi_createcustomer",
+      "frontend_src_features_customers_customersapi_customerpayload",
+      "frontend_src_features_customers_customersapi_customersresponse",
+      "frontend_src_features_customers_customersapi_getcustomer",
+      "frontend_src_features_customers_customersapi_updatecustomer",
+      "frontend_src_pages_customerform",
+      "frontend_src_pages_customerform_cleancustomerpayload",
+      "frontend_src_pages_customerform_customerform",
+      "frontend_src_pages_customerform_customerformdata",
+      "frontend_src_pages_customerform_schema"
+    ],
+    "33": [
+      "backend_app_http_resources_auth_loginresource",
+      "backend_app_http_resources_auth_loginresource_loginresource",
+      "backend_app_http_resources_auth_loginresource_loginresource_toarray",
+      "backend_app_http_resources_baseresource",
+      "backend_app_http_resources_baseresource_baseresource",
+      "backend_app_http_resources_baseresource_baseresource_meta",
+      "backend_app_http_resources_baseresource_baseresource_with",
+      "backend_app_http_resources_user_userresource",
+      "backend_app_http_resources_user_userresource_userresource",
+      "backend_app_http_resources_user_userresource_userresource_toarray"
+    ],
+    "34": [
+      "backend_app_models_scopes_belongstostoreornullscope",
+      "backend_app_models_scopes_belongstostoreornullscope_belongstostoreornullscope",
+      "backend_app_models_scopes_belongstostoreornullscope_belongstostoreornullscope_apply",
+      "backend_app_models_scopes_belongstostoreornullscope_belongstostoreornullscope_extend",
+      "backend_app_models_scopes_belongstostorescope",
+      "backend_app_models_scopes_belongstostorescope_belongstostorescope",
+      "backend_app_models_scopes_belongstostorescope_belongstostorescope_apply",
+      "backend_app_models_scopes_belongstostorescope_belongstostorescope_extend",
+      "illuminate_database_eloquent_builder",
+      "illuminate_database_eloquent_scope"
+    ],
+    "35": [
+      "frontend_src_app",
+      "frontend_src_app_app",
+      "frontend_src_components_ui_toastprovider_toastprovider",
+      "frontend_src_features_auth_authapi_me",
+      "frontend_src_features_auth_useauthbootstrap",
+      "frontend_src_features_auth_useauthbootstrap_useauthbootstrap",
+      "frontend_src_main",
+      "frontend_src_main_queryclient",
+      "frontend_src_routes_router_router"
+    ],
+    "36": [
+      "frontend_src_components_ui_toastcontext",
+      "frontend_src_components_ui_toastcontext_toastcontext",
+      "frontend_src_components_ui_toastcontext_toastcontextvalue",
+      "frontend_src_components_ui_toastcontext_toastinput",
+      "frontend_src_components_ui_toastcontext_toasttone",
+      "frontend_src_components_ui_toastprovider",
+      "frontend_src_components_ui_toastprovider_icons",
+      "frontend_src_components_ui_toastprovider_toast",
+      "frontend_src_components_ui_usetoast"
+    ],
+    "37": [
+      "backend_app_models_category",
+      "backend_app_models_category_category",
+      "backend_app_models_category_category_casts",
+      "backend_app_models_category_category_children",
+      "backend_app_models_category_category_products",
+      "backend_app_models_category_category_store",
+      "illuminate_database_eloquent_relations_belongsto",
+      "illuminate_database_eloquent_relations_hasmany"
+    ],
+    "38": [
+      "backend_app_http_controllers_api_v1_customercontroller_customercontroller_update",
+      "backend_app_http_requests_customer_updatecustomerrequest",
+      "backend_app_http_requests_customer_updatecustomerrequest_updatecustomerrequest",
+      "backend_app_http_requests_customer_updatecustomerrequest_updatecustomerrequest_authorize",
+      "backend_app_http_requests_customer_updatecustomerrequest_updatecustomerrequest_messages",
+      "backend_app_http_requests_customer_updatecustomerrequest_updatecustomerrequest_rules"
+    ],
+    "39": [
+      "backend_app_http_controllers_api_v1_productcontroller_productcontroller_store",
+      "backend_app_http_requests_product_storeproductrequest",
+      "backend_app_http_requests_product_storeproductrequest_storeproductrequest",
+      "backend_app_http_requests_product_storeproductrequest_storeproductrequest_authorize",
+      "backend_app_http_requests_product_storeproductrequest_storeproductrequest_messages",
+      "backend_app_http_requests_product_storeproductrequest_storeproductrequest_rules"
+    ],
+    "40": [
+      "backend_app_http_controllers_api_v1_productcontroller_productcontroller_update",
+      "backend_app_http_requests_product_updateproductrequest",
+      "backend_app_http_requests_product_updateproductrequest_updateproductrequest",
+      "backend_app_http_requests_product_updateproductrequest_updateproductrequest_authorize",
+      "backend_app_http_requests_product_updateproductrequest_updateproductrequest_messages",
+      "backend_app_http_requests_product_updateproductrequest_updateproductrequest_rules"
+    ],
+    "41": [
+      "backend_app_models_cart",
+      "backend_app_models_cart_cart",
+      "backend_app_models_cart_cart_casts",
+      "backend_app_models_cart_cart_customer",
+      "backend_app_models_cart_cart_items",
+      "backend_app_models_cart_cart_store"
+    ],
+    "42": [
+      "backend_app_models_inventory",
+      "backend_app_models_inventory_inventory",
+      "backend_app_models_inventory_inventory_casts",
+      "backend_app_models_inventory_inventory_movements",
+      "backend_app_models_inventory_inventory_productvariant",
+      "backend_app_models_inventory_inventory_warehouse"
+    ],
+    "43": [
+      "backend_app_models_warehouse",
+      "backend_app_models_warehouse_warehouse",
+      "backend_app_models_warehouse_warehouse_casts",
+      "backend_app_models_warehouse_warehouse_inventories",
+      "backend_app_models_warehouse_warehouse_store"
+    ],
+    "44": [
+      "backend_app_console_commands_cleanuptokens",
+      "backend_app_console_commands_cleanuptokens_cleanuptokens",
+      "backend_app_console_commands_cleanuptokens_cleanuptokens_handle",
+      "illuminate_console_command"
+    ],
+    "45": [
+      "backend_tests_unit_exampletest",
+      "backend_tests_unit_exampletest_exampletest",
+      "backend_tests_unit_exampletest_exampletest_test_that_true_is_true",
+      "phpunit_framework_testcase"
+    ],
+    "46": [
+      "frontend_src_features_customers_customersapi_getcustomers",
+      "frontend_src_features_products_services_productsapi_getproducts",
+      "frontend_src_pages_dashboard",
+      "frontend_src_pages_dashboard_dashboard"
+    ],
+    "47": [
+      "frontend_src_layouts_authlayout",
+      "frontend_src_layouts_authlayout_authstate",
+      "frontend_src_layouts_authlayout_useauthstore",
+      "frontend_src_layouts_authlayout_user"
+    ],
+    "48": [
+      "backend_app_models_concerns_belongstostoreornull",
+      "backend_app_models_concerns_belongstostoreornull_bootbelongstostoreornull",
+      "backend_app_models_concerns_belongstostoreornull_store"
+    ],
+    "49": [
+      "backend_app_services_baseservice",
+      "backend_app_services_baseservice_baseservice",
+      "backend_app_services_baseservice_baseservice_transaction"
+    ],
+    "50": [
+      "backend_database_migrations_0001_01_01_000000_create_users_table",
+      "backend_database_migrations_0001_01_01_000000_create_users_table_down",
+      "backend_database_migrations_0001_01_01_000000_create_users_table_up"
+    ],
+    "51": [
+      "backend_database_migrations_0001_01_01_000001_create_cache_table",
+      "backend_database_migrations_0001_01_01_000001_create_cache_table_down",
+      "backend_database_migrations_0001_01_01_000001_create_cache_table_up"
+    ],
+    "52": [
+      "backend_database_migrations_0001_01_01_000002_create_jobs_table",
+      "backend_database_migrations_0001_01_01_000002_create_jobs_table_down",
+      "backend_database_migrations_0001_01_01_000002_create_jobs_table_up"
+    ],
+    "53": [
+      "backend_database_migrations_2026_06_26_192303_create_personal_access_tokens_table",
+      "backend_database_migrations_2026_06_26_192303_create_personal_access_tokens_table_down",
+      "backend_database_migrations_2026_06_26_192303_create_personal_access_tokens_table_up"
+    ],
+    "54": [
+      "backend_database_migrations_2026_06_26_192911_create_stores_table",
+      "backend_database_migrations_2026_06_26_192911_create_stores_table_down",
+      "backend_database_migrations_2026_06_26_192911_create_stores_table_up"
+    ],
+    "55": [
+      "backend_database_migrations_2026_06_26_192925_create_roles_table",
+      "backend_database_migrations_2026_06_26_192925_create_roles_table_down",
+      "backend_database_migrations_2026_06_26_192925_create_roles_table_up"
+    ],
+    "56": [
+      "backend_database_migrations_2026_06_26_192926_create_permissions_table",
+      "backend_database_migrations_2026_06_26_192926_create_permissions_table_down",
+      "backend_database_migrations_2026_06_26_192926_create_permissions_table_up"
+    ],
+    "57": [
+      "backend_database_migrations_2026_06_26_192926_create_role_user_table",
+      "backend_database_migrations_2026_06_26_192926_create_role_user_table_down",
+      "backend_database_migrations_2026_06_26_192926_create_role_user_table_up"
+    ],
+    "58": [
+      "backend_database_migrations_2026_06_26_192927_create_permission_role_table",
+      "backend_database_migrations_2026_06_26_192927_create_permission_role_table_down",
+      "backend_database_migrations_2026_06_26_192927_create_permission_role_table_up"
+    ],
+    "59": [
+      "backend_database_migrations_2026_06_26_193000_create_categories_table",
+      "backend_database_migrations_2026_06_26_193000_create_categories_table_down",
+      "backend_database_migrations_2026_06_26_193000_create_categories_table_up"
+    ],
+    "60": [
+      "backend_database_migrations_2026_06_26_193001_create_brands_table",
+      "backend_database_migrations_2026_06_26_193001_create_brands_table_down",
+      "backend_database_migrations_2026_06_26_193001_create_brands_table_up"
+    ],
+    "61": [
+      "backend_database_migrations_2026_06_26_193002_create_products_table",
+      "backend_database_migrations_2026_06_26_193002_create_products_table_down",
+      "backend_database_migrations_2026_06_26_193002_create_products_table_up"
+    ],
+    "62": [
+      "backend_database_migrations_2026_06_26_193003_create_product_variants_table",
+      "backend_database_migrations_2026_06_26_193003_create_product_variants_table_down",
+      "backend_database_migrations_2026_06_26_193003_create_product_variants_table_up"
+    ],
+    "63": [
+      "backend_database_migrations_2026_06_26_193004_create_product_images_table",
+      "backend_database_migrations_2026_06_26_193004_create_product_images_table_down",
+      "backend_database_migrations_2026_06_26_193004_create_product_images_table_up"
+    ],
+    "64": [
+      "backend_database_migrations_2026_06_26_193009_create_warehouses_table",
+      "backend_database_migrations_2026_06_26_193009_create_warehouses_table_down",
+      "backend_database_migrations_2026_06_26_193009_create_warehouses_table_up"
+    ],
+    "65": [
+      "backend_database_migrations_2026_06_26_193010_create_inventories_table",
+      "backend_database_migrations_2026_06_26_193010_create_inventories_table_down",
+      "backend_database_migrations_2026_06_26_193010_create_inventories_table_up"
+    ],
+    "66": [
+      "backend_database_migrations_2026_06_26_193011_create_inventory_movements_table",
+      "backend_database_migrations_2026_06_26_193011_create_inventory_movements_table_down",
+      "backend_database_migrations_2026_06_26_193011_create_inventory_movements_table_up"
+    ],
+    "67": [
+      "backend_database_migrations_2026_06_26_193017_create_customers_table",
+      "backend_database_migrations_2026_06_26_193017_create_customers_table_down",
+      "backend_database_migrations_2026_06_26_193017_create_customers_table_up"
+    ],
+    "68": [
+      "backend_database_migrations_2026_06_26_193018_create_customer_addresses_table",
+      "backend_database_migrations_2026_06_26_193018_create_customer_addresses_table_down",
+      "backend_database_migrations_2026_06_26_193018_create_customer_addresses_table_up"
+    ],
+    "69": [
+      "backend_database_migrations_2026_06_26_193026_create_carts_table",
+      "backend_database_migrations_2026_06_26_193026_create_carts_table_down",
+      "backend_database_migrations_2026_06_26_193026_create_carts_table_up"
+    ],
+    "70": [
+      "backend_database_migrations_2026_06_26_193027_create_cart_items_table",
+      "backend_database_migrations_2026_06_26_193027_create_cart_items_table_down",
+      "backend_database_migrations_2026_06_26_193027_create_cart_items_table_up"
+    ],
+    "71": [
+      "backend_database_migrations_2026_06_26_193029_create_orders_table",
+      "backend_database_migrations_2026_06_26_193029_create_orders_table_down",
+      "backend_database_migrations_2026_06_26_193029_create_orders_table_up"
+    ],
+    "72": [
+      "backend_database_migrations_2026_06_26_193030_create_order_items_table",
+      "backend_database_migrations_2026_06_26_193030_create_order_items_table_down",
+      "backend_database_migrations_2026_06_26_193030_create_order_items_table_up"
+    ],
+    "73": [
+      "backend_database_migrations_2026_06_26_193031_create_payments_table",
+      "backend_database_migrations_2026_06_26_193031_create_payments_table_down",
+      "backend_database_migrations_2026_06_26_193031_create_payments_table_up"
+    ],
+    "74": [
+      "backend_database_migrations_2026_06_26_193032_create_transactions_table",
+      "backend_database_migrations_2026_06_26_193032_create_transactions_table_down",
+      "backend_database_migrations_2026_06_26_193032_create_transactions_table_up"
+    ],
+    "75": [
+      "backend_database_migrations_2026_06_26_193033_create_coupons_table",
+      "backend_database_migrations_2026_06_26_193033_create_coupons_table_down",
+      "backend_database_migrations_2026_06_26_193033_create_coupons_table_up"
+    ],
+    "76": [
+      "backend_database_migrations_2026_06_26_193034_create_discount_rules_table",
+      "backend_database_migrations_2026_06_26_193034_create_discount_rules_table_down",
+      "backend_database_migrations_2026_06_26_193034_create_discount_rules_table_up"
+    ],
+    "77": [
+      "backend_database_migrations_2026_06_26_193035_create_notifications_table",
+      "backend_database_migrations_2026_06_26_193035_create_notifications_table_down",
+      "backend_database_migrations_2026_06_26_193035_create_notifications_table_up"
+    ],
+    "78": [
+      "backend_database_migrations_2026_06_26_193036_create_settings_table",
+      "backend_database_migrations_2026_06_26_193036_create_settings_table_down",
+      "backend_database_migrations_2026_06_26_193036_create_settings_table_up"
+    ],
+    "79": [
+      "backend_database_migrations_2026_06_26_193037_create_audit_logs_table",
+      "backend_database_migrations_2026_06_26_193037_create_audit_logs_table_down",
+      "backend_database_migrations_2026_06_26_193037_create_audit_logs_table_up"
+    ],
+    "80": [
+      "backend_database_migrations_2026_07_27_000001_create_subscriptions_table",
+      "backend_database_migrations_2026_07_27_000001_create_subscriptions_table_down",
+      "backend_database_migrations_2026_07_27_000001_create_subscriptions_table_up"
+    ],
+    "81": [
+      "backend_tests_testcase",
+      "backend_tests_testcase_testcase",
+      "illuminate_foundation_testing_testcase"
+    ],
+    "82": [
+      "frontend_src_components_ui_infocard",
+      "frontend_src_components_ui_infocard_infocard",
+      "frontend_src_components_ui_infocard_infocardprops"
+    ],
+    "83": [
+      "frontend_tsconfig",
+      "frontend_tsconfig_files",
+      "frontend_tsconfig_references"
+    ],
+    "84": [
+      "backend_artisan",
+      "backend_routes_console"
+    ],
+    "85": [
+      "github_copilot_instructions",
+      "github_copilot_instructions_graphify"
+    ],
+    "86": [
+      "backend_app_enums_coupontype"
+    ],
+    "87": [
+      "backend_app_enums_inventorymovementtype"
+    ],
+    "88": [
+      "backend_app_enums_notificationtype"
+    ],
+    "89": [
+      "backend_app_enums_orderstatus"
+    ],
+    "90": [
+      "backend_app_enums_paymentmethod"
+    ],
+    "91": [
+      "backend_app_enums_paymentstatus"
+    ],
+    "92": [
+      "backend_app_enums_userstatus"
+    ],
+    "93": [
+      "backend_bootstrap_app"
+    ],
+    "94": [
+      "backend_config_app"
+    ],
+    "95": [
+      "backend_config_cache"
+    ],
+    "96": [
+      "backend_config_cors"
+    ],
+    "97": [
+      "backend_config_database"
+    ],
+    "98": [
+      "backend_config_filesystems"
+    ],
+    "99": [
+      "backend_config_logging"
+    ],
+    "100": [
+      "backend_config_mail"
+    ],
+    "101": [
+      "backend_config_plans"
+    ],
+    "102": [
+      "backend_config_queue"
+    ],
+    "103": [
+      "backend_config_sanctum"
+    ],
+    "104": [
+      "backend_config_services"
+    ],
+    "105": [
+      "backend_config_session"
+    ],
+    "106": [
+      "backend_config_tenancy"
+    ],
+    "107": [
+      "backend_public_index"
+    ],
+    "108": [
+      "backend_resources_js_app"
+    ],
+    "109": [
+      "backend_resources_views_welcome_blade"
+    ],
+    "110": [
+      "backend_routes_web"
+    ],
+    "111": [
+      "backend_vite_config"
+    ],
+    "112": [
+      "frontend_eslint_config"
+    ],
+    "113": [
+      "frontend_src_features_products_components_productactions"
+    ],
+    "114": [
+      "frontend_src_features_products_components_productcard"
+    ],
+    "115": [
+      "frontend_src_features_products_components_productfilters"
+    ],
+    "116": [
+      "frontend_src_features_products_components_productpagination"
+    ],
+    "117": [
+      "frontend_src_features_products_components_producttable"
+    ],
+    "118": [
+      "frontend_src_features_products_hooks_usedeleteproduct"
+    ],
+    "119": [
+      "frontend_src_features_products_hooks_useproducts"
+    ],
+    "120": [
+      "frontend_src_features_products_types"
+    ],
+    "121": [
+      "frontend_src_layouts_storelayout"
+    ],
+    "122": [
+      "frontend_vite_config"
+    ]
+  },
+  "cohesion": {
+    "0": 0.05331510594668489,
+    "1": 0.06352941176470588,
+    "2": 0.047619047619047616,
+    "3": 0.0907563025210084,
+    "4": 0.06060606060606061,
+    "5": 0.11612903225806452,
+    "6": 0.06896551724137931,
+    "7": 0.12962962962962962,
+    "8": 0.08,
+    "9": 0.12923076923076923,
+    "10": 0.11594202898550725,
+    "11": 0.08695652173913043,
+    "12": 0.14761904761904762,
+    "13": 0.1,
+    "14": 0.14035087719298245,
+    "15": 0.13071895424836602,
+    "16": 0.12418300653594772,
+    "17": 0.13725490196078433,
+    "18": 0.13071895424836602,
+    "19": 0.1111111111111111,
+    "20": 0.15441176470588236,
+    "21": 0.1619047619047619,
+    "22": 0.24761904761904763,
+    "23": 0.1619047619047619,
+    "24": 0.2,
+    "25": 0.18681318681318682,
+    "26": 0.17582417582417584,
+    "27": 0.1978021978021978,
+    "28": 0.1978021978021978,
+    "29": 0.19696969696969696,
+    "30": 0.19696969696969696,
+    "31": 0.25757575757575757,
+    "32": 0.3090909090909091,
+    "33": 0.28888888888888886,
+    "34": 0.35555555555555557,
+    "35": 0.3333333333333333,
+    "36": 0.3611111111111111,
+    "37": 0.35714285714285715,
+    "38": 0.3333333333333333,
+    "39": 0.3333333333333333,
+    "40": 0.3333333333333333,
+    "41": 0.3333333333333333,
+    "42": 0.3333333333333333,
+    "43": 0.4,
+    "44": 0.6666666666666666,
+    "45": 0.6666666666666666,
+    "46": 0.8333333333333334,
+    "47": 0.5,
+    "48": 0.6666666666666666,
+    "49": 0.6666666666666666,
+    "50": 0.6666666666666666,
+    "51": 0.6666666666666666,
+    "52": 0.6666666666666666,
+    "53": 0.6666666666666666,
+    "54": 0.6666666666666666,
+    "55": 0.6666666666666666,
+    "56": 0.6666666666666666,
+    "57": 0.6666666666666666,
+    "58": 0.6666666666666666,
+    "59": 0.6666666666666666,
+    "60": 0.6666666666666666,
+    "61": 0.6666666666666666,
+    "62": 0.6666666666666666,
+    "63": 0.6666666666666666,
+    "64": 0.6666666666666666,
+    "65": 0.6666666666666666,
+    "66": 0.6666666666666666,
+    "67": 0.6666666666666666,
+    "68": 0.6666666666666666,
+    "69": 0.6666666666666666,
+    "70": 0.6666666666666666,
+    "71": 0.6666666666666666,
+    "72": 0.6666666666666666,
+    "73": 0.6666666666666666,
+    "74": 0.6666666666666666,
+    "75": 0.6666666666666666,
+    "76": 0.6666666666666666,
+    "77": 0.6666666666666666,
+    "78": 0.6666666666666666,
+    "79": 0.6666666666666666,
+    "80": 0.6666666666666666,
+    "81": 0.6666666666666666,
+    "82": 0.6666666666666666,
+    "83": 0.6666666666666666,
+    "84": 1.0,
+    "85": 1.0,
+    "86": 1.0,
+    "87": 1.0,
+    "88": 1.0,
+    "89": 1.0,
+    "90": 1.0,
+    "91": 1.0,
+    "92": 1.0,
+    "93": 1.0,
+    "94": 1.0,
+    "95": 1.0,
+    "96": 1.0,
+    "97": 1.0,
+    "98": 1.0,
+    "99": 1.0,
+    "100": 1.0,
+    "101": 1.0,
+    "102": 1.0,
+    "103": 1.0,
+    "104": 1.0,
+    "105": 1.0,
+    "106": 1.0,
+    "107": 1.0,
+    "108": 1.0,
+    "109": 1.0,
+    "110": 1.0,
+    "111": 1.0,
+    "112": 1.0,
+    "113": 1.0,
+    "114": 1.0,
+    "115": 1.0,
+    "116": 1.0,
+    "117": 1.0,
+    "118": 1.0,
+    "119": 1.0,
+    "120": 1.0,
+    "121": 1.0,
+    "122": 1.0
+  },
+  "gods": [
+    {
+      "id": "backend_app_models_user_user",
+      "label": "User",
+      "degree": 47
+    },
+    {
+      "id": "backend_app_models_product_product",
+      "label": "Product",
+      "degree": 34
+    },
+    {
+      "id": "backend_app_models_customer_customer",
+      "label": "Customer",
+      "degree": 29
+    },
+    {
+      "id": "backend_app_models_store_store",
+      "label": "Store",
+      "degree": 23
+    },
+    {
+      "id": "frontend_tsconfig_app_compileroptions",
+      "label": "compilerOptions",
+      "degree": 17
+    },
+    {
+      "id": "frontend_tsconfig_node_compileroptions",
+      "label": "compilerOptions",
+      "degree": 15
+    },
+    {
+      "id": "backend_tests_feature_http_productcontrollertest_productcontrollertest",
+      "label": "ProductControllerTest",
+      "degree": 15
+    },
+    {
+      "id": "backend_tests_feature_auth_registertest_registertest",
+      "label": "RegisterTest",
+      "degree": 14
+    },
+    {
+      "id": "backend_app_models_role_role",
+      "label": "Role",
+      "degree": 13
+    },
+    {
+      "id": "backend_tests_feature_auth_logintenantisolationtest_logintenantisolationtest",
+      "label": "LoginTenantIsolationTest",
+      "degree": 13
+    }
+  ],
+  "surprises": [
+    {
+      "source": "createUserWithPermissions()",
+      "target": "Role",
+      "source_files": [
+        "backend/tests/Concerns/CreatesStoreUsers.php",
+        "backend/app/Models/Role.php"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    },
+    {
+      "source": "Tenant",
+      "target": "Store",
+      "source_files": [
+        "backend/app/Support/Tenancy/Tenant.php",
+        "backend/app/Models/Store.php"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "references",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "Header()",
+      "target": "useAuthStore",
+      "source_files": [
+        "frontend/src/components/layout/Header.tsx",
+        "frontend/src/store/authStore.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "CustomerForm()",
+      "target": "useToast()",
+      "source_files": [
+        "frontend/src/pages/CustomerForm.tsx",
+        "frontend/src/components/ui/useToast.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "ProductForm()",
+      "target": "useToast()",
+      "source_files": [
+        "frontend/src/pages/ProductForm.tsx",
+        "frontend/src/components/ui/useToast.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `Product` connect `Product` to `.parent`, `Illuminate\\Database\\Eloquent\\SoftDeletes`, `StoreProductRequest`, `UpdateProductRequest`, `App\\Models\\Concerns\\BelongsToStore`, `Illuminate\\Database\\Eloquent\\Model`, `Illuminate\\Http\\Request`, `Illuminate\\Database\\Eloquent\\Factories\\HasFactory`, `Brand`?",
+      "why": "High betweenness centrality (0.045) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `Customer` connect `Customer` to `.parent`, `Illuminate\\Database\\Eloquent\\SoftDeletes`, `UpdateCustomerRequest`, `Product`, `App\\Models\\Concerns\\BelongsToStore`, `Illuminate\\Database\\Eloquent\\Model`, `Illuminate\\Http\\Request`, `Illuminate\\Foundation\\Http\\FormRequest`, `Illuminate\\Database\\Eloquent\\Factories\\HasFactory`?",
+      "why": "High betweenness centrality (0.034) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `Store` connect `Store` to `.parent`, `Illuminate\\Database\\Eloquent\\SoftDeletes`, `Illuminate\\Database\\Eloquent\\Model`, `Customer`, `Tenant`, `Illuminate\\Database\\Eloquent\\Factories\\HasFactory`, `Brand`?",
+      "why": "High betweenness centrality (0.027) - this node is a cross-community bridge."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 9 inferred relationships involving `Product` (e.g. with `.test_index_solo_devuelve_productos_de_la_tienda_del_subdominio()` and `.test_no_puede_actualizar_un_producto_de_otra_tienda()`) actually correct?",
+      "why": "`Product` has 9 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "isolated_nodes",
+      "question": "What connects `graphify`, `$schema`, `name` to the rest of the system?",
+      "why": "154 weakly-connected nodes found - possible documentation gaps or missing edges."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `.parent` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.05331510594668489 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `StoreCreated` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.06352941176470588 - nodes in this community are weakly interconnected."
+    }
+  ]
+}
