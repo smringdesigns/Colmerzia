@@ -85,8 +85,8 @@
     "semantic_hash": "c4d729ccf7e53b1ad320c39a51f9bbd6"
   },
   "backend/app/Http/Controllers/Api/V1/Auth/AuthController.php": {
-    "mtime": 1785515309.0913634,
-    "ast_hash": "96ac78d7f17ee3c051669e6a58f6df1b",
+    "mtime": 1785448386.9706044,
+    "ast_hash": "e0dcc398df3a4222a32fd29b5003f8c8",
     "semantic_hash": ""
   },
   "backend/app/Http/Controllers/Api/V1/CustomerController.php": {
@@ -330,8 +330,8 @@
     "semantic_hash": "9a3a6463c688a2cc4a737de5e2541c66"
   },
   "backend/app/Models/User.php": {
-    "mtime": 1785513104.70728,
-    "ast_hash": "72ab1135856c24f3bc4e4ed1ce34caab",
+    "mtime": 1785447516.2363248,
+    "ast_hash": "d693c9c7aa1558fa0b8729732eb34d45",
     "semantic_hash": ""
   },
   "backend/app/Models/Warehouse.php": {
@@ -710,8 +710,8 @@
     "semantic_hash": "1a03818ea91deb4f3989c6c994e5867c"
   },
   "backend/routes/api.php": {
-    "mtime": 1785515181.534721,
-    "ast_hash": "e35e7e2c1ad134fdae823aa856acf9da",
+    "mtime": 1785447116.1095116,
+    "ast_hash": "d00208b68aab1933350355666b999b28",
     "semantic_hash": ""
   },
   "backend/routes/console.php": {
@@ -830,8 +830,8 @@
     "semantic_hash": "6b3cbd8c7ca0bad1ca1328ef36b0ee29"
   },
   "frontend/src/features/auth/authApi.ts": {
-    "mtime": 1785516475.7815027,
-    "ast_hash": "314cb4b8a83ad98602f794a3b8574e3b",
+    "mtime": 1785443787.9832613,
+    "ast_hash": "149a79014a61aed9e3209909045a7adf",
     "semantic_hash": ""
   },
   "frontend/src/features/auth/useAuthBootstrap.ts": {
@@ -970,8 +970,8 @@
     "semantic_hash": "7f7e83ce8534e641c35c2d846442a15b"
   },
   "frontend/src/routes/router.tsx": {
-    "mtime": 1785525180.843782,
-    "ast_hash": "f0bdacf6216ca47c9d8ba29e7f7ea89d",
+    "mtime": 1785338112.1928797,
+    "ast_hash": "6481675807c427fab67b561cd097810f",
     "semantic_hash": ""
   },
   "frontend/src/store/authStore.ts": {
@@ -1005,8 +1005,8 @@
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1785457722.3256187,
-    "ast_hash": "6488b0514f9959b7aaad4cbcca3bb3bf",
+    "mtime": 1784947998.4664958,
+    "ast_hash": "6d6e80856d2be0987ec6cd03cc766d6d",
     "semantic_hash": ""
   },
   "backend/README.md": {
@@ -1377,16 +1377,6 @@
   "composer.json": {
     "mtime": 1785430426.0195923,
     "ast_hash": "eac0ecce94040159576ccbdcdba67d7a",
-    "semantic_hash": ""
-  },
-  "frontend/src/features/auth/VerifyEmail.tsx": {
-    "mtime": 1785526870.5012264,
-    "ast_hash": "070e60979f502f0abd80ef0ee78476a4",
-    "semantic_hash": ""
-  },
-  "frontend/src/pages/ResetPassword.tsx": {
-    "mtime": 1785526839.3561862,
-    "ast_hash": "40b5ee6279324da08f77bc3b77881832",
     "semantic_hash": ""
   }
 }
