@@ -21,10 +21,13 @@ return Application::configure(basePath: dirname(__DIR__))
         */
 
         $middleware->alias([
-            'tenant' => \App\Http\Middleware\ResolveTenantBySubdomain::class,
-            'store.active' => \App\Http\Middleware\EnsureStoreIsActive::class,
-            'subscription.writable' => \App\Http\Middleware\EnsureSubscriptionIsWritable::class,
-            'feature' => \App\Http\Middleware\EnsureFeatureAvailable::class,
+            // Apuntando a la clase exacta que acabamos de crear
+            'tenant' => \App\Http\Middleware\TenantResolver::class,
+            
+            // TODO: Descomentar estos cuando creemos físicamente los archivos
+            // 'store.active' => \App\Http\Middleware\EnsureStoreIsActive::class,
+            // 'subscription.writable' => \App\Http\Middleware\EnsureSubscriptionIsWritable::class,
+            // 'feature' => \App\Http\Middleware\EnsureFeatureAvailable::class,
         ]);
 
         /*
@@ -47,7 +50,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->redirectGuestsTo(function (Request $request) {
 
             if ($request->is('api/*')) {
-                return null;
+                return null; // Devuelve 401 en lugar de redirigir a una vista HTML
             }
 
             return route('login');

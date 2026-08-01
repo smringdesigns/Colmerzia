@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Store extends Model
 {
@@ -16,18 +17,9 @@ class Store extends Model
     protected $fillable = [
         'uuid',
         'name',
-        'slug',
-        'email',
-        'phone',
-        'logo',
-        'favicon',
         'subdomain',
-        'country',
-        'currency',
-        'timezone',
+        'custom_domain',
         'is_active',
-        'is_verified',
-        'plan',
     ];
 
     /**
@@ -37,15 +29,25 @@ class Store extends Model
     {
         return [
             'is_active' => 'boolean',
-            'is_verified' => 'boolean',
         ];
+    }
+
+    /**
+     * Generar UUID automáticamente al crear la tienda.
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            if (empty($model->uuid)) {
+                $model->uuid = (string) Str::uuid();
+            }
+        });
     }
 
     /**
      * Relación:
      * Una tienda tiene muchos usuarios.
-     *
-     * stores.id -> users.store_id
      */
     public function users()
     {
@@ -54,23 +56,29 @@ class Store extends Model
 
     /**
      * Relación:
-     * Una tienda tiene muchos roles.
-     *
-     * stores.id -> roles.store_id
+     * Una tienda tiene una configuración extendida (Moneda, logo, email, etc).
+     */
+    public function settings()
+    {
+        return $this->hasOne(StoreSetting::class);
+    }
+
+    /**
+     * Relación:
+     * Una tienda tiene muchos roles (Para cuando integremos Spatie).
      */
     public function roles()
     {
-        return $this->hasMany(Role::class);
+        // Deberás asegurarte de tener importado el modelo Role cuando lleguemos a ese módulo
+        // return $this->hasMany(Role::class); 
     }
 
     /**
      * Relación:
      * Una tienda tiene una suscripción.
-     *
-     * stores.id -> subscriptions.store_id
      */
     public function subscription()
     {
-        return $this->hasOne(Subscription::class);
+        // return $this->hasOne(Subscription::class);
     }
 }
