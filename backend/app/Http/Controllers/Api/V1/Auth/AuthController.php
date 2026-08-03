@@ -39,18 +39,31 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request): LoginResource
     {
-        return new LoginResource(
-            $this->authService->login(
-                $request->email,
-                $request->password
-            )
+        // 1. Ejecutamos el servicio intacto como lo tenías
+        $result = $this->authService->login(
+            $request->email,
+            $request->password
         );
+
+        // 2. Validación "antifallos" para inyectar relaciones sin romper nada,
+        // evaluando dinámicamente el tipo de dato que devuelve el servicio.
+        if ($result instanceof User) {
+            $result->load(['store', 'roles']);
+        } elseif (is_array($result) && isset($result['user']) && $result['user'] instanceof User) {
+            $result['user']->load(['store', 'roles']);
+        } elseif (is_object($result) && isset($result->user) && $result->user instanceof User) {
+            $result->user->load(['store', 'roles']);
+        }
+
+        // 3. Retornamos el recurso igual que antes
+        return new LoginResource($result);
     }
 
     public function me(Request $request): UserResource
     {
+        // Cargamos las relaciones directamente del usuario autenticado en la petición
         return new UserResource(
-            $request->user()
+            $request->user()->load(['store', 'roles'])
         );
     }
 

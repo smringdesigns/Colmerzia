@@ -45,11 +45,8 @@ export default function Login() {
      *
      * Si el backend valida las credenciales:
      * - Guarda el usuario en Zustand.
-     * - Guarda el token en localStorage.
-     * - Redirige al Dashboard.
-     *
-     * Si ocurre un error (401 o 422), muestra el mensaje
-     * debajo del campo contraseña.
+     * - Guarda el token en Zustand/localStorage.
+     * - Redirige inteligentemente según el rol o si posee tienda.
      */
     async function onSubmit(data: LoginForm) {
         try {
@@ -61,9 +58,24 @@ export default function Login() {
             setUser(res.user);
             setToken(res.token);
 
-            navigate("/", {
-                replace: true,
-            });
+            // ==========================================
+            // LÓGICA DE REDIRECCIÓN INTELIGENTE
+            // ==========================================
+            const isSuperAdmin = res.user.roles?.includes('super-admin') || res.user.is_super_admin;
+
+            if (isSuperAdmin) {
+                // 1. Si es el Super Admin de Colmerzia
+                navigate("/admin", { replace: true });
+            } else if (!res.user.store_id) {
+                // 2. Si es un usuario nuevo que aún no crea su tienda
+                navigate("/onboarding", { replace: true });
+            } else {
+                // 3. Si es un inquilino con tienda registrada
+                if (res.user.store?.subdomain) {
+                    localStorage.setItem("tenant_subdomain", res.user.store.subdomain);
+                }
+                navigate("/", { replace: true });
+            }
 
         } catch (error: any) {
 

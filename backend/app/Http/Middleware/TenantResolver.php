@@ -20,7 +20,7 @@ class TenantResolver
         if (!$subdomain) {
             return response()->json([
                 'success' => false,
-                'message' => 'Falta el identificador de la tienda (Header X-Tenant).'
+                'message' => 'No se ha especificado un espacio de trabajo válido. Si el problema persiste, intenta iniciar sesión nuevamente.'
             ], 400);
         }
 
@@ -31,7 +31,7 @@ class TenantResolver
         if (!$store || !$store->is_active) {
             return response()->json([
                 'success' => false,
-                'message' => 'La tienda no existe o se encuentra inactiva.'
+                'message' => 'El espacio de trabajo al que intentas acceder no existe o se encuentra temporalmente inactivo.'
             ], 404);
         }
 

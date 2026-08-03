@@ -11,7 +11,6 @@ class StoreSeeder extends Seeder
     {
         Store::factory()->create([
             'name' => 'Colmerzia',
-            'slug' => 'colmerzia',
             'subdomain' => 'colmerzia',
             'email' => 'elmusdevops@gmail.com',
         ]);

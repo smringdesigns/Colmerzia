@@ -16,56 +16,71 @@ return Application::configure(basePath: dirname(__DIR__))
 
         /*
         |--------------------------------------------------------------------------
-        | Tenancy: alias de middleware para resolver la tienda por subdominio
+        | Middleware aliases
         |--------------------------------------------------------------------------
+        |
+        | Alias utilizados en las rutas:
+        | tenant
+        | store.active
+        | subscription.writable
+        | feature
+        |
         */
 
         $middleware->alias([
-            // Apuntando a la clase exacta que acabamos de crear
+
+            // Resolver tenant por subdominio
             'tenant' => \App\Http\Middleware\TenantResolver::class,
-            
-            // TODO: Descomentar estos cuando creemos físicamente los archivos
-            // 'store.active' => \App\Http\Middleware\EnsureStoreIsActive::class,
-            // 'subscription.writable' => \App\Http\Middleware\EnsureSubscriptionIsWritable::class,
-            // 'feature' => \App\Http\Middleware\EnsureFeatureAvailable::class,
+
+            // Validar que la tienda esté activa
+            'store.active' => \App\Http\Middleware\EnsureStoreIsActive::class,
+
+            // Validar que la suscripción permita escritura
+            'subscription.writable' => \App\Http\Middleware\EnsureSubscriptionIsWritable::class,
+
+            // Validar funcionalidades según plan
+            'feature' => \App\Http\Middleware\EnsureFeatureAvailable::class,
+
         ]);
+
 
         /*
         |--------------------------------------------------------------------------
-        | Rate limiting: activa throttle:api en el grupo de rutas 'api'
+        | API Rate limiting
         |--------------------------------------------------------------------------
-        |
-        | El límite en sí (60 req/min por usuario o IP) está definido en
-        | AppServiceProvider::configureRateLimiting(), bajo el nombre 'api'.
         */
 
         $middleware->throttleApi();
 
+
         /*
         |--------------------------------------------------------------------------
-        | API: No redirigir usuarios no autenticados al login web
+        | Evitar redirección web para API
         |--------------------------------------------------------------------------
         */
 
         $middleware->redirectGuestsTo(function (Request $request) {
 
             if ($request->is('api/*')) {
-                return null; // Devuelve 401 en lugar de redirigir a una vista HTML
+                return null;
             }
 
             return route('login');
+
         });
+
     })
     ->withExceptions(function (Exceptions $exceptions): void {
 
         /*
         |--------------------------------------------------------------------------
-        | Las rutas API siempre responden en formato JSON
+        | API responde siempre JSON
         |--------------------------------------------------------------------------
         */
 
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*'),
         );
+
     })
     ->create();

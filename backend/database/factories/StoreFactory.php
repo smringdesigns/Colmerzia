@@ -14,7 +14,6 @@ class StoreFactory extends Factory
         return [
             'uuid'        => Str::uuid(),
             'name'        => $name,
-            'slug'        => Str::slug($name),
             'email'       => fake()->unique()->companyEmail(),
             'phone'       => fake()->phoneNumber(),
             'logo'        => null,
