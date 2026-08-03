@@ -157,6 +157,8 @@
   "155": "App\\Http\\Requests\\BaseRequest",
   "156": "App\\Http\\Requests\\Product\\StoreProductRequest",
   "157": "App\\Http\\Requests\\Product\\UpdateProductRequest",
+  "158": "App\\Http\\Resources\\Auth\\LoginResource",
+  "159": "App\\Http\\Resources\\User\\UserResource",
   "160": "App\\Models\\Order",
   "161": "App\\Models\\Product",
   "162": "App\\Models\\ProductVariant",
@@ -178,6 +180,8 @@
   "178": "composer.json",
   "179": "2026_07_30_114428_create_telescope_entries_table.php",
   "180": "OrderItem",
+  "181": "Payment",
+  "182": "Brand",
   "183": "ComingSoon.tsx",
   "184": "NotFound.tsx"
 }
