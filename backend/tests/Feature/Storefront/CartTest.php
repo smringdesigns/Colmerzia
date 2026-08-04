@@ -10,11 +10,13 @@ use App\Models\Store;
 use App\Models\Subscription;
 use App\Support\Tenancy\Tenant;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Concerns\SeedsInventory;
 use Tests\TestCase;
 
 class CartTest extends TestCase
 {
     use RefreshDatabase;
+    use SeedsInventory;
 
     private Store $store;
 
@@ -46,14 +48,18 @@ class CartTest extends TestCase
         return "http://tienda-a.localhost/api/v1/storefront{$path}";
     }
 
-    private function simpleProduct(array $overrides = []): Product
+    /** Crea un producto simple y le siembra $stock unidades en Inventory. */
+    private function simpleProduct(array $overrides = [], int $stock = 10): Product
     {
-        return Product::factory()->create(array_merge([
+        $product = Product::factory()->create(array_merge([
             'store_id' => $this->store->id,
             'has_variants' => false,
-            'stock' => 10,
             'price' => 10000,
         ], $overrides));
+
+        $this->seedStock($product, $stock);
+
+        return $product;
     }
 
     // ---------------------------------------------------------------
@@ -100,7 +106,7 @@ class CartTest extends TestCase
 
     public function test_no_se_puede_agregar_mas_cantidad_de_la_que_hay_en_stock(): void
     {
-        $product = $this->simpleProduct(['stock' => 3]);
+        $product = $this->simpleProduct(stock: 3);
 
         $response = $this->postJson($this->url('/cart/items'), [
             'product_id' => $product->id,
@@ -124,13 +130,18 @@ class CartTest extends TestCase
 
     public function test_agregar_una_variante_usa_su_propio_precio_y_stock(): void
     {
-        $product = $this->simpleProduct(['has_variants' => true, 'price' => 10000]);
+        $product = Product::factory()->create([
+            'store_id' => $this->store->id,
+            'has_variants' => true,
+            'price' => 10000,
+        ]);
 
         $variant = ProductVariant::factory()->create([
             'product_id' => $product->id,
             'price' => 15000,
-            'stock' => 2,
         ]);
+
+        $this->seedStock($product, 2, $variant);
 
         $response = $this->postJson($this->url('/cart/items'), [
             'product_id' => $product->id,
@@ -345,8 +356,9 @@ class CartTest extends TestCase
         $product = Product::factory()->create([
             'store_id' => $readOnlyStore->id,
             'has_variants' => false,
-            'stock' => 10,
         ]);
+
+        $this->seedStock($product, 10);
 
         $add = $this->postJson(
             "http://tienda-vencida.localhost/api/v1/storefront/cart/items",

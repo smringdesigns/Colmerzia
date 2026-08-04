@@ -7,13 +7,16 @@ use App\Models\Coupon;
 use App\Models\Product;
 use App\Models\Store;
 use App\Models\Subscription;
+use App\Services\Inventory\InventoryService;
 use App\Support\Tenancy\Tenant;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Concerns\SeedsInventory;
 use Tests\TestCase;
 
 class CheckoutTest extends TestCase
 {
     use RefreshDatabase;
+    use SeedsInventory;
 
     private Store $store;
 
@@ -66,9 +69,10 @@ class CheckoutTest extends TestCase
         $product = Product::factory()->create([
             'store_id' => $this->store->id,
             'has_variants' => false,
-            'stock' => $stock,
             'price' => $price,
         ]);
+
+        $this->seedStock($product, $stock);
 
         $response = $this->postJson($this->url('/cart/items'), [
             'product_id' => $product->id,
@@ -76,6 +80,11 @@ class CheckoutTest extends TestCase
         ]);
 
         return [$product, $response->json('guest_token')];
+    }
+
+    private function currentStock(Product $product): int
+    {
+        return app(InventoryService::class)->availableStock($product->store_id, $product->id, null);
     }
 
     public function test_checkout_crea_una_orden_y_descuenta_el_stock(): void
@@ -90,7 +99,7 @@ class CheckoutTest extends TestCase
         $response->assertJsonPath('payment_status', 'pending');
         $response->assertJsonPath('total', '20000.00');
 
-        $this->assertSame(8, $product->fresh()->stock);
+        $this->assertSame(8, $this->currentStock($product));
 
         $this->assertDatabaseHas('orders', [
             'store_id' => $this->store->id,
@@ -131,7 +140,7 @@ class CheckoutTest extends TestCase
         [$product, $token] = $this->addProductToCart(stock: 5);
 
         // Alguien más se lleva casi todo el stock justo antes del pago.
-        $product->update(['stock' => 1]);
+        $this->seedStock($product, 1);
 
         $response = $this->withHeader('X-Guest-Token', $token)
             ->postJson($this->url('/checkout'), $this->checkoutPayload());
@@ -139,7 +148,7 @@ class CheckoutTest extends TestCase
         $response->assertStatus(422);
 
         $this->assertDatabaseCount('orders', 0);
-        $this->assertSame(1, $product->fresh()->stock); // no se tocó
+        $this->assertSame(1, $this->currentStock($product)); // no se tocó
     }
 
     public function test_checkout_no_permite_reusar_el_mismo_carrito_dos_veces(): void

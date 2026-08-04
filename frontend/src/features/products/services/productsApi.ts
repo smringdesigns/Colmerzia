@@ -52,8 +52,16 @@ export async function getProducts(params?: {
     page?: number;
     per_page?: number;
 }): Promise<ProductsResponse> {
+
     const res = await api.get("/v1/products", { params });
-    return res.data;
+
+    return {
+        data: res.data.data,
+        current_page: res.data.meta.current_page,
+        last_page: res.data.meta.last_page,
+        per_page: res.data.meta.per_page,
+        total: res.data.meta.total,
+    };
 }
 
 export async function getProduct(id: number): Promise<Product> {

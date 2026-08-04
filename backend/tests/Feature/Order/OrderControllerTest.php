@@ -6,15 +6,18 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\Store;
 use App\Models\Subscription;
+use App\Services\Inventory\InventoryService;
 use App\Support\Tenancy\Tenant;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Concerns\CreatesStoreUsers;
+use Tests\Concerns\SeedsInventory;
 use Tests\TestCase;
 
 class OrderControllerTest extends TestCase
 {
     use RefreshDatabase;
     use CreatesStoreUsers;
+    use SeedsInventory;
 
     private Store $store;
 
@@ -53,9 +56,10 @@ class OrderControllerTest extends TestCase
         $product = Product::factory()->create([
             'store_id' => $store->id,
             'has_variants' => false,
-            'stock' => $stock,
             'price' => $price,
         ]);
+
+        $this->seedStock($product, $stock);
 
         $add = $this->postJson(
             "http://{$store->subdomain}.localhost/api/v1/storefront/cart/items",
@@ -71,6 +75,11 @@ class OrderControllerTest extends TestCase
         $order = Order::where('order_number', $checkout->json('order_number'))->firstOrFail();
 
         return [$order, $product];
+    }
+
+    private function currentStock(Product $product): int
+    {
+        return app(InventoryService::class)->availableStock($product->store_id, $product->id, null);
     }
 
     public function test_lista_solo_los_pedidos_de_la_tienda_del_subdominio(): void
@@ -146,7 +155,7 @@ class OrderControllerTest extends TestCase
     {
         [$order, $product] = $this->createRealOrder($this->store, stock: 10);
 
-        $this->assertSame(8, $product->fresh()->stock); // 10 - 2 vendidas
+        $this->assertSame(8, $this->currentStock($product)); // 10 - 2 vendidas
 
         $user = $this->createUserWithPermissions($this->store, ['orders.update']);
 
@@ -154,7 +163,7 @@ class OrderControllerTest extends TestCase
             ->patchJson($this->url("/orders/{$order->id}/status"), ['status' => 'cancelled']);
 
         $response->assertOk();
-        $this->assertSame(10, $product->fresh()->stock);
+        $this->assertSame(10, $this->currentStock($product));
     }
 
     public function test_cancelar_dos_veces_no_repone_el_stock_dos_veces(): void
@@ -169,7 +178,7 @@ class OrderControllerTest extends TestCase
         $this->actingAs($user, 'sanctum')
             ->patchJson($this->url("/orders/{$order->id}/status"), ['status' => 'cancelled']);
 
-        $this->assertSame(10, $product->fresh()->stock);
+        $this->assertSame(10, $this->currentStock($product));
     }
 
     public function test_gestionar_pedidos_funciona_aunque_la_suscripcion_este_en_read_only(): void

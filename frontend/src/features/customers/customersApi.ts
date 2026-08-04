@@ -48,8 +48,16 @@ export async function getCustomers(params?: {
     page?: number;
     per_page?: number;
 }): Promise<CustomersResponse> {
+
     const res = await api.get("/v1/customers", { params });
-    return res.data;
+
+    return {
+        data: res.data.data,
+        current_page: res.data.meta.current_page,
+        last_page: res.data.meta.last_page,
+        per_page: res.data.meta.per_page,
+        total: res.data.meta.total,
+    };
 }
 
 export async function getCustomer(id: number): Promise<Customer> {

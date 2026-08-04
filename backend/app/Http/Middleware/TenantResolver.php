@@ -14,7 +14,31 @@ class TenantResolver
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // 1. Leer el subdominio desde el Header que enviará React
+        /*
+        |--------------------------------------------------------------------------
+        | Super Admin
+        |--------------------------------------------------------------------------
+        |
+        | El super admin pertenece al nivel plataforma.
+        | No necesita seleccionar una tienda para entrar.
+        |
+        */
+        $user = $request->user();
+
+        if ($user && $user->hasRole('super-admin')) {
+            return $next($request);
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Usuarios de tienda
+        |--------------------------------------------------------------------------
+        |
+        | Store owner, empleados, etc.
+        | Necesitan enviar X-Tenant desde React.
+        |
+        */
         $subdomain = $request->header('X-Tenant');
 
         if (!$subdomain) {
@@ -24,10 +48,10 @@ class TenantResolver
             ], 400);
         }
 
-        // 2. Buscar la tienda en la base de datos
+
         $store = Store::where('subdomain', $subdomain)->first();
 
-        // 3. Validar que exista y esté activa
+
         if (!$store || !$store->is_active) {
             return response()->json([
                 'success' => false,
@@ -35,8 +59,14 @@ class TenantResolver
             ], 404);
         }
 
-        // 4. Inyectar la tienda globalmente para que cualquier parte de Laravel sepa en qué tienda estamos
+
+        /*
+        |--------------------------------------------------------------------------
+        | Guardar tenant actual
+        |--------------------------------------------------------------------------
+        */
         app()->instance('tenant', $store);
+
 
         return $next($request);
     }
