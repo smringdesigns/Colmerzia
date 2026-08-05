@@ -1,6 +1,7 @@
 import { api } from "../../api/client";
 
-// Tipos
+
+// ── Tipos ─────────────────────────────────────────────────
 
 export interface Customer {
     id: number;
@@ -19,6 +20,7 @@ export interface Customer {
     created_at: string;
 }
 
+
 export interface CustomersResponse {
     data: Customer[];
     current_page: number;
@@ -26,6 +28,7 @@ export interface CustomersResponse {
     per_page: number;
     total: number;
 }
+
 
 export interface CustomerPayload {
     first_name: string;
@@ -40,7 +43,8 @@ export interface CustomerPayload {
     is_active?: boolean;
 }
 
-// Funciones
+
+// ── Funciones ─────────────────────────────────────────────
 
 export async function getCustomers(params?: {
     search?: string;
@@ -49,37 +53,54 @@ export async function getCustomers(params?: {
     per_page?: number;
 }): Promise<CustomersResponse> {
 
-    const res = await api.get("/v1/customers", { params });
+    const res = await api.get("/v1/customers", {
+        params,
+    });
 
     return {
         data: res.data.data,
-        current_page: res.data.meta.current_page,
-        last_page: res.data.meta.last_page,
-        per_page: res.data.meta.per_page,
-        total: res.data.meta.total,
+        current_page: res.data.current_page,
+        last_page: res.data.last_page,
+        per_page: res.data.per_page,
+        total: res.data.total,
     };
 }
 
-export async function getCustomer(id: number): Promise<Customer> {
+
+export async function getCustomer(
+    id: number
+): Promise<Customer> {
+
     const res = await api.get(`/v1/customers/${id}`);
+
     return res.data;
 }
+
 
 export async function createCustomer(
     payload: CustomerPayload
 ): Promise<Customer> {
+
     const res = await api.post("/v1/customers", payload);
+
     return res.data;
 }
+
 
 export async function updateCustomer(
     id: number,
     payload: CustomerPayload
 ): Promise<Customer> {
+
     const res = await api.put(`/v1/customers/${id}`, payload);
+
     return res.data;
 }
 
-export async function deleteCustomer(id: number): Promise<void> {
+
+export async function deleteCustomer(
+    id: number
+): Promise<void> {
+
     await api.delete(`/v1/customers/${id}`);
 }

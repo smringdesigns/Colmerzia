@@ -16,9 +16,10 @@ export interface Product {
     featured: boolean;
     is_active: boolean;
     category: { id: number; name: string } | null;
-    brand:    { id: number; name: string } | null;
+    brand: { id: number; name: string } | null;
     created_at: string;
 }
+
 
 export interface ProductsResponse {
     data: Product[];
@@ -27,6 +28,7 @@ export interface ProductsResponse {
     per_page: number;
     total: number;
 }
+
 
 export interface ProductPayload {
     name: string;
@@ -43,6 +45,7 @@ export interface ProductPayload {
     is_active?: boolean;
 }
 
+
 // ── Funciones ─────────────────────────────────────────────
 
 export async function getProducts(params?: {
@@ -53,7 +56,9 @@ export async function getProducts(params?: {
     per_page?: number;
 }): Promise<ProductsResponse> {
 
-    const res = await api.get("/v1/products", { params });
+    const res = await api.get("/v1/products", {
+        params,
+    });
 
     return {
         data: res.data.data,
@@ -64,26 +69,39 @@ export async function getProducts(params?: {
     };
 }
 
+
 export async function getProduct(id: number): Promise<Product> {
+
     const res = await api.get(`/v1/products/${id}`);
+
     return res.data;
 }
+
 
 export async function createProduct(
     payload: ProductPayload
 ): Promise<Product> {
+
     const res = await api.post("/v1/products", payload);
+
     return res.data;
 }
+
 
 export async function updateProduct(
     id: number,
     payload: ProductPayload
 ): Promise<Product> {
+
     const res = await api.put(`/v1/products/${id}`, payload);
+
     return res.data;
 }
 
-export async function deleteProduct(id: number): Promise<void> {
+
+export async function deleteProduct(
+    id: number
+): Promise<void> {
+
     await api.delete(`/v1/products/${id}`);
 }
