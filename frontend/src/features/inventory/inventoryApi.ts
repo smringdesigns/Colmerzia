@@ -45,6 +45,17 @@ export interface InventoryResponse {
 
 // ── Funciones ─────────────────────────────────────────────
 
+
+// Obtener bodegas disponibles
+export async function getWarehouses(): Promise<Warehouse[]> {
+
+    const res = await api.get("/v1/warehouses");
+
+    return res.data.value;
+}
+
+
+// Obtener inventario
 export async function getInventory(params?: {
     search?: string;
     warehouse_id?: number;

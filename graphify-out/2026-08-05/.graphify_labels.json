@@ -162,8 +162,6 @@
   "160": "App\\Models\\Order",
   "161": "App\\Models\\Product",
   "162": "App\\Models\\ProductVariant",
-  "163": "LoginTenantIsolationTest",
-  "164": "WarehouseControllerTest",
   "165": "User",
   "166": "Product",
   "167": "providers.php",
@@ -175,18 +173,13 @@
   "173": "Product",
   "174": "Store",
   "175": "ProductVariant",
-  "176": "StorePolicy",
   "177": "HorizonServiceProvider",
   "178": "composer.json",
   "179": "2026_07_30_114428_create_telescope_entries_table.php",
-  "180": "CustomerControllerTest",
-  "181": "InventoryControllerTest",
   "182": "Customers.tsx",
   "183": "ComingSoon.tsx",
   "184": "NotFound.tsx",
   "185": "Inventory",
   "186": "HorizonServiceProvider",
-  "187": "ApplyCouponRequest",
-  "188": "AppServiceProvider.php",
-  "189": "Login.tsx"
+  "187": "ApplyCouponRequest"
 }
