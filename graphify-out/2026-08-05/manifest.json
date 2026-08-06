@@ -840,8 +840,8 @@
     "semantic_hash": "d3e2ff3a81aaaf7ae9dfd928d0fe19f5"
   },
   "frontend/src/features/customers/customersApi.ts": {
-    "mtime": 1785881279.0866137,
-    "ast_hash": "6e9d9c0b359338f20dfd5005dafea488",
+    "mtime": 1785940181.3985076,
+    "ast_hash": "891813243d668045541aafc3a2c4a096",
     "semantic_hash": ""
   },
   "frontend/src/features/products/components/ProductActions.tsx": {
@@ -885,8 +885,8 @@
     "semantic_hash": "ca1c15cca8db5ede60cb8b27d9f03218"
   },
   "frontend/src/features/products/services/productsApi.ts": {
-    "mtime": 1785881282.0872748,
-    "ast_hash": "1e124ec64ad3dcb1b1e0ab1f2163f9dc",
+    "mtime": 1785940902.1927507,
+    "ast_hash": "e426211856cd3f58eee1c5697b13347a",
     "semantic_hash": ""
   },
   "frontend/src/features/products/types.ts": {
@@ -970,8 +970,8 @@
     "semantic_hash": "7f7e83ce8534e641c35c2d846442a15b"
   },
   "frontend/src/routes/router.tsx": {
-    "mtime": 1785786337.5421278,
-    "ast_hash": "307dff10df5a0651bfc0033bbd938405",
+    "mtime": 1785940580.8231854,
+    "ast_hash": "c169bb8bdf163af5d654aaf01053108f",
     "semantic_hash": ""
   },
   "frontend/src/store/authStore.ts": {
@@ -1577,6 +1577,16 @@
   "storefront/src/assets/vite.svg": {
     "mtime": 1785872888.5638132,
     "ast_hash": "9960a24288958394ac50e57ff638b036",
+    "semantic_hash": ""
+  },
+  "frontend/src/features/inventory/inventoryApi.ts": {
+    "mtime": 1785940404.0901294,
+    "ast_hash": "b40c75c89fbe7e8bae9189e957ae0f1f",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/Inventory.tsx": {
+    "mtime": 1785940505.8366048,
+    "ast_hash": "bb8cc11299d31b617668f9b580a99cfd",
     "semantic_hash": ""
   }
 }
