@@ -13,8 +13,8 @@ class DatabaseSeeder extends Seeder
             PermissionSeeder::class,
             RoleSeeder::class,
             UserSeeder::class,
-            CatalogSeeder::class,
-            CustomerSeeder::class,
+            // CatalogSeeder::class,
+            // CustomerSeeder::class,
         ]);
     }
 }

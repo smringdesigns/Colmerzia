@@ -74,7 +74,7 @@ export default function CreateAccount() {
         setLoading(true);
 
         try {
-            const response = await api.post(
+            await api.post(
                 "/v1/onboarding",
                 {
                     business_name: businessName.trim(),
@@ -82,29 +82,18 @@ export default function CreateAccount() {
                     owner_name: ownerName.trim(),
                     email: email.trim().toLowerCase(),
                     password,
+                    password_confirmation: password, // <-- NUEVO: Soluciona el error de confirmación
                     plan_slug: "free",
                 }
             );
 
-            const responseData = response.data?.data ?? response.data;
-
-            const token = responseData?.token;
-            const store = responseData?.store;
-
-            if (token) {
-                localStorage.setItem("token", token);
-            }
-
-            if (store?.subdomain) {
-                localStorage.setItem(
-                    "tenant_subdomain",
-                    store.subdomain
-                );
-            }
-
-            navigate("/", {
+            // <-- NUEVO: En lugar de guardar el token y auto-loguear, 
+            // redirigimos a la pantalla de verificación de correo.
+            navigate("/check-email", {
                 replace: true,
+                state: { email: email.trim().toLowerCase() } 
             });
+            
         } catch (err: any) {
             const validationErrors =
                 err.response?.data?.errors;

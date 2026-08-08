@@ -21,6 +21,7 @@ class UserSeeder extends Seeder
             'uuid' => Str::uuid(),
             'name' => 'Super Administrador',
             'email' => 'elmusdevops@gmail.com',
+            'email_verified_at' => now(), // verificado su correo electrónico
             'password' => bcrypt('Root123'),
             'is_active' => true,
         ]);

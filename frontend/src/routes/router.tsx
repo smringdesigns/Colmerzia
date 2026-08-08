@@ -15,6 +15,7 @@ import CreateAccount from "../pages/CreateAccount";
 import ForgotPassword from "../pages/ForgotPassword";
 import ResetPassword from "../pages/ResetPassword";
 import VerifyEmail from "../features/auth/VerifyEmail";
+import CheckEmail from "../pages/CheckEmail"; // <-- 1. Importamos el nuevo componente
 import CreateStore from "../pages/CreateStore";
 import Settings from "../pages/Settings";
 import NotFound from "../pages/NotFound";
@@ -30,6 +31,7 @@ export const router = createBrowserRouter([
             { path: "/create-account", element: <CreateAccount /> },
             { path: "/forgot-password", element: <ForgotPassword /> },
             { path: "/reset-password", element: <ResetPassword /> },
+            { path: "/check-email", element: <CheckEmail /> }, // <-- 2. Lo agregamos como ruta pública
         ],
     },
 

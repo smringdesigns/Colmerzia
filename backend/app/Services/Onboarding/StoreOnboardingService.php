@@ -10,6 +10,7 @@ use App\Models\Subscription;
 use App\Models\User;
 use App\Support\Plans\PlanRegistry;
 use App\Support\Tenancy\Tenant;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -87,6 +88,9 @@ class StoreOnboardingService implements StoreOnboardingServiceInterface
             $token = $owner
                 ->createToken('colmerzia')
                 ->plainTextToken;
+
+            // <-- Disparar el evento para enviar el correo de verificación
+            event(new Registered($owner));
 
             return new StoreOnboardingResponseDTO(
                 store: $store,
