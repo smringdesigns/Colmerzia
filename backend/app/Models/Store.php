@@ -79,6 +79,6 @@ class Store extends Model
      */
     public function subscription()
     {
-        // return $this->hasOne(Subscription::class);
+        return $this->hasOne(Subscription::class);
     }
 }

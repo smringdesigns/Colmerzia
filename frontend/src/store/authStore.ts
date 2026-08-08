@@ -12,6 +12,12 @@ interface Permission {
     slug: string;
 }
 
+interface Store {
+    id: number;
+    name: string;
+    subdomain: string;
+}
+
 interface User {
     id: number;
     uuid: string;
@@ -20,6 +26,7 @@ interface User {
     email: string;
     is_active: boolean;
 
+    store?: Store | null;
     roles: Role[];
     permissions: Permission[];
 }

@@ -75,6 +75,15 @@ class StoreOnboardingService implements StoreOnboardingServiceInterface
 
             $ownerRole->users()->attach($owner->id);
 
+            // Configuración por defecto de la tienda. Sin esto, una
+            // tienda creada por el onboarding público queda sin
+            // moneda/timezone hasta que alguien entre a Configuración
+            // y guarde manualmente.
+            $store->settings()->create([
+                'currency' => 'COP',
+                'timezone' => 'America/Bogota',
+            ]);
+
             $token = $owner
                 ->createToken('colmerzia')
                 ->plainTextToken;

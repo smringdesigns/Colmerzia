@@ -3,59 +3,96 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Store\CreateWorkspaceRequest;
+use App\Http\Requests\Store\UpdateStoreRequest;
+use App\Models\Role;
 use App\Models\Store;
+use App\Models\Subscription;
+use App\Support\Plans\PlanRegistry;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class StoreController extends Controller
 {
     /**
-     * POST /api/v1/stores (Onboarding - Crear Empresa)
+     * POST /api/v1/stores (crear el espacio de trabajo de un usuario
+     * autenticado que todavía no tiene tienda propia)
+     *
+     * En el flujo normal de alta (StoreOnboardingService, público, sin
+     * sesión) tienda + dueño se crean juntos en un solo paso. Esta
+     * ruta cubre el caso complementario: un usuario que YA tiene
+     * sesión pero cuyo store_id sigue vacío (por ejemplo, una cuenta
+     * creada por un flujo externo, o de soporte, antes de tener
+     * tienda asignada). Replica la misma lógica de negocio que el
+     * onboarding público (suscripción inicial + rol de dueño) para
+     * que la tienda quede en un estado consistente y utilizable de
+     * inmediato.
      */
-    public function store(Request $request)
+    public function store(CreateWorkspaceRequest $request)
     {
-        // Validar los datos que envía React
-        $validated = $request->validate([
-            'name' => 'required|string|max:100',
-            'subdomain' => 'required|string|max:50|unique:stores,subdomain|regex:/^[a-zA-Z0-9\-]+$/'
-        ]);
+        $user = $request->user();
 
-        try {
-            DB::beginTransaction();
+        if ($user->store_id) {
+            abort(422, 'Tu cuenta ya tiene una tienda asociada.');
+        }
 
-            // 1. Crear la empresa
+        $validated = $request->validated();
+
+        $store = DB::transaction(function () use ($validated, $user) {
+
+            // 1. Crear la tienda
             $store = Store::create([
+                'uuid' => Str::uuid(),
                 'name' => $validated['name'],
                 'subdomain' => strtolower($validated['subdomain']),
+                'is_active' => true,
             ]);
 
-            // 2. Crear la configuración por defecto de la empresa
+            // 2. Configuración por defecto
             $store->settings()->create([
-                'currency' => 'USD',
-                'timezone' => 'UTC',
+                'currency' => 'COP',
+                'timezone' => 'America/Bogota',
             ]);
 
-            // 3. Vincular el usuario creador a la tienda (Asegúrate de que la tabla users tenga la columna store_id)
-            $user = $request->user();
-            $user->store_id = $store->id;
-            $user->save();
+            // 3. Suscripción inicial, igual que en el onboarding
+            // público: plan free, en período de prueba.
+            $trialDays = PlanRegistry::trialDays('free');
 
-            DB::commit();
+            Subscription::create([
+                'store_id' => $store->id,
+                'plan_slug' => 'free',
+                'status' => Subscription::STATUS_TRIALING,
+                'trial_ends_at' => $trialDays ? now()->addDays($trialDays) : null,
+            ]);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Empresa creada exitosamente.',
-                'data' => $store->load('settings')
-            ], 201);
+            // 4. Rol de dueño para esta tienda, asignado al usuario
+            // actual. Sin esto, Gate::before() no le concede ningún
+            // permiso y quedaría con sesión pero sin poder hacer nada
+            // en su propia tienda recién creada.
+            $ownerRole = Role::create([
+                'store_id' => $store->id,
+                'uuid' => Str::uuid(),
+                'name' => 'Dueño de la tienda',
+                'slug' => 'store-owner',
+                'is_system' => true,
+            ]);
 
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json([
-                'success' => false,
-                'message' => 'Ocurrió un error al crear la empresa.',
-                'error' => $e->getMessage()
-            ], 500);
-        }
+            $ownerRole->users()->attach($user->id);
+
+            // 5. Vincular el usuario a la tienda
+            $user->update([
+                'store_id' => $store->id,
+            ]);
+
+            return $store;
+        });
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Tienda creada exitosamente.',
+            'data' => $store->load('settings', 'subscription'),
+        ], 201);
     }
 
     /**
@@ -69,6 +106,57 @@ class StoreController extends Controller
         return response()->json([
             'success' => true,
             'data' => $store->load('settings')
+        ]);
+    }
+
+    /**
+     * PUT /api/v1/settings/store (Panel de Configuración -> pestaña General)
+     *
+     * Actualiza el nombre de la tienda y su configuración extendida
+     * (store_settings) en una sola petición. Los campos son todos
+     * opcionales (sometimes): el frontend solo envía lo que cambió.
+     */
+    public function update(UpdateStoreRequest $request)
+    {
+        $store = app('tenant');
+
+        $data = $request->validated();
+
+        DB::transaction(function () use ($store, $data) {
+
+            if (array_key_exists('name', $data)) {
+                $store->update([
+                    'name' => $data['name'],
+                ]);
+            }
+
+            $settingsData = collect($data)
+                ->only([
+                    'contact_email',
+                    'contact_phone',
+                    'currency',
+                    'timezone',
+                    'logo_path',
+                    'theme_colors',
+                ])
+                ->toArray();
+
+            if (!empty($settingsData)) {
+
+                $settings = $store->settings;
+
+                if ($settings) {
+                    $settings->update($settingsData);
+                } else {
+                    $store->settings()->create($settingsData);
+                }
+            }
+        });
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Configuración actualizada correctamente.',
+            'data' => $store->fresh()->load('settings'),
         ]);
     }
 }

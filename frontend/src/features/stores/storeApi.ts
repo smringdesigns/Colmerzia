@@ -12,7 +12,16 @@ export interface StoreSetting {
     currency: string;
     timezone: string;
     logo_path: string | null;
-    theme_colors: any | null;
+    theme_colors: Record<string, string> | null;
+}
+
+export interface Subscription {
+    id: number;
+    store_id: number;
+    plan_slug: string;
+    status: string;
+    trial_ends_at: string | null;
+    current_period_ends_at: string | null;
 }
 
 export interface Store {
@@ -23,6 +32,7 @@ export interface Store {
     custom_domain: string | null;
     is_active: boolean;
     settings?: StoreSetting; // La configuración que cargamos con 'load()'
+    subscription?: Subscription;
     created_at: string;
 }
 
@@ -37,12 +47,25 @@ export interface StoreResponse {
     data: Store;
 }
 
+export interface UpdateStoreSettingsPayload {
+    name?: string;
+    contact_email?: string | null;
+    contact_phone?: string | null;
+    currency?: string;
+    timezone?: string;
+    logo_path?: string | null;
+    theme_colors?: Record<string, string> | null;
+}
+
 // ==========================================
 // Funciones
 // ==========================================
 
 /**
- * Crea una nueva empresa/tienda en el proceso de Onboarding.
+ * Crea el espacio de trabajo (tienda) de un usuario ya autenticado que
+ * todavía no tiene una tienda asociada. Distinto del onboarding
+ * público (/v1/onboarding): ese crea cuenta + tienda juntas, este solo
+ * la tienda, para una cuenta que ya existe.
  */
 export async function createStore(
     payload: CreateStorePayload
@@ -56,5 +79,16 @@ export async function createStore(
  */
 export async function getMyStore(): Promise<StoreResponse> {
     const res = await api.get("/v1/stores/me");
+    return res.data;
+}
+
+/**
+ * Actualiza el nombre y la configuración general de la tienda actual
+ * (pestaña "General" del panel de Configuración).
+ */
+export async function updateStoreSettings(
+    payload: UpdateStoreSettingsPayload
+): Promise<StoreResponse> {
+    const res = await api.put("/v1/settings/store", payload);
     return res.data;
 }

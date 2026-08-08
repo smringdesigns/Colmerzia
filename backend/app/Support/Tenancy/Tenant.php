@@ -3,6 +3,7 @@
 namespace App\Support\Tenancy;
 
 use App\Models\Store;
+use App\Models\Subscription;
 
 /**
  * Guarda la tienda (Store) resuelta a partir del subdominio de la
@@ -32,6 +33,16 @@ class Tenant
     public static function id(): ?int
     {
         return static::$current?->id;
+    }
+
+    /**
+     * Suscripción de la tienda actual (plan, estado, límites). Usado
+     * por EnsureFeatureAvailable, y por Controller::abortIfPlanLimitReached()
+     * para validar límites del plan antes de crear recursos.
+     */
+    public static function subscription(): ?Subscription
+    {
+        return static::$current?->subscription;
     }
 
     public static function check(): bool

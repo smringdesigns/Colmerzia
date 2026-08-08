@@ -12,6 +12,11 @@ use App\Http\Controllers\Api\V1\OrderController;
 use App\Http\Controllers\Api\V1\WarehouseController;
 use App\Http\Controllers\Api\V1\InventoryController;
 
+use App\Http\Controllers\Api\V1\StoreController;
+use App\Http\Controllers\Api\V1\UserController;
+use App\Http\Controllers\Api\V1\RoleController;
+use App\Http\Controllers\Api\V1\PermissionController;
+
 use App\Http\Controllers\Api\V1\Storefront\CartController;
 use App\Http\Controllers\Api\V1\Storefront\CheckoutController;
 
@@ -158,6 +163,23 @@ Route::prefix('v1')->group(function () {
             '/email/verification-notification',
             [AuthController::class, 'sendVerificationEmail']
         )->middleware('throttle:6,1');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Crear espacio de trabajo (usuario autenticado sin tienda)
+        |--------------------------------------------------------------------------
+        |
+        | Vive fuera del grupo 'tenant' a propósito: un usuario sin
+        | tienda todavía no tiene subdominio que enviar en X-Tenant,
+        | así que no podría pasar por TenantResolver.
+        |
+        */
+
+        Route::post(
+            '/stores',
+            [StoreController::class, 'store']
+        )->middleware('throttle:register');
 
 
     });
@@ -486,6 +508,117 @@ Route::prefix('v1')->group(function () {
                     '/inventory/{inventory}/movements',
                     [InventoryController::class, 'movements']
                 )->middleware('can:inventory.view');
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Configuración general de la tienda
+                |--------------------------------------------------------------------------
+                */
+
+
+                Route::get(
+                    '/settings/store',
+                    [StoreController::class, 'me']
+                )->middleware('can:settings.view');
+
+
+                Route::put(
+                    '/settings/store',
+                    [StoreController::class, 'update']
+                )->middleware('can:settings.update');
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Usuarios (staff)
+                |--------------------------------------------------------------------------
+                */
+
+
+                Route::get(
+                    '/users',
+                    [UserController::class, 'index']
+                )->middleware('can:users.view');
+
+
+                Route::post(
+                    '/users',
+                    [UserController::class, 'store']
+                )->middleware('can:users.create');
+
+
+                Route::get(
+                    '/users/{user}',
+                    [UserController::class, 'show']
+                )->middleware('can:users.view');
+
+
+                Route::put(
+                    '/users/{user}',
+                    [UserController::class, 'update']
+                )->middleware('can:users.update');
+
+
+                Route::patch(
+                    '/users/{user}',
+                    [UserController::class, 'update']
+                )->middleware('can:users.update');
+
+
+                Route::delete(
+                    '/users/{user}',
+                    [UserController::class, 'destroy']
+                )->middleware('can:users.delete');
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Roles y permisos
+                |--------------------------------------------------------------------------
+                */
+
+
+                Route::get(
+                    '/roles',
+                    [RoleController::class, 'index']
+                )->middleware('can:roles.view');
+
+
+                Route::post(
+                    '/roles',
+                    [RoleController::class, 'store']
+                )->middleware('can:roles.create');
+
+
+                Route::get(
+                    '/roles/{role}',
+                    [RoleController::class, 'show']
+                )->middleware('can:roles.view');
+
+
+                Route::put(
+                    '/roles/{role}',
+                    [RoleController::class, 'update']
+                )->middleware('can:roles.update');
+
+
+                Route::patch(
+                    '/roles/{role}',
+                    [RoleController::class, 'update']
+                )->middleware('can:roles.update');
+
+
+                Route::delete(
+                    '/roles/{role}',
+                    [RoleController::class, 'destroy']
+                )->middleware('can:roles.delete');
+
+
+                Route::get(
+                    '/permissions',
+                    [PermissionController::class, 'index']
+                )->middleware('can:roles.view');
 
 
             });

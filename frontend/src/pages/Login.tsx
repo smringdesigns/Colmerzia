@@ -61,7 +61,9 @@ export default function Login() {
             // ==========================================
             // LÓGICA DE REDIRECCIÓN INTELIGENTE
             // ==========================================
-            const isSuperAdmin = res.user.roles?.includes('super-admin') || res.user.is_super_admin;
+            const isSuperAdmin = res.user.roles?.some(
+                (role: { slug: string }) => role.slug === "super-admin"
+            );
 
             if (isSuperAdmin) {
                 // 1. Si es el Super Admin de Colmerzia
