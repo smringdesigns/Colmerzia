@@ -41,7 +41,7 @@ backend/.phpunit.cache
 # ===========================
 # Graphify (Arquitectura)
 # ===========================
-graphify-out/cache/
+graphify-out/
 
 
 # ===========================

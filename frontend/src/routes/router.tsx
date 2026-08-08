@@ -16,6 +16,7 @@ import ForgotPassword from "../pages/ForgotPassword";
 import ResetPassword from "../pages/ResetPassword";
 import VerifyEmail from "../features/auth/VerifyEmail";
 import CreateStore from "../pages/CreateStore";
+import Settings from "../pages/Settings";
 import NotFound from "../pages/NotFound";
 import ProtectedRoute from "../components/auth/ProtectedRoute";
 import PublicRoute from "../components/auth/PublicRoute";
@@ -40,7 +41,6 @@ export const router = createBrowserRouter([
             { path: "/verify-email", element: <VerifyEmail /> },
 
             { path: "/onboarding", element: <CreateStore /> },
-
 
             {
                 path: "/admin",
@@ -92,15 +92,8 @@ export const router = createBrowserRouter([
 
 
                     // Configuración
-                    { 
-                        path: "settings",
-                        element: <ComingSoon title="Configuración" />
-                    },
-
-                    { 
-                        path: "configuracion",
-                        element: <ComingSoon title="Configuración" />
-                    },
+                    { path: "settings", element: <Settings /> },
+                    { path: "configuracion", element: <Settings /> },
 
 
                     { path: "*", element: <NotFound /> },

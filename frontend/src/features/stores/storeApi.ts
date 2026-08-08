@@ -78,7 +78,7 @@ export async function createStore(
  * Obtiene la información de la tienda actual resolviendo el Header X-Tenant.
  */
 export async function getMyStore(): Promise<StoreResponse> {
-    const res = await api.get("/v1/stores/me");
+    const res = await api.get("/v1/settings/store");
     return res.data;
 }
 
