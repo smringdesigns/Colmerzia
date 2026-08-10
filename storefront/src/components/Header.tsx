@@ -1,19 +1,37 @@
 import { ShoppingBag } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+
 import { useCart } from "../features/cart/useCart";
 import { useUIStore } from "../lib/uiStore";
+import { getStoreInfo } from "../features/store/storeApi";
 
 export default function Header() {
     const { cart } = useCart();
     const openCart = useUIStore((s) => s.openCart);
+
+    const { data: store } = useQuery({
+        queryKey: ["store-info"],
+        queryFn: getStoreInfo,
+        staleTime: 5 * 60 * 1000,
+    });
 
     const itemCount = cart?.items.reduce((sum, item) => sum + item.quantity, 0) ?? 0;
 
     return (
         <header className="sticky top-0 z-30 border-b border-[var(--color-line)] bg-[var(--color-stone)]/95 backdrop-blur">
             <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
-                <Link to="/" className="font-display text-2xl">
-                    Tienda
+                <Link to="/" className="flex items-center gap-2 font-display text-2xl">
+                    {store?.logo_path && (
+                        <img
+                            src={store.logo_path}
+                            alt=""
+                            className="h-8 w-8 rounded-sm object-cover"
+                        />
+                    )}
+                    {store?.name ?? (
+                        <span className="skeleton inline-block h-6 w-28 align-middle" />
+                    )}
                 </Link>
 
                 <button

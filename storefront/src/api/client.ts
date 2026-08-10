@@ -2,14 +2,16 @@ import axios from "axios";
 import { getGuestToken, setGuestToken } from "../lib/guestToken";
 
 /**
- * La tienda se identifica por SUBDOMINIO (tienda-a.midominio.com), el
- * mismo mecanismo que usa el backend (ResolveTenantBySubdomain). Por
- * eso la base URL de la API se arma a partir del hostname actual del
- * navegador, no de un valor fijo: así, visitar tienda-a.localhost:5174
- * automáticamente habla con tienda-a.localhost:8080/api.
+ * La tienda se identifica por SUBDOMINIO.
  *
- * VITE_API_URL permite overridearlo (por ejemplo, en producción
- * detrás de un proxy con el mismo origin).
+ * Ejemplo:
+ *
+ * tienda-a.localhost:5174
+ *        ↓
+ * tienda-a.localhost:8080/api
+ *
+ * VITE_API_URL permite sobrescribir esta URL en producción
+ * o cuando se utiliza un proxy.
  */
 const apiBaseUrl =
     import.meta.env.VITE_API_URL ??
@@ -19,28 +21,102 @@ export const api = axios.create({
     baseURL: apiBaseUrl,
     headers: {
         Accept: "application/json",
+        "Content-Type": "application/json",
     },
 });
 
+
+/*
+|--------------------------------------------------------------------------
+| REQUEST INTERCEPTOR
+|--------------------------------------------------------------------------
+|
+| Agrega automáticamente:
+|
+| 1. Authorization Bearer para usuarios autenticados.
+| 2. X-Guest-Token para el storefront/carrito.
+|
+|--------------------------------------------------------------------------
+*/
+
 api.interceptors.request.use((config) => {
-    const token = getGuestToken();
+
+    /*
+    |--------------------------------------------------------------------------
+    | Token de autenticación
+    |--------------------------------------------------------------------------
+    */
+
+    const token = localStorage.getItem("token");
 
     if (token) {
-        config.headers["X-Guest-Token"] = token;
+        config.headers.Authorization = `Bearer ${token}`;
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Guest token
+    |--------------------------------------------------------------------------
+    */
+
+    const guestToken = getGuestToken();
+
+    if (guestToken) {
+        config.headers["X-Guest-Token"] = guestToken;
+    }
+
 
     return config;
 });
 
-// El backend puede devolver un guest_token nuevo (primera visita, o
-// el carrito anterior ya no es válido) — lo persistimos siempre que
-// aparezca en una respuesta.
-api.interceptors.response.use((response) => {
-    const token = response.data?.guest_token;
 
-    if (token) {
-        setGuestToken(token);
+/*
+|--------------------------------------------------------------------------
+| RESPONSE INTERCEPTOR
+|--------------------------------------------------------------------------
+|
+| El backend puede generar un nuevo guest_token.
+|
+| Esto puede ocurrir:
+|
+| - Primera visita.
+| - El carrito anterior expiró.
+| - El backend renovó el token.
+|
+|--------------------------------------------------------------------------
+*/
+
+api.interceptors.response.use(
+    (response) => {
+
+        const guestToken = response.data?.guest_token;
+
+        if (guestToken) {
+            setGuestToken(guestToken);
+        }
+
+        return response;
+    },
+
+    (error) => {
+
+        /*
+        |--------------------------------------------------------------------------
+        | Error 401
+        |--------------------------------------------------------------------------
+        |
+        | Si el token de autenticación expiró, eliminamos el token local.
+        |
+        | No eliminamos el guest token porque pertenece al carrito.
+        |
+        |--------------------------------------------------------------------------
+        */
+
+        if (error.response?.status === 401) {
+            localStorage.removeItem("token");
+        }
+
+        return Promise.reject(error);
     }
-
-    return response;
-});
+);
