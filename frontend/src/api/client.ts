@@ -12,36 +12,55 @@ api.interceptors.request.use((config) => {
     // 1. Inyectar el Token de autenticación si existe
     const token = localStorage.getItem("token");
     if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+        // Usamos .set() para mayor seguridad en versiones recientes de Axios
+        config.headers.set('Authorization', `Bearer ${token}`);
     }
 
-    // 2. NUEVO: Validar si es una ruta de autenticación pública
-    // Las rutas de login o registro NUNCA deben llevar el header de la tienda (X-Tenant)
+    // 2. Validar si es una ruta de autenticación pública
     const isAuthRoute = 
         config.url?.includes('/login') || 
         config.url?.includes('/register');
 
-    // 3. Inyectar el subdominio de la tienda (Tenant) solo si existe Y NO es una ruta de auth
-    const tenant = localStorage.getItem("tenant_subdomain");
+    // 3. Determinar el Tenant (Tienda) dinámicamente
+    let tenant = null;
+    const hostname = window.location.hostname; // Ej: "colmerzia.localhost" o "lemarc.localhost"
+    const parts = hostname.split('.'); 
+    
+    // a. Si estás usando una URL con subdominio (ej: lemarc.localhost o lemarc.colmerzia.localhost)
+    // Ignoramos "localhost" puro o la IP local.
+    if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
+        // Tomamos siempre la primera parte de la URL antes del primer punto
+        if (parts[0] !== 'www') {
+            tenant = parts[0]; 
+        }
+    }
+
+    // b. Fallback al localStorage (útil si entras por localhost puro o estás en el Panel Admin)
+    if (!tenant) {
+        tenant = localStorage.getItem("tenant_subdomain");
+    }
+
+    // --- LOGS PARA DEPURACIÓN ---
+    console.log("Petición a:", config.url);
+    console.log("Tenant detectado por React:", tenant);
+
+    // 4. Inyectar el X-Tenant si lo encontramos y no es ruta de auth
     if (tenant && !isAuthRoute) {
-        config.headers["X-Tenant"] = tenant;
+        // Usamos .set() para inyectar la cabecera de forma segura
+        config.headers.set('X-Tenant', tenant);
+        console.log("✅ Header X-Tenant inyectado correctamente.");
+    } else {
+        console.warn("⚠️ No se inyectó X-Tenant.");
     }
 
     return config;
 });
 
-// Si el token guardado ya no sirve (expiró, se borró en el backend,
-// o simplemente es inválido), el backend responde 401. Sin este
-// interceptor, la app se queda "colgada": cree que hay sesión activa
-// (porque existe un token en localStorage) pero ninguna petición
-// funciona y no hay forma de volver al login.
 api.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response?.status === 401) {
             localStorage.removeItem("token");
-            
-            // Opcional: También podemos limpiar el tenant por seguridad al cerrar sesión
             localStorage.removeItem("tenant_subdomain");
 
             if (window.location.pathname !== "/login") {

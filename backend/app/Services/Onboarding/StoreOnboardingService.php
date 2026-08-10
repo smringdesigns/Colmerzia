@@ -8,8 +8,10 @@ use App\Models\Role;
 use App\Models\Store;
 use App\Models\Subscription;
 use App\Models\User;
+use App\Models\Permission; // <-- Importación para los permisos
 use App\Support\Plans\PlanRegistry;
 use App\Support\Tenancy\Tenant;
+use Illuminate\Auth\Events\Registered; // <-- Importación para el correo
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -73,6 +75,12 @@ class StoreOnboardingService implements StoreOnboardingServiceInterface
                 'is_system' => true,
             ]);
 
+            // --- CORRECCIÓN 1: Asignar permisos al rol para evitar el error 403 ---
+            $permissions = Permission::all();
+            if ($permissions->isNotEmpty()) {
+                $ownerRole->permissions()->sync($permissions->pluck('id'));
+            }
+
             $ownerRole->users()->attach($owner->id);
 
             // Configuración por defecto de la tienda. Sin esto, una
@@ -87,6 +95,9 @@ class StoreOnboardingService implements StoreOnboardingServiceInterface
             $token = $owner
                 ->createToken('colmerzia')
                 ->plainTextToken;
+
+            // --- CORRECCIÓN 2: Disparar evento para enviar el correo de verificación a Mailpit ---
+            event(new Registered($owner));
 
             return new StoreOnboardingResponseDTO(
                 store: $store,

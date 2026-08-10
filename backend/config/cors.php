@@ -32,7 +32,18 @@ return [
         ))
     ))),
 
-    'allowed_origins_patterns' => [],
+    'allowed_origins_patterns' => [
+        // Permite localhost y cualquier IP local en puerto 5173 (Admin) y 5174 (Storefront)
+        '#^http://localhost:517[34]$#',
+        '#^http://127\.0\.0\.1:517[34]$#',
+        
+        // Permite CUALQUIER subdominio local de colmerzia en esos puertos
+        // Ej: http://lemarc.colmerzia.localhost:5174
+        '#^http://.*\.colmerzia\.localhost:517[34]$#',
+        
+        // Permite tu dominio base local sin subdominio
+        '#^http://colmerzia\.localhost:517[34]$#'
+    ],
 
     'allowed_headers' => ['*'],
 

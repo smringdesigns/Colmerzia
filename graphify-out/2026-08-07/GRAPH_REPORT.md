@@ -1,16 +1,16 @@
-# Graph Report - Colmerzia  (2026-08-07)
+# Graph Report - Colmerzia  (2026-08-05)
 
 ## Corpus Check
-- 320 files · ~63,770 words
+- 319 files · ~62,642 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1677 nodes · 3006 edges · 204 communities (152 shown, 52 thin omitted)
-- Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 157 edges (avg confidence: 0.8)
+- 1663 nodes · 2982 edges · 189 communities (140 shown, 49 thin omitted)
+- Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 162 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `0a3fdd57`
+- Built from commit: `ba7df92d`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -116,7 +116,6 @@
 - Product
 - Store
 - ProductVariant
-- ProductVariant
 - HorizonServiceProvider
 - composer.json
 - 2026_07_30_114428_create_telescope_entries_table.php
@@ -128,28 +127,14 @@
 - ApplyCouponRequest
 - AppServiceProvider.php
 - Login.tsx
-- Products.tsx
-- LoginTenantIsolationTest
-- frontend/src/App.tsx
-- StoreOnboardingRequest
-- RegisterTest
-- layout/Header.tsx
-- authApi.ts
-- Coupon
-- ProductVariantResource
-- inventoryApi.ts
-- Product
-- LoginRateLimitTest
-- CartItem
-- ForgotPassword.tsx
 
 ## God Nodes (most connected - your core abstractions)
-1. `User` - 74 edges
-2. `Store` - 69 edges
-3. `Tenant` - 50 edges
+1. `User` - 75 edges
+2. `Store` - 65 edges
+3. `Tenant` - 49 edges
 4. `Product` - 39 edges
 5. `Customer` - 31 edges
-6. `Subscription` - 28 edges
+6. `Subscription` - 30 edges
 7. `TestCase` - 28 edges
 8. `InventoryService` - 27 edges
 9. `CartTest` - 24 edges
@@ -170,11 +155,11 @@
 ## Import Cycles
 - None detected.
 
-## Communities (204 total, 52 thin omitted)
+## Communities (189 total, 49 thin omitted)
 
 ### Community 0 - ".parent"
-Cohesion: 0.13
-Nodes (5): App\Http\Requests\BaseRequest, StoreController, AdjustInventoryRequest, CreateWorkspaceRequest, UpdateStoreRequest
+Cohesion: 0.24
+Nodes (4): App\Http\Controllers\Controller, StoreController, CategoryController, CategoryResource
 
 ### Community 1 - "StoreCreated"
 Cohesion: 0.06
@@ -193,24 +178,24 @@ Cohesion: 0.09
 Nodes (26): clsx, dependencies, clsx, @hookform/resolvers, lucide-react, react, react-dom, react-hook-form (+18 more)
 
 ### Community 5 - "Illuminate\Database\Eloquent\SoftDeletes"
-Cohesion: 0.13
-Nodes (9): Permission, Role, CustomerSeeder, DatabaseSeeder, PermissionSeeder, RoleSeeder, UserSeeder, createUserWithPermissions() (+1 more)
+Cohesion: 0.11
+Nodes (10): Permission, Role, CustomerSeeder, DatabaseSeeder, PermissionSeeder, RoleSeeder, StoreSeeder, UserSeeder (+2 more)
 
 ### Community 6 - "devDependencies"
 Cohesion: 0.12
 Nodes (16): devDependencies, eslint, @eslint/js, eslint-plugin-react-hooks, eslint-plugin-react-refresh, globals, tailwindcss, @tailwindcss/vite (+8 more)
 
 ### Community 7 - "Customers.tsx"
-Cohesion: 0.29
-Nodes (9): createProduct(), getProduct(), ProductPayload, ProductsResponse, updateProduct(), ProductForm(), ProductFormData, ProductFormInput (+1 more)
+Cohesion: 0.22
+Nodes (11): PageHeader(), PageHeaderProps, createProduct(), getProduct(), ProductPayload, ProductsResponse, updateProduct(), ProductForm() (+3 more)
 
 ### Community 8 - "scripts"
 Cohesion: 0.14
 Nodes (14): scripts, dev, post-autoload-dump, post-update-cmd, pre-package-uninstall, test, Composer\\Config::disableProcessTimeout, Illuminate\\Foundation\\ComposerScripts::postAutoloadDump (+6 more)
 
 ### Community 9 - "router.tsx"
-Cohesion: 0.17
-Nodes (12): ProtectedRoute(), PublicRoute(), CreateStore(), Login(), LoginForm, schema, AuthState, Permission (+4 more)
+Cohesion: 0.07
+Nodes (26): App(), ProtectedRoute(), PublicRoute(), Header(), menu, ToastProvider(), logout(), me() (+18 more)
 
 ### Community 10 - "Product"
 Cohesion: 0.13
@@ -221,8 +206,8 @@ Cohesion: 0.05
 Nodes (41): compilerOptions, allowImportingTsExtensions, erasableSyntaxOnly, jsx, lib, module, moduleDetection, moduleResolution (+33 more)
 
 ### Community 12 - "User"
-Cohesion: 0.09
-Nodes (8): User, ProductPolicy, StorePolicy, UserPolicy, Illuminate\Contracts\Auth\MustVerifyEmail, Illuminate\Foundation\Auth\User, Illuminate\Notifications\Notifiable, Laravel\Sanctum\HasApiTokens
+Cohesion: 0.05
+Nodes (15): login(), logout(), register(), LoginResponseDTO, User, CustomerPolicy, StorePolicy, UserPolicy (+7 more)
 
 ### Community 13 - "compilerOptions"
 Cohesion: 0.05
@@ -234,83 +219,75 @@ Nodes (15): BrandFactory, CategoryFactory, CouponFactory, static, CustomerFactor
 
 ### Community 15 - "App\Models\Concerns\BelongsToStore"
 Cohesion: 0.13
-Nodes (8): App\Models\Concerns\BelongsToStore, Brand, CustomerAddress, DiscountRule, Warehouse, CatalogSeeder, Illuminate\Database\Eloquent\Factories\HasFactory, Illuminate\Database\Eloquent\SoftDeletes
+Nodes (8): App\Models\Concerns\BelongsToStore, CustomerAddress, DiscountRule, ProductImage, Warehouse, Illuminate\Database\Eloquent\Concerns\HasUuids, Illuminate\Database\Eloquent\Model, Illuminate\Database\Eloquent\SoftDeletes
 
 ### Community 16 - "BaseRequest"
-Cohesion: 0.09
-Nodes (6): StoreCustomerRequest, UpdateCustomerRequest, StoreProductRequest, UpdateProductRequest, StoreStoreRequest, Illuminate\Foundation\Http\FormRequest
+Cohesion: 0.06
+Nodes (9): CustomerController, StoreCustomerRequest, UpdateCustomerRequest, StoreProductRequest, UpdateProductRequest, StoreStoreRequest, UpdateStoreRequest, Customer (+1 more)
 
 ### Community 19 - "devDependencies"
 Cohesion: 0.11
 Nodes (17): devDependencies, concurrently, laravel-vite-plugin, tailwindcss, @tailwindcss/vite, vite, tailwindcss, @tailwindcss/vite (+9 more)
 
 ### Community 21 - "App\Models\Concerns\BelongsToStoreOrNull"
-Cohesion: 0.16
-Nodes (4): App\Models\Concerns\BelongsToStoreOrNull, AuditLog, Notification, Setting
-
-### Community 22 - "Illuminate\Http\Request"
-Cohesion: 0.13
-Nodes (3): CustomerController, Customer, CustomerPolicy
+Cohesion: 0.12
+Nodes (7): App\Models\Concerns\BelongsToStoreOrNull, AuditLog, Notification, Setting, StoreSetting, Transaction, Illuminate\Database\Eloquent\Factories\HasFactory
 
 ### Community 23 - "Illuminate\Foundation\Http\FormRequest"
-Cohesion: 0.12
-Nodes (24): api, CustomerSnapshot, getOrder(), Order, OrderItem, OrdersResponse, OrderStatus, PaymentStatus (+16 more)
+Cohesion: 0.13
+Nodes (23): CustomerSnapshot, getOrder(), Order, OrderItem, OrdersResponse, OrderStatus, PaymentStatus, ShippingAddress (+15 more)
 
 ### Community 24 - "Tenant"
-Cohesion: 0.11
-Nodes (7): App\DTOs\Onboarding\StoreOnboardingResponseDTO, App\Models\Subscription, register(), StoreOnboardingResponseDTO, Store, StoreOnboardingService, StoreSeeder
+Cohesion: 0.12
+Nodes (5): register(), StoreOnboardingResponseDTO, Store, StoreOnboardingService, LoginRateLimitTest
+
+### Community 25 - "BaseApiException"
+Cohesion: 0.05
+Nodes (15): ApiException, InactiveUserException, InvalidCredentialsException, BaseApiException, CartException, CheckoutController, Cart, CartItem (+7 more)
 
 ### Community 26 - "Illuminate\Database\Eloquent\Factories\HasFactory"
-Cohesion: 0.17
-Nodes (7): App\Contracts\Auth\AuthServiceInterface, App\Http\Requests\Auth\LoginRequest, App\Http\Requests\Auth\RegisterRequest, App\Http\Resources\Auth\LoginResource, App\Http\Resources\User\UserResource, AuthController, Illuminate\Foundation\Auth\EmailVerificationRequest
-
-### Community 27 - "Store"
-Cohesion: 0.27
-Nodes (3): App\Http\Controllers\Controller, CategoryController, ProductController
+Cohesion: 0.11
+Nodes (13): App\Contracts\Auth\AuthServiceInterface, App\Http\Requests\Auth\LoginRequest, App\Http\Requests\Auth\RegisterRequest, App\Http\Resources\Auth\LoginResource, App\Http\Resources\User\UserResource, AuthController, LoginResource, BaseResource (+5 more)
 
 ### Community 28 - "authApi.ts"
 Cohesion: 0.05
 Nodes (42): 1. Clonar el repositorio, 2. Configurar las variables de entorno, 3. Construir y levantar el proyecto, 4. Verificar los contenedores, 5. Ver los logs, 🏗️ Arquitectura del proyecto, 🏪 Arquitectura Multiempresa, 🔐 Autenticación (+34 more)
 
 ### Community 29 - "Brand"
-Cohesion: 0.24
-Nodes (10): Button(), ButtonProps, ButtonVariant, ConfirmDialog(), ConfirmDialogProps, Customer, deleteCustomer(), Customers() (+2 more)
+Cohesion: 0.23
+Nodes (10): Button(), ButtonProps, ButtonVariant, ConfirmDialog(), ConfirmDialogProps, useToast(), deleteProduct(), getProducts() (+2 more)
 
 ### Community 31 - "ProductForm.tsx"
-Cohesion: 0.36
-Nodes (3): App\Contracts\Onboarding\StoreOnboardingServiceInterface, StoreOnboardingController, Controller
+Cohesion: 0.19
+Nodes (4): App\Contracts\Onboarding\StoreOnboardingServiceInterface, StoreOnboardingController, Controller, StoreOnboardingRequest
 
 ### Community 32 - "CustomerForm.tsx"
-Cohesion: 0.27
-Nodes (9): useToast(), createCustomer(), CustomerPayload, CustomersResponse, getCustomer(), updateCustomer(), CustomerForm(), CustomerFormData (+1 more)
+Cohesion: 0.19
+Nodes (11): TextField(), TextFieldProps, forgotPassword(), createCustomer(), CustomerPayload, getCustomer(), updateCustomer(), CustomerForm() (+3 more)
 
 ### Community 33 - "BaseResource"
-Cohesion: 0.39
-Nodes (6): Panel(), PanelProps, getOrders(), formatDate(), formatMoney(), Orders()
+Cohesion: 0.25
+Nodes (7): BadgeProps, Panel(), PanelProps, getOrders(), formatDate(), formatMoney(), Orders()
 
 ### Community 34 - "BelongsToStoreOrNullScope.php"
-Cohesion: 0.18
-Nodes (5): bootBelongsToStore(), BelongsToStoreOrNullScope, BelongsToStoreScope, Illuminate\Database\Eloquent\Builder, Illuminate\Database\Eloquent\Scope
+Cohesion: 0.24
+Nodes (4): BelongsToStoreOrNullScope, BelongsToStoreScope, Illuminate\Database\Eloquent\Builder, Illuminate\Database\Eloquent\Scope
 
 ### Community 35 - "App.tsx"
-Cohesion: 0.25
-Nodes (4): TestCase, Illuminate\Foundation\Testing\RefreshDatabase, Illuminate\Foundation\Testing\TestCase, Tests\Concerns\CreatesStoreUsers
-
-### Community 36 - "ToastProvider.tsx"
-Cohesion: 0.11
-Nodes (6): OrderItem, ProductImage, StoreSetting, Transaction, Illuminate\Database\Eloquent\Concerns\HasUuids, Illuminate\Database\Eloquent\Model
+Cohesion: 0.29
+Nodes (3): TestCase, Illuminate\Foundation\Testing\RefreshDatabase, Illuminate\Foundation\Testing\TestCase
 
 ### Community 37 - "Category"
 Cohesion: 0.36
 Nodes (3): Category, Illuminate\Database\Eloquent\Relations\BelongsTo, Illuminate\Database\Eloquent\Relations\HasMany
 
 ### Community 41 - "Cart"
-Cohesion: 0.25
-Nodes (6): App\Models\Product, App\Models\ProductVariant, App\Models\Store, seedStock(), Tests\Concerns\SeedsInventory, Tests\TestCase
+Cohesion: 0.28
+Nodes (7): App\Models\Product, App\Models\ProductVariant, App\Models\Store, seedStock(), Tests\Concerns\CreatesStoreUsers, Tests\Concerns\SeedsInventory, Tests\TestCase
 
 ### Community 43 - "Warehouse"
-Cohesion: 0.14
-Nodes (10): CustomerResource, StoreResource, CartItemResource, CartResource, CategoryResource, OrderResource, ProductDetailResource, ProductListResource (+2 more)
+Cohesion: 0.10
+Nodes (9): CustomerResource, ProductVariantResource, StoreResource, CartItemResource, CartResource, OrderResource, ProductDetailResource, ProductListResource (+1 more)
 
 ### Community 44 - "CleanupTokens"
 Cohesion: 0.33
@@ -320,17 +297,13 @@ Nodes (4): CleanupTokens, SyncInventoryStock, Command, Illuminate\Console\Comman
 Cohesion: 0.50
 Nodes (3): AuthState, useAuthStore, User
 
-### Community 48 - "BelongsToStoreOrNull.php"
-Cohesion: 0.19
-Nodes (5): ApiException, InactiveUserException, InvalidCredentialsException, BaseApiException, Exception
-
 ### Community 81 - "TestCase"
-Cohesion: 0.39
+Cohesion: 0.36
 Nodes (6): ToastContext, ToastContextValue, ToastInput, ToastTone, icons, Toast
 
 ### Community 123 - "OrderController.php"
-Cohesion: 0.12
-Nodes (4): CartController, AddCartItemRequest, ApplyCouponRequest, UpdateCartItemRequest
+Cohesion: 0.11
+Nodes (5): CartController, BaseRequest, AddCartItemRequest, ApplyCouponRequest, UpdateCartItemRequest
 
 ### Community 126 - "frontend/package.json"
 Cohesion: 0.20
@@ -352,10 +325,6 @@ Nodes (8): post-root-package-install, setup, composer install, npm install --ign
 Cohesion: 0.25
 Nodes (7): About Laravel, Agentic Development, Code of Conduct, Contributing, Learning Laravel, License, Security Vulnerabilities
 
-### Community 132 - "StoreOnboardingResource.php"
-Cohesion: 0.16
-Nodes (6): App\Http\Resources\BaseResource, LoginResource, BaseResource, StoreOnboardingResource, OrderResource, UserResource
-
 ### Community 133 - "config"
 Cohesion: 0.29
 Nodes (7): pestphp/pest-plugin, php-http/discovery, config, allow-plugins, optimize-autoloader, preferred-install, sort-packages
@@ -369,12 +338,8 @@ Cohesion: 0.50
 Nodes (3): Expanding the ESLint configuration, React Compiler, React + TypeScript + Vite
 
 ### Community 136 - "SubscriptionTest"
-Cohesion: 0.20
-Nodes (7): createStore(), CreateStorePayload, Store, StoreResponse, StoreSetting, Subscription, UpdateStoreSettingsPayload
-
-### Community 138 - "OrderItem"
-Cohesion: 0.15
-Nodes (3): RegisterRequest, BaseRequest, CheckoutRequest
+Cohesion: 0.24
+Nodes (7): api, createStore(), CreateStorePayload, Store, StoreResponse, StoreSetting, CreateStore()
 
 ### Community 139 - "psr-4"
 Cohesion: 0.40
@@ -404,21 +369,17 @@ Nodes (16): @types/react, typescript, @vitejs/plugin-react, devDependencies, tai
 Cohesion: 0.67
 Nodes (3): axios, axios, axios
 
-### Community 150 - "typescript"
-Cohesion: 0.23
-Nodes (5): login(), logout(), register(), LoginResponseDTO, AuthService
-
 ### Community 153 - "App\Http\Requests\Auth\LoginRequest"
 Cohesion: 0.67
 Nodes (3): zustand, zustand, zustand
 
 ### Community 155 - "App\Http\Requests\BaseRequest"
-Cohesion: 0.29
-Nodes (3): WarehouseController, WarehouseRequest, Warehouse
+Cohesion: 0.18
+Nodes (5): App\Http\Requests\BaseRequest, WarehouseController, AdjustInventoryRequest, WarehouseRequest, Warehouse
 
 ### Community 156 - "App\Http\Requests\Product\StoreProductRequest"
-Cohesion: 0.28
-Nodes (3): App\Http\Requests\Product\StoreProductRequest, App\Http\Requests\Product\UpdateProductRequest, ProductController
+Cohesion: 0.19
+Nodes (4): App\Http\Requests\Product\StoreProductRequest, App\Http\Requests\Product\UpdateProductRequest, ProductController, ProductResource
 
 ### Community 157 - "App\Http\Requests\Product\UpdateProductRequest"
 Cohesion: 0.67
@@ -427,10 +388,6 @@ Nodes (3): @types/node, @types/node, @types/node
 ### Community 158 - "ProductVariant"
 Cohesion: 0.08
 Nodes (40): api, App(), CartDrawer(), Header(), ProductCard(), Toast(), addCartItem(), applyCoupon() (+32 more)
-
-### Community 176 - "ProductVariant"
-Cohesion: 0.27
-Nodes (3): CheckoutController, ProductVariant, CheckoutService
 
 ### Community 177 - "HorizonServiceProvider"
 Cohesion: 0.22
@@ -445,52 +402,32 @@ Cohesion: 0.83
 Nodes (3): down(), getConnection(), up()
 
 ### Community 182 - "Customers.tsx"
-Cohesion: 0.83
-Nodes (3): getCustomers(), getProducts(), Dashboard()
+Cohesion: 0.35
+Nodes (8): Customer, CustomersResponse, deleteCustomer(), getCustomers(), Customers(), formatDate(), fullName(), Dashboard()
 
 ### Community 185 - "Inventory"
-Cohesion: 0.41
-Nodes (3): App\Models\User, App\Models\Warehouse, InventoryService
-
-### Community 190 - "Products.tsx"
-Cohesion: 0.24
-Nodes (6): BadgeProps, PageHeader(), PageHeaderProps, deleteProduct(), formatPrice(), Products()
-
-### Community 192 - "frontend/src/App.tsx"
-Cohesion: 0.31
-Nodes (6): App(), ToastProvider(), me(), useAuthBootstrap(), queryClient, router
-
-### Community 196 - "authApi.ts"
-Cohesion: 0.33
-Nodes (5): logout(), resetPassword(), sendVerificationEmail(), VerifyEmail(), ResetPassword()
-
-### Community 199 - "inventoryApi.ts"
-Cohesion: 0.43
-Nodes (6): getInventory(), getWarehouses(), InventoryItem, InventoryResponse, Warehouse, Inventory()
-
-### Community 203 - "ForgotPassword.tsx"
-Cohesion: 0.47
-Nodes (4): TextField(), TextFieldProps, forgotPassword(), ForgotPassword()
+Cohesion: 0.16
+Nodes (5): App\Models\User, App\Models\Warehouse, InventoryController, Inventory, InventoryService
 
 ## Knowledge Gaps
-- **259 isolated node(s):** `StoreSetting`, `Subscription`, `Store`, `CreateStorePayload`, `StoreResponse` (+254 more)
+- **256 isolated node(s):** `Warehouse`, `InventoryResponse`, `name`, `private`, `version` (+251 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **52 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **49 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `Product` connect `HorizonServiceProvider` to `Illuminate\Database\Eloquent\Model`, `Customer`, `Products.tsx`, `Customers.tsx`?**
-  _High betweenness centrality (0.113) - this node is a cross-community bridge._
-- **Why does `Store` connect `Tenant` to `.parent`, `ProductControllerTest`, `RegisterTest`, `App.tsx`, `ToastProvider.tsx`, `Illuminate\Database\Eloquent\SoftDeletes`, `StoreProductRequest`, `UpdateProductRequest`, `LoginRateLimitTest`, `Product`, `User`, `Dashboard.tsx`, `App\Models\Concerns\BelongsToStore`, `@eslint/js`, `CustomerControllerTest`, `Illuminate\Http\Request`, `RegisterStaffLimitTest`, `LoginTenantIsolationTest`?**
-  _High betweenness centrality (0.043) - this node is a cross-community bridge._
+- **Why does `Product` connect `HorizonServiceProvider` to `Illuminate\Database\Eloquent\Model`, `Customer`, `Brand`, `Customers.tsx`?**
+  _High betweenness centrality (0.117) - this node is a cross-community bridge._
+- **Why does `Store` connect `Tenant` to `.parent`, `ProductControllerTest`, `App.tsx`, `Illuminate\Database\Eloquent\SoftDeletes`, `StoreProductRequest`, `UpdateProductRequest`, `Product`, `User`, `Dashboard.tsx`, `App\Models\Concerns\BelongsToStore`, `BelongsToStoreOrNull.php`, `BaseRequest`, `@eslint/js`, `CustomerControllerTest`, `App\Models\Concerns\BelongsToStoreOrNull`, `RegisterStaffLimitTest`?**
+  _High betweenness centrality (0.060) - this node is a cross-community bridge._
 - **Why does `CartTest` connect `HorizonServiceProvider` to `Cart`, `App.tsx`?**
-  _High betweenness centrality (0.041) - this node is a cross-community bridge._
-- **Are the 15 inferred relationships involving `User` (e.g. with `.run()` and `.test_el_bloqueo_es_por_email_no_global_para_la_misma_ip()`) actually correct?**
-  _`User` has 15 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 11 inferred relationships involving `Store` (e.g. with `.handle()` and `.handle()`) actually correct?**
-  _`Store` has 11 INFERRED edges - model-reasoned connections that need verification._
-- **What connects `StoreSetting`, `Subscription`, `Store` to the rest of the system?**
-  _259 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `.parent` be split into smaller, more focused modules?**
-  _Cohesion score 0.12857142857142856 - nodes in this community are weakly interconnected._
+  _High betweenness centrality (0.057) - this node is a cross-community bridge._
+- **Are the 16 inferred relationships involving `User` (e.g. with `.register()` and `.run()`) actually correct?**
+  _`User` has 16 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 13 inferred relationships involving `Store` (e.g. with `.store()` and `.handle()`) actually correct?**
+  _`Store` has 13 INFERRED edges - model-reasoned connections that need verification._
+- **What connects `Warehouse`, `InventoryResponse`, `name` to the rest of the system?**
+  _256 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Should `StoreCreated` be split into smaller, more focused modules?**
+  _Cohesion score 0.06352941176470588 - nodes in this community are weakly interconnected._

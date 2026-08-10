@@ -14,7 +14,21 @@ class EnsureSubscriptionIsWritable
         Request $request,
         Closure $next
     ): Response {
-        // GET, HEAD y OPTIONS son operaciones de lectura.
+        /*
+         * Super Admin:
+         *
+         * Tiene acceso global a la plataforma y no depende de la
+         * suscripción de una tienda específica.
+         */
+        $user = $request->user();
+
+        if ($user && $user->hasRole('super-admin')) {
+            return $next($request);
+        }
+
+        /*
+         * GET, HEAD y OPTIONS son operaciones de lectura.
+         */
         if (in_array(
             $request->method(),
             ['GET', 'HEAD', 'OPTIONS'],
@@ -41,24 +55,32 @@ class EnsureSubscriptionIsWritable
             $store = Tenant::current();
         }
 
-        // Si no se encontró la tienda, bloqueamos la escritura.
+        /*
+         * Si no se encontró la tienda, bloqueamos la escritura.
+         */
         if (!$store) {
             return response()->json([
                 'message' => 'No fue posible identificar la tienda.',
             ], 403);
         }
 
-        // Cargamos la suscripción actual.
+        /*
+         * Cargamos la suscripción actual.
+         */
         $subscription = $store->subscription;
 
-        // Sin suscripción no se permiten escrituras.
+        /*
+         * Sin suscripción no se permiten escrituras.
+         */
         if (!$subscription) {
             return response()->json([
                 'message' => 'La tienda no tiene una suscripción activa.',
             ], 403);
         }
 
-        // read_only y canceled no permiten escrituras.
+        /*
+         * read_only y canceled no permiten escrituras.
+         */
         if (!$subscription->isWritable()) {
             return response()->json([
                 'message' => 'Tu suscripción no permite realizar cambios.',

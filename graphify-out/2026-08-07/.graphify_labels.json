@@ -175,7 +175,6 @@
   "173": "Product",
   "174": "Store",
   "175": "ProductVariant",
-  "176": "ProductVariant",
   "177": "HorizonServiceProvider",
   "178": "composer.json",
   "179": "2026_07_30_114428_create_telescope_entries_table.php",
@@ -188,19 +187,5 @@
   "186": "HorizonServiceProvider",
   "187": "ApplyCouponRequest",
   "188": "AppServiceProvider.php",
-  "189": "Login.tsx",
-  "190": "Products.tsx",
-  "191": "LoginTenantIsolationTest",
-  "192": "frontend/src/App.tsx",
-  "193": "StoreOnboardingRequest",
-  "194": "RegisterTest",
-  "195": "layout/Header.tsx",
-  "196": "authApi.ts",
-  "197": "Coupon",
-  "198": "ProductVariantResource",
-  "199": "inventoryApi.ts",
-  "200": "Product",
-  "201": "LoginRateLimitTest",
-  "202": "CartItem",
-  "203": "ForgotPassword.tsx"
+  "189": "Login.tsx"
 }
