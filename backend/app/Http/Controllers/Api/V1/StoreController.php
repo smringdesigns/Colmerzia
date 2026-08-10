@@ -96,12 +96,30 @@ class StoreController extends Controller
     }
 
     /**
+     * Resuelve la tienda "actual" para las rutas de Configuración.
+     *
+     * app('tenant') solo queda vinculado por TenantResolver para
+     * usuarios de tienda (X-Tenant). Para un super-admin, el
+     * middleware lo salta a propósito (es de nivel plataforma), así
+     * que app('tenant') no existe y explota. Si el super-admin igual
+     * tiene una tienda propia asignada (como el usuario semilla),
+     * caemos a currentStoreId() para resolverla igual.
+     */
+    private function resolveCurrentStore(Request $request): Store
+    {
+        if (app()->bound('tenant')) {
+            return app('tenant');
+        }
+
+        return Store::findOrFail($this->currentStoreId($request));
+    }
+
+    /**
      * GET /api/v1/stores/me (Obtener datos de la tienda actual)
      */
-    public function me()
+    public function me(Request $request)
     {
-        // Traemos la tienda que fue resuelta e inyectada por el TenantResolver
-        $store = app('tenant');
+        $store = $this->resolveCurrentStore($request);
 
         return response()->json([
             'success' => true,
@@ -118,7 +136,7 @@ class StoreController extends Controller
      */
     public function update(UpdateStoreRequest $request)
     {
-        $store = app('tenant');
+        $store = $this->resolveCurrentStore($request);
 
         $data = $request->validated();
 

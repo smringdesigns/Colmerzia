@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Debe ejecutarse DESPUÉS de ResolveTenantBySubdomain. Bloquea la
+* Debe ejecutarse DESPUÉS de TenantResolver. Bloquea la
  * petición si la tienda resuelta está desactivada (por ejemplo,
  * suspendida por falta de pago o por el admin de Colmerzia).
  *

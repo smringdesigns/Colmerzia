@@ -22,6 +22,11 @@ class AppServiceProvider extends ServiceProvider
             AuthServiceInterface::class,
             AuthService::class
         );
+
+        $this->app->bind(
+            StoreOnboardingServiceInterface::class,
+            StoreOnboardingService::class
+        );
     }
 
     public function boot(): void

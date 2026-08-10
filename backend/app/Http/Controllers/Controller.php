@@ -12,7 +12,7 @@ abstract class Controller
      *
      * Cruza dos fuentes de verdad:
      *  - el subdominio de la petición (Tenant::id(), puesto por
-     *    ResolveTenantBySubdomain)
+     *    TenantResolver)
      *  - la tienda del usuario autenticado (Sanctum token)
      *
      * Si ambas existen y no coinciden, alguien está usando un token

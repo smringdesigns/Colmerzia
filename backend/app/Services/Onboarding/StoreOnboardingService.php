@@ -11,7 +11,11 @@ use App\Models\User;
 use App\Models\Permission; // <-- Importación para los permisos
 use App\Support\Plans\PlanRegistry;
 use App\Support\Tenancy\Tenant;
+<<<<<<< HEAD
 use Illuminate\Auth\Events\Registered; // <-- Importación para el correo
+=======
+use Illuminate\Auth\Events\Registered;
+>>>>>>> 1d3ee6edc0ea943b83bf54de12a274e682f5256f
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -96,7 +100,11 @@ class StoreOnboardingService implements StoreOnboardingServiceInterface
                 ->createToken('colmerzia')
                 ->plainTextToken;
 
+<<<<<<< HEAD
             // --- CORRECCIÓN 2: Disparar evento para enviar el correo de verificación a Mailpit ---
+=======
+            // <-- Disparar el evento para enviar el correo de verificación
+>>>>>>> 1d3ee6edc0ea943b83bf54de12a274e682f5256f
             event(new Registered($owner));
 
             return new StoreOnboardingResponseDTO(

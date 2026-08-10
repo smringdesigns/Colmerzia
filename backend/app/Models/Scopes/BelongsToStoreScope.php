@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\Scope;
  * tests, o el panel super-admin en el dominio central), el scope NO
  * restringe nada: esos contextos legítimamente necesitan ver datos de
  * cualquier tienda. La restricción "real" para peticiones HTTP normales
- * ya está garantizada porque ResolveTenantBySubdomain siempre setea el
+ * ya está garantizada porque TenantResolver siempre setea el
  * tenant antes de llegar a un controller de negocio.
  */
 class BelongsToStoreScope implements Scope
