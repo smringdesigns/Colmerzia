@@ -36,7 +36,10 @@ class ProductController extends Controller
         }
 
         if ($request->filled('search')) {
-            $query->where('name', 'ilike', '%' . $request->query('search') . '%');
+            $query->whereRaw(
+                'LOWER(name) LIKE ?',
+                ['%' . strtolower($request->query('search')) . '%']
+            );
         }
 
         $perPage = min((int) $request->query('per_page', 20), 60);

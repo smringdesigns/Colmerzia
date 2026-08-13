@@ -9,18 +9,27 @@ class InventoryMovement extends Model
 {
     use HasFactory;
 
+    public const TYPE_IN = 'in';
+    public const TYPE_OUT = 'out';
+    public const TYPE_ADJUSTMENT = 'adjustment';
+    public const TYPE_TRANSFER = 'transfer';
+    public const TYPE_RETURN = 'return';
+
     /**
      * Campos asignables masivamente.
      */
     protected $fillable = [
         'inventory_id',
         'user_id',
+        'uuid',
         'type',
         'quantity',
-        'previous_stock',
-        'new_stock',
+        'stock_before',
+        'stock_after',
+        'reason',
         'reference',
-        'notes',
+        'metadata',
+        'performed_at',
     ];
 
     /**
@@ -30,8 +39,10 @@ class InventoryMovement extends Model
     {
         return [
             'quantity' => 'integer',
-            'previous_stock' => 'integer',
-            'new_stock' => 'integer',
+            'stock_before' => 'integer',
+            'stock_after' => 'integer',
+            'metadata' => 'array',
+            'performed_at' => 'datetime',
         ];
     }
 

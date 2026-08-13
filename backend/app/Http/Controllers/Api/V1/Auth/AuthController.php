@@ -14,8 +14,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Str;
 use App\Models\User;
+use App\Models\Store;
+use App\Support\Tenancy\Tenant;
 use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 class AuthController extends Controller
 {
@@ -26,6 +27,8 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request)
     {
+        $this->resolvePublicTenant($request);
+
         $data = new LoginResource(
             $this->authService->register(
                 $request->name,
@@ -40,6 +43,8 @@ class AuthController extends Controller
     public function login(LoginRequest $request): LoginResource
     {
         // 1. Ejecutamos el servicio intacto como lo tenías
+        $this->resolvePublicTenant($request);
+
         $result = $this->authService->login(
             $request->email,
             $request->password
@@ -153,17 +158,63 @@ class AuthController extends Controller
     /**
      * Confirmar la verificación del correo mediante enlace firmado.
      */
-    public function verifyEmail(EmailVerificationRequest $request)
+    public function verifyEmail(Request $request, int $id, string $hash)
     {
-        if ($request->user()->hasVerifiedEmail()) {
-            return response()->json(['message' => 'El correo ya está verificado.']);
-        }
-
-        if ($request->user()->markEmailAsVerified()) {
-            event(new \Illuminate\Auth\Events\Verified($request->user()));
-        }
-
+        $user = User::findOrFail($id);
         $frontendUrl = env('FRONTEND_URL', 'http://localhost:5173');
+
+        if (!hash_equals($hash, sha1($user->getEmailForVerification()))) {
+            abort(403, 'El enlace de verificacion no es valido.');
+        }
+
+        if ($user->hasVerifiedEmail()) {
+            return redirect("{$frontendUrl}/dashboard?verified=1");
+        }
+
+        if ($user->markEmailAsVerified()) {
+            event(new \Illuminate\Auth\Events\Verified($user));
+        }
+
         return redirect("{$frontendUrl}/dashboard?verified=1");
+    }
+
+    private function resolvePublicTenant(Request $request): void
+    {
+        Tenant::clear();
+
+        $subdomain = $request->header('X-Tenant');
+
+        if (is_string($subdomain)) {
+            $subdomain = strtolower(trim($subdomain));
+        }
+
+        if (!$subdomain) {
+            $host = strtolower($request->getHost());
+            $centralDomains = config('tenancy.central_domains', []);
+
+            if (!in_array($host, $centralDomains, true)) {
+                if (str_ends_with($host, '.localhost')) {
+                    $subdomain = substr($host, 0, -strlen('.localhost'));
+                } elseif (str_ends_with($host, '.127.0.0.1')) {
+                    $subdomain = substr($host, 0, -strlen('.127.0.0.1'));
+                } else {
+                    $subdomain = explode('.', $host)[0] ?? null;
+                }
+            }
+        }
+
+        if (!$subdomain) {
+            return;
+        }
+
+        $store = Store::where('subdomain', $subdomain)->first();
+
+        if (!$store) {
+            return;
+        }
+
+        Tenant::set($store);
+        app()->instance('tenant', $store);
+        $request->attributes->set('tenant', $store);
     }
 }

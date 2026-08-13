@@ -4,18 +4,14 @@ namespace App\Services\Onboarding;
 
 use App\Contracts\Onboarding\StoreOnboardingServiceInterface;
 use App\DTOs\Onboarding\StoreOnboardingResponseDTO;
+use App\Models\Permission;
 use App\Models\Role;
 use App\Models\Store;
 use App\Models\Subscription;
 use App\Models\User;
-use App\Models\Permission; // <-- Importación para los permisos
 use App\Support\Plans\PlanRegistry;
 use App\Support\Tenancy\Tenant;
-<<<<<<< HEAD
-use Illuminate\Auth\Events\Registered; // <-- Importación para el correo
-=======
 use Illuminate\Auth\Events\Registered;
->>>>>>> 1d3ee6edc0ea943b83bf54de12a274e682f5256f
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -29,8 +25,7 @@ class StoreOnboardingService implements StoreOnboardingServiceInterface
         string $email,
         string $password,
         string $planSlug
-    ): StoreOnboardingResponseDTO
-    {
+    ): StoreOnboardingResponseDTO {
         // Crear una tienda nueva solo tiene sentido desde el dominio
         // central. Hacerlo "dentro" del subdominio de otra tienda no
         // tiene un caso de uso legítimo.
@@ -79,32 +74,30 @@ class StoreOnboardingService implements StoreOnboardingServiceInterface
                 'is_system' => true,
             ]);
 
-            // --- CORRECCIÓN 1: Asignar permisos al rol para evitar el error 403 ---
+            // Asignar todos los permisos al rol propietario.
             $permissions = Permission::all();
+
             if ($permissions->isNotEmpty()) {
-                $ownerRole->permissions()->sync($permissions->pluck('id'));
+                $ownerRole->permissions()->sync(
+                    $permissions->pluck('id')
+                );
             }
 
+            // Asociar el usuario propietario con su rol.
             $ownerRole->users()->attach($owner->id);
 
-            // Configuración por defecto de la tienda. Sin esto, una
-            // tienda creada por el onboarding público queda sin
-            // moneda/timezone hasta que alguien entre a Configuración
-            // y guarde manualmente.
+            // Configuración por defecto de la tienda.
             $store->settings()->create([
                 'currency' => 'COP',
                 'timezone' => 'America/Bogota',
             ]);
 
+            // Crear token de autenticación.
             $token = $owner
                 ->createToken('colmerzia')
                 ->plainTextToken;
 
-<<<<<<< HEAD
-            // --- CORRECCIÓN 2: Disparar evento para enviar el correo de verificación a Mailpit ---
-=======
-            // <-- Disparar el evento para enviar el correo de verificación
->>>>>>> 1d3ee6edc0ea943b83bf54de12a274e682f5256f
+            // Disparar evento para enviar el correo de verificación.
             event(new Registered($owner));
 
             return new StoreOnboardingResponseDTO(
@@ -126,8 +119,10 @@ class StoreOnboardingService implements StoreOnboardingServiceInterface
      * lanzamiento real, esto debería reemplazarse por un flujo real
      * de checkout/verificación de pago.
      */
-    private function initialSubscriptionAttributes(int $storeId, string $planSlug): array
-    {
+    private function initialSubscriptionAttributes(
+        int $storeId,
+        string $planSlug
+    ): array {
         $trialDays = PlanRegistry::trialDays($planSlug);
 
         if ($trialDays !== null) {

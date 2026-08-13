@@ -9,10 +9,16 @@ use App\Models\Coupon;
 use App\Models\DiscountRule;
 use App\Models\Product;
 use App\Models\ProductVariant;
+use App\Services\Inventory\InventoryService;
 use Illuminate\Support\Str;
 
 class CartService
 {
+    public function __construct(
+        private readonly InventoryService $inventoryService
+    ) {
+    }
+
     public function resolveCart(int $storeId, ?string $guestToken): array
     {
         if ($guestToken) {
@@ -254,7 +260,11 @@ class CartService
 
     private function assertStockAvailable(Product $product, ?ProductVariant $variant, int $requestedQuantity): void
     {
-        $available = $variant ? $variant->stock : $product->stock;
+        $available = $this->inventoryService->availableStock(
+            $product->store_id,
+            $product->id,
+            $variant?->id
+        );
 
         if ($requestedQuantity > $available) {
             throw new CartException(

@@ -32,7 +32,7 @@ class EnsureFeatureAvailableTest extends TestCase
             'is_active' => true,
         ]);
 
-        Route::prefix('v1')->middleware(['tenant', 'store.active'])->group(function () {
+        Route::prefix('api/v1')->middleware(['tenant', 'store.active'])->group(function () {
             Route::get('/_test/coupons-only', function () {
                 return response()->json(['ok' => true]);
             })->middleware('feature:coupons');

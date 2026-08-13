@@ -3,12 +3,16 @@
 namespace App\Services\Order;
 
 use App\Models\Order;
-use App\Models\Product;
-use App\Models\ProductVariant;
+use App\Services\Inventory\InventoryService;
 use Illuminate\Support\Facades\DB;
 
 class OrderService
 {
+    public function __construct(
+        private readonly InventoryService $inventoryService
+    ) {
+    }
+
     /**
      * Aplica los cambios de estado recibidos (cualquier subconjunto de
      * status/payment_status/shipping_status) y dispara los efectos
@@ -68,15 +72,13 @@ class OrderService
     private function restockItems(Order $order): void
     {
         foreach ($order->items()->get() as $item) {
-            if ($item->product_variant_id) {
-                ProductVariant::where('id', $item->product_variant_id)
-                    ->increment('stock', $item->quantity);
-
-                continue;
-            }
-
-            Product::where('id', $item->product_id)
-                ->increment('stock', $item->quantity);
+            $this->inventoryService->restockForCancellation(
+                $order->store_id,
+                $item->product_id,
+                $item->product_variant_id,
+                $item->quantity,
+                $order->order_number
+            );
         }
     }
 }

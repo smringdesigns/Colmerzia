@@ -38,6 +38,10 @@ class AppServiceProvider extends ServiceProvider
                 return true;
             }
 
+            if ($user->hasRole('store-owner')) {
+                return true;
+            }
+
             // Los demás usuarios acceden según sus permisos
             if ($user->hasPermission($ability)) {
                 return true;

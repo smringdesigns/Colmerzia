@@ -13,6 +13,10 @@ export function useAuthBootstrap() {
         (state) => state.setUser
     );
 
+    const setToken = useAuthStore(
+        (state) => state.setToken
+    );
+
     const [isReady, setIsReady] = useState(false);
 
     useEffect(() => {
@@ -39,6 +43,9 @@ export function useAuthBootstrap() {
                     error
                 );
 
+                setUser(null);
+                setToken(null);
+
             })
             .finally(() => {
 
@@ -46,7 +53,7 @@ export function useAuthBootstrap() {
 
             });
 
-    }, [token, setUser]);
+    }, [token, setToken, setUser]);
 
     return isReady;
 }

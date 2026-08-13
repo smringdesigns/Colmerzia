@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Concerns\BelongsToStore;
 
 class Order extends Model
 {
-    use HasFactory, BelongsToStore;
+    use HasFactory, BelongsToStore, SoftDeletes;
 
     /**
      * Campos asignables masivamente.
@@ -16,14 +17,23 @@ class Order extends Model
     protected $fillable = [
         'store_id',
         'customer_id',
-        'number',
+        'cart_id',
+        'uuid',
+        'order_number',
         'status',
+        'payment_status',
+        'shipping_status',
         'subtotal',
-        'tax',
         'discount',
+        'tax',
         'shipping',
         'total',
+        'customer_snapshot',
+        'shipping_address',
+        'notes',
         'paid_at',
+        'shipped_at',
+        'delivered_at',
     ];
 
     /**
@@ -37,7 +47,11 @@ class Order extends Model
             'discount' => 'decimal:2',
             'shipping' => 'decimal:2',
             'total' => 'decimal:2',
+            'customer_snapshot' => 'array',
+            'shipping_address' => 'array',
             'paid_at' => 'datetime',
+            'shipped_at' => 'datetime',
+            'delivered_at' => 'datetime',
         ];
     }
 

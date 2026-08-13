@@ -116,6 +116,7 @@ class InventoryController extends Controller
         $movements = $inventory->movements()
             ->with('user:id,name')
             ->orderByDesc('performed_at')
+            ->orderByDesc('id')
             ->limit(50)
             ->get()
             ->map(fn ($movement) => [

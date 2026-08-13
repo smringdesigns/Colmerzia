@@ -54,7 +54,7 @@ class ProductResource extends JsonResource
             |
             */
 
-            'stock' => $this->stock,
+            'stock' => (int) ($this->available_stock ?? $this->stock),
 
             'available_stock' => $this->when(
                 isset($this->available_stock),

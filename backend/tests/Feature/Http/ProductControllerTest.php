@@ -66,6 +66,30 @@ class ProductControllerTest extends TestCase
         $response->assertJsonPath('data.0.name', 'Producto A');
     }
 
+    public function test_index_busca_por_nombre_o_sku_sin_depender_de_ilike(): void
+    {
+        $user = $this->createUserWithPermissions($this->storeA, ['products.view']);
+
+        Product::factory()->create([
+            'store_id' => $this->storeA->id,
+            'name' => 'Zapato Azul',
+            'sku' => 'CALZ-001',
+        ]);
+
+        Product::factory()->create([
+            'store_id' => $this->storeA->id,
+            'name' => 'Camisa Roja',
+            'sku' => 'TEXT-001',
+        ]);
+
+        $response = $this->actingAs($user, 'sanctum')
+            ->getJson($this->url('tienda-a.localhost', '/products?search=azul'));
+
+        $response->assertOk();
+        $response->assertJsonCount(1, 'data');
+        $response->assertJsonPath('data.0.name', 'Zapato Azul');
+    }
+
     public function test_show_de_producto_de_otra_tienda_devuelve_404(): void
     {
         $user = $this->createUserWithPermissions($this->storeA, ['products.view']);
@@ -131,6 +155,54 @@ class ProductControllerTest extends TestCase
 
         $this->assertDatabaseHas('products', [
             'sku' => 'SKU-CREATE-1',
+            'store_id' => $this->storeA->id,
+        ]);
+    }
+
+    public function test_producto_creado_devuelve_stock_disponible_y_lo_lista_como_stock(): void
+    {
+        $user = $this->createUserWithPermissions($this->storeA, ['products.create', 'products.view']);
+
+        $createResponse = $this->actingAs($user, 'sanctum')
+            ->postJson($this->url('tienda-a.localhost', '/products'), [
+                'name' => 'Producto con stock',
+                'sku' => 'SKU-STOCK-1',
+                'price' => 25000,
+                'stock' => 7,
+            ]);
+
+        $createResponse->assertCreated();
+        $createResponse->assertJsonPath('stock', 7);
+        $createResponse->assertJsonPath('available_stock', 7);
+
+        $indexResponse = $this->actingAs($user, 'sanctum')
+            ->getJson($this->url('tienda-a.localhost', '/products?search=SKU-STOCK-1'));
+
+        $indexResponse->assertOk();
+        $indexResponse->assertJsonPath('data.0.stock', 7);
+        $indexResponse->assertJsonPath('data.0.available_stock', 7);
+    }
+
+    public function test_el_sku_puede_repetirse_en_tiendas_distintas(): void
+    {
+        $user = $this->createUserWithPermissions($this->storeA, ['products.create']);
+
+        Product::factory()->create([
+            'store_id' => $this->storeB->id,
+            'sku' => 'SKU-COMPARTIDO-1',
+        ]);
+
+        $response = $this->actingAs($user, 'sanctum')
+            ->postJson($this->url('tienda-a.localhost', '/products'), [
+                'name' => 'Producto tienda A',
+                'sku' => 'SKU-COMPARTIDO-1',
+                'price' => 25000,
+            ]);
+
+        $response->assertCreated();
+
+        $this->assertDatabaseHas('products', [
+            'sku' => 'SKU-COMPARTIDO-1',
             'store_id' => $this->storeA->id,
         ]);
     }

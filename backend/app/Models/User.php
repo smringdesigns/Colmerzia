@@ -91,18 +91,6 @@ class User extends Authenticatable implements MustVerifyEmail // <-- ADICIÓN 2:
      */
     public function sendPasswordResetNotification($token): void
     {
-        $frontendUrl = rtrim(
-            config('app.frontend_url', 'http://localhost:5173'),
-            '/'
-        );
-
-        $resetUrl = $frontendUrl
-            . '/reset-password'
-            . '?token=' . urlencode($token)
-            . '&email=' . urlencode($this->email);
-
-        $this->notify(
-            new ResetPassword($resetUrl)
-        );
+        $this->notify(new ResetPassword($token));
     }
 }

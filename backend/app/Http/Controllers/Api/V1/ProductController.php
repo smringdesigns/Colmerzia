@@ -47,8 +47,10 @@ class ProductController extends Controller
 
             $query->where(function ($q) use ($search) {
 
-                $q->where('name', 'ilike', "%{$search}%")
-                    ->orWhere('sku', 'ilike', "%{$search}%");
+                $term = '%' . strtolower($search) . '%';
+
+                $q->whereRaw('LOWER(name) LIKE ?', [$term])
+                    ->orWhereRaw('LOWER(sku) LIKE ?', [$term]);
 
             });
         }
@@ -245,6 +247,7 @@ class ProductController extends Controller
 
 
             $product->available_stock = $initialStock;
+            $product->stock = $initialStock;
         }
 
 
@@ -280,6 +283,7 @@ class ProductController extends Controller
                     $product->id,
                     null
                 );
+            $product->stock = $product->available_stock;
 
         } else {
 
@@ -409,6 +413,7 @@ class ProductController extends Controller
                     $product->id,
                     null
                 );
+            $product->stock = $product->available_stock;
         }
 
 

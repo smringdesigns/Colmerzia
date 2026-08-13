@@ -74,7 +74,7 @@ class RegisterStaffLimitTest extends TestCase
 
         $response = $this->postJson($this->url(), $this->payload());
 
-        $response->assertOk();
+        $response->assertCreated();
     }
 
     public function test_un_plan_superior_permite_mas_staff(): void
@@ -85,6 +85,6 @@ class RegisterStaffLimitTest extends TestCase
 
         $response = $this->postJson($this->url(), $this->payload());
 
-        $response->assertOk();
+        $response->assertCreated();
     }
 }

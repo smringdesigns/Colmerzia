@@ -5,6 +5,7 @@ namespace Tests\Concerns;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\Store;
+use App\Models\Subscription;
 use App\Models\User;
 use Illuminate\Support\Str;
 
@@ -19,6 +20,15 @@ trait CreatesStoreUsers
 {
     protected function createUserWithPermissions(Store $store, array $permissionSlugs): User
     {
+        Subscription::firstOrCreate(
+            ['store_id' => $store->id],
+            [
+                'plan_slug' => 'free',
+                'status' => Subscription::STATUS_TRIALING,
+                'trial_ends_at' => now()->addDays(60),
+            ]
+        );
+
         $user = User::factory()->create([
             'store_id' => $store->id,
             'is_active' => true,

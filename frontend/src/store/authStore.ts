@@ -60,6 +60,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
             localStorage.setItem("token", token);
         } else {
             localStorage.removeItem("token");
+            localStorage.removeItem("tenant_subdomain");
         }
 
         set({ token });
@@ -106,6 +107,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     logout: () => {
 
         localStorage.removeItem("token");
+        localStorage.removeItem("tenant_subdomain");
 
         set({
             user: null,

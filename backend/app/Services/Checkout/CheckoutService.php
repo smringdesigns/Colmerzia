@@ -10,6 +10,7 @@ use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Services\Cart\CartService;
+use App\Services\Inventory\InventoryService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -26,7 +27,8 @@ use Illuminate\Support\Str;
 class CheckoutService
 {
     public function __construct(
-        private readonly CartService $cartService
+        private readonly CartService $cartService,
+        private readonly InventoryService $inventoryService
     ) {
     }
 
@@ -52,7 +54,12 @@ class CheckoutService
             // evitar que dos checkouts simultáneos vendan la misma
             // última unidad (condición de carrera clásica).
             foreach ($items as $item) {
-                $this->lockAndValidateStock($item->product_id, $item->product_variant_id, $item->quantity);
+                $this->inventoryService->lockAndAssertAvailable(
+                    $cart->store_id,
+                    $item->product_id,
+                    $item->product_variant_id,
+                    $item->quantity
+                );
             }
 
             // Recalcula totales una última vez por si algo cambió
@@ -103,7 +110,18 @@ class CheckoutService
                     'total' => $item->total,
                 ]);
 
-                $this->decrementStock($item->product_id, $item->product_variant_id, $item->quantity);
+                $inventory = $this->inventoryService->lockAndAssertAvailable(
+                    $cart->store_id,
+                    $item->product_id,
+                    $item->product_variant_id,
+                    $item->quantity
+                );
+
+                $this->inventoryService->decrementForSale(
+                    $inventory,
+                    $item->quantity,
+                    $order->order_number
+                );
             }
 
             if ($cart->coupon_id) {
@@ -114,36 +132,6 @@ class CheckoutService
 
             return $order->fresh(['items', 'payments']);
         });
-    }
-
-    private function lockAndValidateStock(int $productId, ?int $variantId, int $quantity): void
-    {
-        if ($variantId) {
-            $variant = ProductVariant::where('id', $variantId)->lockForUpdate()->first();
-
-            if (!$variant || $variant->stock < $quantity) {
-                throw new CartException('Uno de los productos ya no tiene stock suficiente.');
-            }
-
-            return;
-        }
-
-        $product = Product::where('id', $productId)->lockForUpdate()->first();
-
-        if (!$product || $product->stock < $quantity) {
-            throw new CartException('Uno de los productos ya no tiene stock suficiente.');
-        }
-    }
-
-    private function decrementStock(int $productId, ?int $variantId, int $quantity): void
-    {
-        if ($variantId) {
-            ProductVariant::where('id', $variantId)->decrement('stock', $quantity);
-
-            return;
-        }
-
-        Product::where('id', $productId)->decrement('stock', $quantity);
     }
 
     /**

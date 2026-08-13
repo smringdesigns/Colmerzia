@@ -91,4 +91,9 @@ class Cart extends Model
     {
         return $this->belongsTo(Coupon::class);
     }
+
+    public function isActive(): bool
+    {
+        return $this->status === self::STATUS_ACTIVE;
+    }
 }

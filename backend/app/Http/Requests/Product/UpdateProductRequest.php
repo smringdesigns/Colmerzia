@@ -42,6 +42,7 @@ class UpdateProductRequest extends FormRequest
                 'max:100',
 
                 Rule::unique('products', 'sku')
+                    ->where('store_id', $storeId)
                     ->ignore($productId),
             ],
 

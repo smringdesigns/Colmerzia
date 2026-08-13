@@ -22,6 +22,7 @@ class Warehouse extends Model
         'address',
         'city',
         'country',
+        'is_default',
         'is_active',
     ];
 
@@ -31,6 +32,7 @@ class Warehouse extends Model
     protected function casts(): array
     {
         return [
+            'is_default' => 'boolean',
             'is_active' => 'boolean',
         ];
     }

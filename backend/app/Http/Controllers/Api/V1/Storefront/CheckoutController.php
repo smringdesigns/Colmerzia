@@ -34,6 +34,9 @@ class CheckoutController extends Controller
             return response()->json(['message' => $e->getMessage()], 422);
         }
 
-        return (new OrderResource($order))->response()->setStatusCode(201);
+        return response()->json(
+            (new OrderResource($order))->resolve($request),
+            201
+        );
     }
 }

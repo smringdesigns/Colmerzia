@@ -27,7 +27,8 @@ class StoreProductRequest extends FormRequest
                 'required',
                 'string',
                 'max:100',
-                'unique:products,sku',
+                Rule::unique('products', 'sku')
+                    ->where('store_id', $storeId),
             ],
 
             'price' => [
