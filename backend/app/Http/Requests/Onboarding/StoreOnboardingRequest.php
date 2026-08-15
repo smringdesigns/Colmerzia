@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Onboarding;
 
 use App\Http\Requests\BaseRequest;
+use App\Support\BusinessTypes\BusinessTypeRegistry;
 use App\Support\Plans\PlanRegistry;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
@@ -74,6 +75,12 @@ class StoreOnboardingRequest extends BaseRequest
                 Rule::in(PlanRegistry::slugs()),
             ],
 
+            'business_type' => [
+                'required',
+                'string',
+                Rule::in(BusinessTypeRegistry::slugs()),
+            ],
+
         ];
     }
 
@@ -95,6 +102,9 @@ class StoreOnboardingRequest extends BaseRequest
             'password.confirmed' => 'Las contraseñas no coinciden.',
 
             'plan_slug.in' => 'El plan seleccionado no es válido.',
+
+            'business_type.required' => 'Selecciona el tipo de negocio.',
+            'business_type.in' => 'El tipo de negocio seleccionado no es válido.',
         ];
     }
 
@@ -107,6 +117,7 @@ class StoreOnboardingRequest extends BaseRequest
             'email' => 'correo electrónico',
             'password' => 'contraseña',
             'plan_slug' => 'plan',
+            'business_type' => 'tipo de negocio',
         ];
     }
 }

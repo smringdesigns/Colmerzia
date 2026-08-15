@@ -1,69 +1,219 @@
 import axios from "axios";
 
+/**
+ * URL base de la API.
+ *
+ * Desarrollo:
+ * VITE_API_URL=http://localhost:8080/api
+ *
+ * Producción:
+ * VITE_API_URL=https://api.colmerzia.com/api
+ *
+ * Si VITE_API_URL no está definida, usamos la URL local
+ * como fallback para no romper el entorno actual.
+ */
+const apiBaseUrl =
+    import.meta.env.VITE_API_URL ?? "http://localhost:8080/api";
+
 export const api = axios.create({
-    baseURL: "http://localhost:8080/api",
+    baseURL: apiBaseUrl,
     headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
     },
 });
 
-api.interceptors.request.use((config) => {
-    // 1. Inyectar el Token de autenticación si existe
-    const token = localStorage.getItem("token");
-    if (token) {
-        // Usamos .set() para mayor seguridad en versiones recientes de Axios
-        config.headers.set('Authorization', `Bearer ${token}`);
+/**
+ * Rutas que no deben enviar X-Tenant.
+ *
+ * Estas rutas pertenecen al flujo de autenticación/onboarding
+ * y algunas se ejecutan desde el dominio principal.
+ *
+ * Es especialmente importante /register porque durante el
+ * registro se está creando una tienda nueva.
+ */
+const publicRoutes = [
+    "/login",
+    "/register",
+    "/onboarding",
+    "/forgot-password",
+    "/reset-password",
+    "/email/verify",
+];
+
+/**
+ * Determina si la petición corresponde a una ruta pública.
+ */
+const isPublicRoute = (url?: string): boolean => {
+    if (!url) {
+        return false;
     }
 
-    // 2. Validar si es una ruta de autenticación pública
-    const isAuthRoute = 
-        config.url?.includes('/login') || 
-        config.url?.includes('/register');
+    return publicRoutes.some((route) => url.includes(route));
+};
 
-    // 3. Determinar el Tenant (Tienda) dinámicamente
-    let tenant = null;
-    const hostname = window.location.hostname; // Ej: "colmerzia.localhost" o "lemarc.localhost"
-    const parts = hostname.split('.'); 
-    
-    // a. Si estás usando una URL con subdominio (ej: lemarc.localhost o lemarc.colmerzia.localhost)
-    // Ignoramos "localhost" puro o la IP local.
-    if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
-        // Tomamos siempre la primera parte de la URL antes del primer punto
-        if (parts[0] !== 'www') {
-            tenant = parts[0]; 
+/**
+ * Determina el tenant actual.
+ *
+ * Prioridad:
+ *
+ * 1. Tenant obtenido del subdominio.
+ * 2. tenant_subdomain almacenado en localStorage.
+ *
+ * IMPORTANTE:
+ * admin.colmerzia.com NO debe convertirse en:
+ *
+ * tenant = "admin"
+ *
+ * porque "admin" es el panel administrativo, no una tienda.
+ */
+const getCurrentTenant = (): string | null => {
+    const hostname = window.location.hostname.toLowerCase();
+
+    /*
+     * Dominios que no representan directamente una tienda.
+     */
+    const ignoredHosts = [
+        "localhost",
+        "127.0.0.1",
+        "::1",
+    ];
+
+    /*
+     * Si estamos en localhost puro o IP local,
+     * usamos posteriormente el fallback de localStorage.
+     */
+    if (!ignoredHosts.includes(hostname)) {
+        const parts = hostname.split(".");
+
+        /*
+         * Ejemplos:
+         *
+         * lemarc.localhost
+         *     → lemarc
+         *
+         * lemarc.colmerzia.localhost
+         *     → lemarc
+         *
+         * lemarc.colmerzia.com
+         *     → lemarc
+         *
+         * admin.colmerzia.com
+         *     → NO debe ser admin
+         */
+        const firstPart = parts[0];
+
+        if (
+            firstPart &&
+            firstPart !== "www" &&
+            firstPart !== "admin" &&
+            firstPart !== "api"
+        ) {
+            return firstPart;
         }
     }
 
-    // b. Fallback al localStorage (útil si entras por localhost puro o estás en el Panel Admin)
-    if (!tenant) {
-        tenant = localStorage.getItem("tenant_subdomain");
+    /*
+     * Fallback para:
+     *
+     * - localhost
+     * - panel administrativo
+     * - desarrollo
+     * - tenant seleccionado manualmente
+     */
+    return localStorage.getItem("tenant_subdomain");
+};
+
+/**
+ * Interceptor de peticiones.
+ *
+ * Se ejecuta antes de enviar cada request a Laravel.
+ */
+api.interceptors.request.use(
+    (config) => {
+        /*
+         * ---------------------------------------------------------
+         * 1. TOKEN DE AUTENTICACIÓN
+         * ---------------------------------------------------------
+         *
+         * Si existe un token, lo enviamos como Bearer.
+         */
+        const token = localStorage.getItem("token");
+
+        if (token) {
+            config.headers.set(
+                "Authorization",
+                `Bearer ${token}`
+            );
+        }
+
+        /*
+         * ---------------------------------------------------------
+         * 2. RUTAS PÚBLICAS
+         * ---------------------------------------------------------
+         *
+         * Login, registro, onboarding, recuperación de contraseña,
+         * etc. no deben recibir X-Tenant.
+         */
+        const isPublic = isPublicRoute(config.url);
+
+        /*
+         * ---------------------------------------------------------
+         * 3. TENANT
+         * ---------------------------------------------------------
+         */
+        const tenant = getCurrentTenant();
+
+        /*
+         * ---------------------------------------------------------
+         * 4. X-TENANT
+         * ---------------------------------------------------------
+         *
+         * Solo lo agregamos cuando:
+         *
+         * - existe un tenant
+         * - la ruta no es pública
+         */
+        if (tenant && !isPublic) {
+            config.headers.set("X-Tenant", tenant);
+        }
+
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
     }
+);
 
-    // --- LOGS PARA DEPURACIÓN ---
-    console.log("Petición a:", config.url);
-    console.log("Tenant detectado por React:", tenant);
-
-    // 4. Inyectar el X-Tenant si lo encontramos y no es ruta de auth
-    if (tenant && !isAuthRoute) {
-        // Usamos .set() para inyectar la cabecera de forma segura
-        config.headers.set('X-Tenant', tenant);
-        console.log("✅ Header X-Tenant inyectado correctamente.");
-    } else {
-        console.warn("⚠️ No se inyectó X-Tenant.");
-    }
-
-    return config;
-});
-
+/**
+ * Interceptor de respuestas.
+ *
+ * Centralizamos aquí el manejo de sesiones expiradas.
+ */
 api.interceptors.response.use(
     (response) => response,
+
     (error) => {
+        /*
+         * HTTP 401 = token inválido, expirado
+         * o usuario no autenticado.
+         */
         if (error.response?.status === 401) {
             localStorage.removeItem("token");
-            localStorage.removeItem("tenant_subdomain");
 
-            if (window.location.pathname !== "/login") {
+            /*
+             * No eliminamos tenant_subdomain.
+             *
+             * El tenant puede seguir siendo necesario para
+             * que el usuario pueda volver a autenticarse en
+             * la misma tienda.
+             */
+            const currentPath = window.location.pathname;
+
+            /*
+             * Evitamos redirecciones repetitivas.
+             */
+            if (currentPath !== "/login") {
                 window.location.href = "/login";
             }
         }

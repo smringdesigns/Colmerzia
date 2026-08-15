@@ -19,7 +19,10 @@ class Store extends Model
         'name',
         'subdomain',
         'custom_domain',
+        'email',
         'is_active',
+        'is_verified',
+        'business_type',
     ];
 
     /**
@@ -29,6 +32,7 @@ class Store extends Model
     {
         return [
             'is_active' => 'boolean',
+            'is_verified' => 'boolean',
         ];
     }
 
@@ -65,12 +69,19 @@ class Store extends Model
 
     /**
      * Relación:
-     * Una tienda tiene muchos roles (Para cuando integremos Spatie).
+     * Una tienda tiene muchos roles.
      */
     public function roles()
     {
-        // Deberás asegurarte de tener importado el modelo Role cuando lleguemos a ese módulo
-        // return $this->hasMany(Role::class); 
+        return $this->hasMany(Role::class);
+    }
+
+    /**
+     * Categorías de la tienda.
+     */
+    public function categories()
+    {
+        return $this->hasMany(Category::class);
     }
 
     /**

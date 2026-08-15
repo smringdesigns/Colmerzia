@@ -19,10 +19,10 @@ export default function Toast() {
     return (
         <div
             role="status"
-            className={`fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-lg px-4 py-3 text-sm shadow-lg ${
+            className={`fixed bottom-6 left-1/2 z-[100] flex -translate-x-1/2 items-center rounded-lg px-5 py-3.5 text-sm font-medium shadow-lg transition-all duration-300 ease-in-out animate-in fade-in slide-in-from-bottom-4 ${
                 isError
-                    ? "bg-[#3a1f1a] text-[#f4ded8]"
-                    : "bg-[var(--color-pine-dark)] text-[var(--color-stone)]"
+                    ? "bg-[#ba1a1a] text-white"
+                    : "bg-[#131b2e] text-[#faf8ff]"
             }`}
         >
             {toast.message}

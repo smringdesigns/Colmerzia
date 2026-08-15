@@ -4,11 +4,13 @@ namespace App\Services\Onboarding;
 
 use App\Contracts\Onboarding\StoreOnboardingServiceInterface;
 use App\DTOs\Onboarding\StoreOnboardingResponseDTO;
+use App\Models\Category;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\Store;
 use App\Models\Subscription;
 use App\Models\User;
+use App\Support\BusinessTypes\BusinessTypeRegistry;
 use App\Support\Plans\PlanRegistry;
 use App\Support\Tenancy\Tenant;
 use Illuminate\Auth\Events\Registered;
@@ -24,7 +26,8 @@ class StoreOnboardingService implements StoreOnboardingServiceInterface
         string $ownerName,
         string $email,
         string $password,
-        string $planSlug
+        string $planSlug,
+        string $businessType
     ): StoreOnboardingResponseDTO {
         // Crear una tienda nueva solo tiene sentido desde el dominio
         // central. Hacerlo "dentro" del subdominio de otra tienda no
@@ -41,14 +44,15 @@ class StoreOnboardingService implements StoreOnboardingServiceInterface
             $ownerName,
             $email,
             $password,
-            $planSlug
+            $planSlug,
+            $businessType
         ) {
             $store = Store::create([
                 'uuid' => Str::uuid(),
                 'name' => $businessName,
-                'slug' => Str::slug($businessName) . '-' . Str::random(6),
                 'email' => strtolower(trim($email)),
                 'subdomain' => $subdomain,
+                'business_type' => $businessType,
                 'is_active' => true,
                 'is_verified' => false,
             ]);
@@ -91,6 +95,21 @@ class StoreOnboardingService implements StoreOnboardingServiceInterface
                 'currency' => 'COP',
                 'timezone' => 'America/Bogota',
             ]);
+
+            // Categorías por defecto según el tipo de negocio elegido
+            // (ej. "restaurante" siembra Entradas/Platos fuertes/...,
+            // "moda" siembra Mujer/Hombre/Accesorios/...). Ver
+            // config/business_types.php.
+            foreach (BusinessTypeRegistry::defaultCategories($businessType) as $sortOrder => $categoryName) {
+                Category::create([
+                    'store_id' => $store->id,
+                    'uuid' => Str::uuid(),
+                    'name' => $categoryName,
+                    'slug' => Str::slug($categoryName),
+                    'is_active' => true,
+                    'sort_order' => $sortOrder,
+                ]);
+            }
 
             // Crear token de autenticación.
             $token = $owner

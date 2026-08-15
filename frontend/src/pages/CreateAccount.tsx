@@ -1,22 +1,49 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Lock, Mail, Store } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
 import Button from "../components/ui/Button";
 import TextField from "../components/ui/TextField";
+import SelectField from "../components/ui/SelectField";
 import { api } from "../api/client";
+import {
+    getBusinessTypes,
+    type BusinessTypeOption,
+} from "../features/stores/businessTypeApi";
 
 export default function CreateAccount() {
     const navigate = useNavigate();
 
     const [businessName, setBusinessName] = useState("");
+    const [businessType, setBusinessType] = useState("");
     const [ownerName, setOwnerName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [acceptedPrivacy, setAcceptedPrivacy] = useState(false);
 
+    const [businessTypes, setBusinessTypes] = useState<BusinessTypeOption[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+
+    useEffect(() => {
+        let active = true;
+
+        getBusinessTypes()
+            .then((types) => {
+                if (active) {
+                    setBusinessTypes(types);
+                }
+            })
+            .catch(() => {
+                // Si falla, dejamos el select vacío; el usuario puede
+                // reintentar recargando la página. No bloqueamos el
+                // resto del formulario por esto.
+            });
+
+        return () => {
+            active = false;
+        };
+    }, []);
 
     function generateSubdomain(name: string): string {
         return name
@@ -42,6 +69,11 @@ export default function CreateAccount() {
 
         if (!ownerName.trim()) {
             setError("Ingresa el nombre del propietario.");
+            return;
+        }
+
+        if (!businessType) {
+            setError("Selecciona el tipo de negocio.");
             return;
         }
 
@@ -79,6 +111,7 @@ export default function CreateAccount() {
                 {
                     business_name: businessName.trim(),
                     subdomain,
+                    business_type: businessType,
                     owner_name: ownerName.trim(),
                     email: email.trim().toLowerCase(),
                     password,
@@ -207,6 +240,24 @@ export default function CreateAccount() {
                                 )
                             }
                             disabled={loading}
+                            required
+                        />
+
+
+                        <SelectField
+                            label="Tipo de negocio"
+                            placeholder="Selecciona una opción"
+                            value={businessType}
+                            onChange={(event) =>
+                                setBusinessType(
+                                    event.target.value
+                                )
+                            }
+                            options={businessTypes.map((type) => ({
+                                value: type.slug,
+                                label: type.name,
+                            }))}
+                            disabled={loading || businessTypes.length === 0}
                             required
                         />
 

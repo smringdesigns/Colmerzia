@@ -1,10 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Globe, Store } from "lucide-react";
 
 import Button from "../components/ui/Button";
 import TextField from "../components/ui/TextField";
+import SelectField from "../components/ui/SelectField";
 import { createStore } from "../features/stores/storeApi";
+import {
+    getBusinessTypes,
+    type BusinessTypeOption,
+} from "../features/stores/businessTypeApi";
 import { useAuthStore } from "../store/authStore";
 
 /**
@@ -23,9 +28,30 @@ export default function CreateStore() {
     const [name, setName] = useState("");
     const [subdomain, setSubdomain] = useState("");
     const [subdomainEdited, setSubdomainEdited] = useState(false);
+    const [businessType, setBusinessType] = useState("");
 
+    const [businessTypes, setBusinessTypes] = useState<BusinessTypeOption[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+
+    useEffect(() => {
+        let active = true;
+
+        getBusinessTypes()
+            .then((types) => {
+                if (active) {
+                    setBusinessTypes(types);
+                }
+            })
+            .catch(() => {
+                // Igual que en CreateAccount: si falla, el select
+                // queda vacío pero no bloqueamos el resto del form.
+            });
+
+        return () => {
+            active = false;
+        };
+    }, []);
 
     function slugify(value: string): string {
         return value
@@ -67,12 +93,18 @@ export default function CreateStore() {
             return;
         }
 
+        if (!businessType) {
+            setError("Selecciona el tipo de negocio.");
+            return;
+        }
+
         setLoading(true);
 
         try {
             const response = await createStore({
                 name: name.trim(),
                 subdomain,
+                business_type: businessType,
             });
 
             const store = response.data;
@@ -171,6 +203,21 @@ export default function CreateStore() {
                             value={subdomain}
                             onChange={handleSubdomainChange}
                             disabled={loading}
+                            required
+                        />
+
+                        <SelectField
+                            label="Tipo de negocio"
+                            placeholder="Selecciona una opción"
+                            value={businessType}
+                            onChange={(event) =>
+                                setBusinessType(event.target.value)
+                            }
+                            options={businessTypes.map((type) => ({
+                                value: type.slug,
+                                label: type.name,
+                            }))}
+                            disabled={loading || businessTypes.length === 0}
                             required
                         />
 

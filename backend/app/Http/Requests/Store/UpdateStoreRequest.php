@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Store;
 
 use App\Http\Requests\BaseRequest;
+use App\Support\BusinessTypes\BusinessTypeRegistry;
+use Illuminate\Validation\Rule;
 
 class UpdateStoreRequest extends BaseRequest
 {
@@ -28,6 +30,13 @@ class UpdateStoreRequest extends BaseRequest
                 'required',
                 'string',
                 'max:100',
+            ],
+
+            'business_type' => [
+                'sometimes',
+                'required',
+                'string',
+                Rule::in(BusinessTypeRegistry::slugs()),
             ],
 
             // Configuración extendida (store_settings)
@@ -84,6 +93,8 @@ class UpdateStoreRequest extends BaseRequest
         return [
 
             'name.required' => 'El nombre de la tienda es obligatorio.',
+
+            'business_type.in' => 'El tipo de negocio seleccionado no es válido.',
 
             'contact_email.email' => 'Ingrese un correo de contacto válido.',
 

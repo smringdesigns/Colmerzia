@@ -4,8 +4,10 @@ namespace App\Models;
 
 use App\Models\Role;
 use App\Models\Store;
-use Illuminate\Contracts\Auth\MustVerifyEmail; // <-- ADICIÓN 1: Importación de la interfaz
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,7 +30,7 @@ use Laravel\Sanctum\HasApiTokens;
     'password',
     'remember_token',
 ])]
-class User extends Authenticatable implements MustVerifyEmail // <-- ADICIÓN 2: Implementación en la clase
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
@@ -84,10 +86,29 @@ class User extends Authenticatable implements MustVerifyEmail // <-- ADICIÓN 2:
     }
 
     /**
+     * Envía el enlace de verificación de correo al frontend con el subdominio dinámico.
+     */
+    public function sendEmailVerificationNotification(): void
+    {
+        $store = $this->store;
+        $subdomain = $store ? $store->subdomain : 'localhost';
+
+        VerifyEmail::toMailUsing(function ($notifiable, $url) use ($subdomain) {
+            $frontendVerifyUrl = "http://{$subdomain}.localhost:5174/verify-email?verify_url=" . urlencode($url);
+
+            return (new MailMessage)
+                ->subject('Verifica tu cuenta en Colmerzia')
+                ->line('¡Hemos creado tu tienda exitosamente!')
+                ->line('Para comenzar a usar tu panel y confirmar tus credenciales, haz clic en el siguiente botón:')
+                ->action('Verificar mi correo', $frontendVerifyUrl)
+                ->line('Si no creaste una cuenta, puedes ignorar este mensaje.');
+        });
+
+        $this->notify(new VerifyEmail);
+    }
+
+    /**
      * Envía el enlace de recuperación de contraseña al frontend React.
-     *
-     * Laravel genera el token de recuperación, pero el enlace
-     * apunta a la pantalla correspondiente del frontend.
      */
     public function sendPasswordResetNotification($token): void
     {

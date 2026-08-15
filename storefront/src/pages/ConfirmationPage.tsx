@@ -19,61 +19,79 @@ export default function ConfirmationPage() {
     if (!order) return null;
 
     return (
-        <main className="mx-auto max-w-xl px-5 py-16">
+        <main className="mx-auto max-w-xl px-4 py-16 sm:px-6">
+            {/* Cabecera de éxito */}
             <div className="mb-8 flex flex-col items-center text-center">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-pine)] text-[var(--color-stone)]">
-                    <Check size={22} />
+                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#4648d4] text-white shadow-sm">
+                    <Check size={26} />
                 </div>
-                <h1 className="font-display text-3xl">Gracias por tu pedido</h1>
-                <p className="mt-2 text-sm text-[var(--color-ink-soft)]">
+                <h1 className="text-3xl font-bold tracking-tight text-[#131b2e]">
+                    ¡Gracias por tu pedido!
+                </h1>
+                <p className="mt-2 text-sm text-[#464554]">
                     Te enviamos la confirmación a tu correo. Guarda tu número de pedido.
                 </p>
             </div>
 
-            <div className="receipt p-6">
-                <div className="mb-4 text-center">
-                    <p className="font-mono text-xs uppercase tracking-widest text-[var(--color-ink-soft)]">
-                        Pedido
+            {/* Estilo de Recibo / Ticket */}
+            <div className="rounded-2xl border border-[#c7c4d7]/60 bg-white p-6 shadow-sm sm:p-8">
+                <div className="mb-6 text-center">
+                    <p className="font-mono text-xs uppercase tracking-widest text-[#767586]">
+                        Número de pedido
                     </p>
-                    <p className="price text-lg">{order.order_number}</p>
+                    <p className="mt-1 text-xl font-bold tracking-wide text-[#4648d4]">
+                        {order.order_number}
+                    </p>
                 </div>
 
-                <hr className="receipt-divider" />
+                <div className="my-4 border-t border-dashed border-[#c7c4d7]" />
 
-                <ul className="flex flex-col gap-2">
+                {/* Lista de productos */}
+                <ul className="flex flex-col gap-3 py-2">
                     {order.items.map((item, index) => (
-                        <li key={index} className="receipt-row">
-                            <span className="text-[var(--color-ink)]">
+                        <li key={index} className="flex items-center justify-between text-sm">
+                            <span className="font-medium text-[#131b2e]">
                                 {item.quantity}× {item.product_name}
                             </span>
-                            <span>{formatMoney(item.total)}</span>
+                            <span className="font-semibold text-[#131b2e]">
+                                {formatMoney(item.total)}
+                            </span>
                         </li>
                     ))}
                 </ul>
 
-                <hr className="receipt-divider" />
+                <div className="my-4 border-t border-dashed border-[#c7c4d7]" />
 
-                <div className="receipt-row">
-                    <span>Subtotal</span>
-                    <span>{formatMoney(order.subtotal)}</span>
-                </div>
-                <div className="receipt-row">
-                    <span>Descuento</span>
-                    <span>-{formatMoney(order.discount)}</span>
-                </div>
-                <div className="receipt-row">
-                    <span>Envío</span>
-                    <span>{formatMoney(order.shipping)}</span>
-                </div>
-                <div className="receipt-row total">
-                    <span>Total</span>
-                    <span>{formatMoney(order.total)}</span>
+                {/* Totales y desglose */}
+                <div className="space-y-2 text-sm text-[#464554]">
+                    <div className="flex justify-between">
+                        <span>Subtotal</span>
+                        <span className="font-medium text-[#131b2e]">{formatMoney(order.subtotal)}</span>
+                    </div>
+                    {Number(order.discount) > 0 && (
+                        <div className="flex justify-between text-emerald-600">
+                            <span>Descuento</span>
+                            <span className="font-medium">-{formatMoney(order.discount)}</span>
+                        </div>
+                    )}
+                    <div className="flex justify-between">
+                        <span>Envío</span>
+                        <span className="font-medium text-[#131b2e]">{formatMoney(order.shipping)}</span>
+                    </div>
+
+                    <div className="my-3 border-t border-[#c7c4d7]/50" />
+
+                    <div className="flex items-center justify-between text-base font-bold text-[#131b2e]">
+                        <span>Total pagado</span>
+                        <span className="text-lg text-[#4648d4]">{formatMoney(order.total)}</span>
+                    </div>
                 </div>
             </div>
 
+            {/* Botón de acción */}
             <Link
                 to="/"
-                className="mt-8 block w-full rounded-md border border-[var(--color-ink)] py-3 text-center text-sm font-medium transition hover:bg-[var(--color-ink)] hover:text-[var(--color-stone)]"
+                className="mt-8 flex w-full items-center justify-center rounded-lg border border-[#c7c4d7] bg-white py-3.5 text-center text-sm font-semibold text-[#131b2e] shadow-sm transition hover:border-[#4648d4] hover:bg-[#4648d4] hover:text-white"
             >
                 Seguir comprando
             </Link>

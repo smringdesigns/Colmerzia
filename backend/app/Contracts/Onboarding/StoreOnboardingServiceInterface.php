@@ -12,6 +12,7 @@ interface StoreOnboardingServiceInterface
         string $ownerName,
         string $email,
         string $password,
-        string $planSlug
+        string $planSlug,
+        string $businessType
     ): StoreOnboardingResponseDTO;
 }

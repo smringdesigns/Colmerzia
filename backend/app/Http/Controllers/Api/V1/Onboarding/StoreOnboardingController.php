@@ -7,6 +7,7 @@ use App\Contracts\Onboarding\StoreOnboardingServiceInterface;
 use App\Http\Requests\Onboarding\StoreOnboardingRequest;
 use App\Http\Resources\Onboarding\StoreOnboardingResource;
 use App\Models\Store;
+use App\Support\BusinessTypes\BusinessTypeRegistry;
 use App\Support\Tenancy\Tenant;
 use Illuminate\Http\Request;
 
@@ -15,6 +16,17 @@ class StoreOnboardingController extends Controller
     public function __construct(
         private readonly StoreOnboardingServiceInterface $onboardingService
     ) {
+    }
+
+    /**
+     * Lista de tipos de negocio disponibles, para poblar el <select>
+     * del formulario de registro. Pública, no requiere tenant.
+     */
+    public function businessTypes()
+    {
+        return response()->json([
+            'data' => BusinessTypeRegistry::options(),
+        ]);
     }
 
     public function store(StoreOnboardingRequest $request)
@@ -28,7 +40,8 @@ class StoreOnboardingController extends Controller
                 $request->owner_name,
                 $request->email,
                 $request->password,
-                $request->plan_slug
+                $request->plan_slug,
+                $request->business_type
             )
         );
 

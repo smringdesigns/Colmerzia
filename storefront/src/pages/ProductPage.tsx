@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-import { Minus, Plus } from "lucide-react";
+import { Minus, Plus, ShoppingBag } from "lucide-react";
 
 import { getProduct } from "../features/catalog/catalogApi";
 import { useCart } from "../features/cart/useCart";
@@ -22,14 +22,23 @@ export default function ProductPage() {
     const [quantity, setQuantity] = useState(1);
 
     if (isLoading) {
-        return <p className="py-24 text-center text-sm text-[var(--color-ink-soft)]">Cargando...</p>;
+        return (
+            <div className="flex min-h-[50vh] items-center justify-center">
+                <p className="text-sm font-medium text-[#767586]">Cargando producto...</p>
+            </div>
+        );
     }
 
     if (!product) {
         return (
-            <p className="py-24 text-center text-sm text-[var(--color-ink-soft)]">
-                No encontramos este producto.
-            </p>
+            <div className="flex min-h-[50vh] flex-col items-center justify-center text-center px-4">
+                <p className="text-base font-semibold text-[#131b2e]">
+                    No encontramos este producto.
+                </p>
+                <p className="mt-1 text-sm text-[#464554]">
+                    Es posible que haya sido eliminado o el enlace sea incorrecto.
+                </p>
+            </div>
         );
     }
 
@@ -40,34 +49,37 @@ export default function ProductPage() {
     const needsVariantChoice = product.has_variants && !variantId;
 
     return (
-        <main className="mx-auto max-w-6xl px-5 py-10">
-            <div className="grid gap-10 md:grid-cols-2">
-                <div>
-                    <div className="aspect-square overflow-hidden rounded-md border border-[var(--color-line)] bg-[var(--color-stone-deep)]">
+        <main className="mx-auto max-w-[1440px] px-4 py-12 sm:px-6 lg:px-8">
+            <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
+                {/* =====================================================
+                    GALERÍA DE IMÁGENES
+                ===================================================== */}
+                <div className="flex flex-col gap-4">
+                    <div className="relative aspect-square overflow-hidden rounded-xl border border-[#c7c4d7]/60 bg-[#f2f3ff] shadow-sm">
                         {product.images[activeImage] ? (
                             <img
                                 src={product.images[activeImage].path}
                                 alt={product.images[activeImage].alt ?? product.name}
-                                className="h-full w-full object-cover"
+                                className="h-full w-full object-cover transition-all duration-300"
                             />
                         ) : (
-                            <div className="flex h-full w-full items-center justify-center font-display text-6xl text-[var(--color-ink-soft)]/40">
+                            <div className="flex h-full w-full items-center justify-center text-6xl font-bold text-[#767586]/40">
                                 {product.name.charAt(0).toUpperCase()}
                             </div>
                         )}
                     </div>
 
                     {product.images.length > 1 && (
-                        <div className="mt-3 flex gap-2">
+                        <div className="flex flex-wrap gap-3">
                             {product.images.map((image, index) => (
                                 <button
                                     key={image.id}
                                     type="button"
                                     onClick={() => setActiveImage(index)}
-                                    className={`h-16 w-16 overflow-hidden rounded border ${
+                                    className={`relative aspect-square h-20 w-20 overflow-hidden rounded-lg border-2 transition ${
                                         index === activeImage
-                                            ? "border-[var(--color-ink)]"
-                                            : "border-[var(--color-line)]"
+                                            ? "border-[#4648d4] shadow-sm"
+                                            : "border-[#c7c4d7]/50 hover:border-[#4648d4]"
                                     }`}
                                 >
                                     <img src={image.path} alt="" className="h-full w-full object-cover" />
@@ -77,46 +89,55 @@ export default function ProductPage() {
                     )}
                 </div>
 
-                <div className="md:sticky md:top-24 md:self-start">
+                {/* =====================================================
+                    INFORMACIÓN Y ACCIONES DEL PRODUCTO
+                ===================================================== */}
+                <div className="lg:sticky lg:top-28">
                     {product.category && (
-                        <p className="font-mono text-xs uppercase tracking-widest text-[var(--color-ink-soft)]">
+                        <p className="font-mono text-xs uppercase tracking-widest text-[#767586]">
                             {product.category.name}
                         </p>
                     )}
 
-                    <h1 className="mt-1 font-display text-3xl">{product.name}</h1>
+                    <h1 className="mt-2 text-3xl font-bold tracking-tight text-[#131b2e] sm:text-4xl">
+                        {product.name}
+                    </h1>
 
-                    <div className="mt-3 flex items-baseline gap-2">
-                        <span className="price text-xl">{formatMoney(price)}</span>
+                    {/* Precios */}
+                    <div className="mt-4 flex items-baseline gap-3">
+                        <span className="text-2xl font-bold text-[#131b2e]">
+                            {formatMoney(price)}
+                        </span>
                         {comparePrice && Number(comparePrice) > Number(price) && (
-                            <span className="price text-sm text-[var(--color-ink-soft)] line-through">
+                            <span className="text-base font-medium text-[#767586] line-through">
                                 {formatMoney(comparePrice)}
                             </span>
                         )}
                     </div>
 
                     {product.short_description && (
-                        <p className="mt-4 text-sm text-[var(--color-ink-soft)]">
+                        <p className="mt-4 text-base leading-relaxed text-[#464554]">
                             {product.short_description}
                         </p>
                     )}
 
+                    {/* Variantes */}
                     {product.has_variants && product.variants && (
-                        <div className="mt-6">
-                            <p className="mb-2 text-xs uppercase tracking-wide text-[var(--color-ink-soft)]">
+                        <div className="mt-8">
+                            <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-[#131b2e]">
                                 Elige una opción
                             </p>
-                            <div className="flex flex-wrap gap-2">
+                            <div className="flex flex-wrap gap-2.5">
                                 {product.variants.map((variant) => (
                                     <button
                                         key={variant.id}
                                         type="button"
                                         disabled={!variant.in_stock}
                                         onClick={() => setVariantId(variant.id)}
-                                        className={`rounded-md border px-3 py-2 text-sm transition disabled:cursor-not-allowed disabled:opacity-40 ${
+                                        className={`rounded-lg border px-4 py-2.5 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-40 ${
                                             variantId === variant.id
-                                                ? "border-[var(--color-ink)] bg-[var(--color-ink)] text-[var(--color-stone)]"
-                                                : "border-[var(--color-line)]"
+                                                ? "border-[#4648d4] bg-[#4648d4] text-white shadow-sm"
+                                                : "border-[#c7c4d7] bg-white text-[#131b2e] hover:border-[#4648d4]"
                                         }`}
                                     >
                                         {variant.name}
@@ -126,24 +147,27 @@ export default function ProductPage() {
                         </div>
                     )}
 
-                    <div className="mt-6 flex items-center gap-3">
-                        <div className="flex items-center rounded-md border border-[var(--color-line)]">
+                    {/* Controles de cantidad y botón de compra */}
+                    <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
+                        <div className="flex items-center rounded-lg border border-[#c7c4d7] bg-white shadow-sm">
                             <button
                                 type="button"
-                                className="p-2"
+                                className="p-3 text-[#464554] transition hover:text-[#4648d4]"
                                 onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                                 aria-label="Restar cantidad"
                             >
-                                <Minus size={14} />
+                                <Minus size={16} />
                             </button>
-                            <span className="price w-8 text-center text-sm">{quantity}</span>
+                            <span className="w-10 text-center text-sm font-semibold text-[#131b2e]">
+                                {quantity}
+                            </span>
                             <button
                                 type="button"
-                                className="p-2"
+                                className="p-3 text-[#464554] transition hover:text-[#4648d4]"
                                 onClick={() => setQuantity((q) => q + 1)}
                                 aria-label="Sumar cantidad"
                             >
-                                <Plus size={14} />
+                                <Plus size={16} />
                             </button>
                         </div>
 
@@ -157,21 +181,24 @@ export default function ProductPage() {
                                     productVariantId: variantId ?? undefined,
                                 })
                             }
-                            className="flex-1 rounded-md bg-[var(--color-pine)] py-3 text-sm font-medium text-[var(--color-stone)] transition hover:bg-[var(--color-pine-dark)] disabled:cursor-not-allowed disabled:opacity-40"
+                            className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg bg-[#4648d4] px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#6063ee] disabled:cursor-not-allowed disabled:opacity-40"
                         >
+                            <ShoppingBag size={18} />
                             {!inStock
                                 ? "Agotado"
                                 : needsVariantChoice
-                                  ? "Elige una opción"
-                                  : addItem.isPending
-                                    ? "Agregando..."
-                                    : "Agregar al carrito"}
+                                ? "Elige una opción"
+                                : addItem.isPending
+                                ? "Agregando..."
+                                : "Agregar al carrito"}
                         </button>
                     </div>
 
+                    {/* Descripción extendida */}
                     {product.description && (
-                        <div className="mt-8 border-t border-[var(--color-line)] pt-6 text-sm leading-relaxed text-[var(--color-ink-soft)]">
-                            {product.description}
+                        <div className="mt-10 border-t border-[#c7c4d7]/50 pt-8 text-sm leading-relaxed text-[#464554]">
+                            <h3 className="mb-3 font-semibold text-[#131b2e]">Descripción del producto</h3>
+                            <div className="space-y-2">{product.description}</div>
                         </div>
                     )}
                 </div>

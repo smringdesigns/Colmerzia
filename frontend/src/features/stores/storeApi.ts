@@ -30,6 +30,7 @@ export interface Store {
     name: string;
     subdomain: string;
     custom_domain: string | null;
+    business_type: string | null;
     is_active: boolean;
     settings?: StoreSetting; // La configuración que cargamos con 'load()'
     subscription?: Subscription;
@@ -39,6 +40,7 @@ export interface Store {
 export interface CreateStorePayload {
     name: string;
     subdomain: string;
+    business_type: string;
 }
 
 export interface StoreResponse {

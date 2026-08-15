@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Store;
 
 use App\Http\Requests\BaseRequest;
+use App\Support\BusinessTypes\BusinessTypeRegistry;
+use Illuminate\Validation\Rule;
 
 class CreateWorkspaceRequest extends BaseRequest
 {
@@ -35,6 +37,12 @@ class CreateWorkspaceRequest extends BaseRequest
                 'unique:stores,subdomain',
                 'regex:/^[a-z0-9\-]+$/',
             ],
+
+            'business_type' => [
+                'required',
+                'string',
+                Rule::in(BusinessTypeRegistry::slugs()),
+            ],
         ];
     }
 
@@ -47,6 +55,9 @@ class CreateWorkspaceRequest extends BaseRequest
             'subdomain.required' => 'El subdominio es obligatorio.',
             'subdomain.unique' => 'Ese subdominio ya está en uso.',
             'subdomain.regex' => 'El subdominio solo puede tener letras minúsculas, números y guiones.',
+
+            'business_type.required' => 'Selecciona el tipo de negocio.',
+            'business_type.in' => 'El tipo de negocio seleccionado no es válido.',
 
         ];
     }

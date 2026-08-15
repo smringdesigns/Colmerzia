@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Store\CreateWorkspaceRequest;
 use App\Http\Requests\Store\UpdateStoreRequest;
+use App\Models\Category;
 use App\Models\Role;
 use App\Models\Store;
 use App\Models\Subscription;
+use App\Support\BusinessTypes\BusinessTypeRegistry;
 use App\Support\Plans\PlanRegistry;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -46,6 +48,7 @@ class StoreController extends Controller
                 'uuid' => Str::uuid(),
                 'name' => $validated['name'],
                 'subdomain' => strtolower($validated['subdomain']),
+                'business_type' => $validated['business_type'],
                 'is_active' => true,
             ]);
 
@@ -54,6 +57,19 @@ class StoreController extends Controller
                 'currency' => 'COP',
                 'timezone' => 'America/Bogota',
             ]);
+
+            // 2.1 Categorías por defecto según el tipo de negocio,
+            // igual que en el onboarding público.
+            foreach (BusinessTypeRegistry::defaultCategories($validated['business_type']) as $sortOrder => $categoryName) {
+                Category::create([
+                    'store_id' => $store->id,
+                    'uuid' => Str::uuid(),
+                    'name' => $categoryName,
+                    'slug' => Str::slug($categoryName),
+                    'is_active' => true,
+                    'sort_order' => $sortOrder,
+                ]);
+            }
 
             // 3. Suscripción inicial, igual que en el onboarding
             // público: plan free, en período de prueba.
@@ -142,10 +158,12 @@ class StoreController extends Controller
 
         DB::transaction(function () use ($store, $data) {
 
-            if (array_key_exists('name', $data)) {
-                $store->update([
-                    'name' => $data['name'],
-                ]);
+            $storeData = collect($data)
+                ->only(['name', 'business_type'])
+                ->toArray();
+
+            if (!empty($storeData)) {
+                $store->update($storeData);
             }
 
             $settingsData = collect($data)

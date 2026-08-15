@@ -98,6 +98,12 @@ Route::prefix('v1')->group(function () {
         [StoreOnboardingController::class, 'store']
     )->middleware('throttle:register');
 
+    // Catálogo de tipos de negocio (para el <select> del onboarding)
+    Route::get(
+        '/business-types',
+        [StoreOnboardingController::class, 'businessTypes']
+    );
+
 
     // Registro
     Route::post(
