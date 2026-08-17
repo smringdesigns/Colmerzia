@@ -22,9 +22,9 @@ class StoreFactory extends Factory
             'country'     => 'CO',
             'currency'    => 'COP',
             'timezone'    => 'America/Bogota',
+            'business_type' => 'retail',
             'is_active'   => true,
             'is_verified' => true,
-            'plan'        => 'pro',
         ];
     }
 }
