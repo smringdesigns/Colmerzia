@@ -103,7 +103,7 @@ export default function GeneralSettingsTab() {
     return (
         <Panel>
             <form onSubmit={handleSubmit}>
-                <div className="form-grid">
+                <div className="form-grid two">
                     <TextField
                         label="Nombre de la tienda"
                         value={form.name ?? ""}

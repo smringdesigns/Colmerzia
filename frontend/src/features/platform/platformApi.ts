@@ -108,6 +108,16 @@ export async function getPlatformUsers(params?: {
 }
 
 /**
+ * Elimina una tienda de forma PERMANENTE, junto con todo lo que le
+ * pertenece (usuarios, roles, categorías, productos, configuración,
+ * suscripción). Úsalo solo para corregir errores de creación, no
+ * para desactivar una tienda real — para eso existe is_active.
+ */
+export async function deletePlatformStore(id: number): Promise<void> {
+    await api.delete(`/v1/platform/stores/${id}`);
+}
+
+/**
  * Elimina un usuario de forma PERMANENTE, sin importar la tienda a
  * la que pertenezca. A diferencia de deleteUser() (features/users),
  * esto no es soft-delete: libera el correo (único en toda la
@@ -119,15 +129,54 @@ export async function deletePlatformUser(id: number): Promise<void> {
 }
 
 /**
- * Cambia el tenant activo del panel a la tienda indicada y recarga.
+ * Cambia el tenant activo del panel a la tienda indicada y te lleva
+ * a su dashboard.
  *
  * Como super-admin, tu propio token de Sanctum sirve para operar
  * sobre cualquier tienda (ver Controller::currentStoreId en el
  * backend) — lo único que hace falta es que el frontend mande el
  * X-Tenant correcto. api/client.ts cae a este valor de localStorage
  * cuando no estás navegando por un subdominio real.
+ *
+ * Usamos window.location.href (navegación completa) en vez de
+ * navigate() de react-router a propósito: necesitamos que TODO se
+ * recargue desde cero —queries de TanStack Query, headers del
+ * cliente axios, todo— para que el nuevo X-Tenant se aplique en
+ * cada petición siguiente, no solo en la navegación.
  */
 export function switchToStore(subdomain: string): void {
     localStorage.setItem("tenant_subdomain", subdomain);
-    window.location.reload();
+    window.location.href = "/dashboard";
+}
+
+/**
+ * Calcula la URL pública (storefront) de una tienda a partir de su
+ * subdominio.
+ *
+ * Dev:  VITE_STOREFRONT_URL=http://localhost:5174 → http://{sub}.localhost:5174
+ * Prod: VITE_STOREFRONT_URL=https://colmerzia.com → https://{sub}.colmerzia.com
+ *
+ * Si VITE_STOREFRONT_URL no está definida, cae al puerto de
+ * desarrollo del storefront (5174) para no romper el entorno local.
+ */
+export function getStorefrontUrl(subdomain: string): string {
+    const base = import.meta.env.VITE_STOREFRONT_URL ?? "http://localhost:5174";
+
+    try {
+        const url = new URL(base);
+        const path = url.pathname === "/" ? "" : url.pathname;
+        return `${url.protocol}//${subdomain}.${url.host}${path}`;
+    } catch {
+        return base;
+    }
+}
+
+/**
+ * Abre la tienda pública (storefront) de esa tienda en una pestaña
+ * nueva — distinto de switchToStore(), que te lleva al PANEL
+ * administrativo. Esto es lo que ve un cliente comprando ahí, sin
+ * sesión ni panel.
+ */
+export function openStorefront(subdomain: string): void {
+    window.open(getStorefrontUrl(subdomain), "_blank", "noopener,noreferrer");
 }

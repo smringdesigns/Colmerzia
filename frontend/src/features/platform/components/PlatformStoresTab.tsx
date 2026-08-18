@@ -1,20 +1,26 @@
 import { useRef, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
     ChevronLeft,
     ChevronRight,
+    ExternalLink,
     LogIn,
     Search,
     ShoppingBag,
     Store as StoreIcon,
+    Trash2,
     Users,
 } from "lucide-react";
 
 import Badge from "../../../components/ui/Badge";
 import Button from "../../../components/ui/Button";
+import ConfirmDialog from "../../../components/ui/ConfirmDialog";
 import Panel from "../../../components/ui/Panel";
+import { useToast } from "../../../components/ui/useToast";
 import {
+    deletePlatformStore,
     getPlatformStores,
+    openStorefront,
     switchToStore,
     type PlatformStore,
 } from "../platformApi";
@@ -50,10 +56,15 @@ const BUSINESS_TYPE_LABELS: Record<string, string> = {
 };
 
 export default function PlatformStoresTab() {
+    const queryClient = useQueryClient();
+    const { notify } = useToast();
+
     const [search, setSearch] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState("");
     const [page, setPage] = useState(1);
     const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    const [storeToDelete, setStoreToDelete] = useState<PlatformStore | null>(null);
 
     function handleSearch(value: string) {
         setSearch(value);
@@ -76,6 +87,29 @@ export default function PlatformStoresTab() {
                 per_page: 15,
                 search: debouncedSearch || undefined,
             }),
+    });
+
+    const { mutate: remove, isPending: isDeleting } = useMutation({
+        mutationFn: deletePlatformStore,
+        onSuccess: () => {
+            setStoreToDelete(null);
+            notify({
+                title: "Tienda eliminada",
+                message: "La tienda y todo lo que le pertenecía se eliminó de forma permanente.",
+                tone: "success",
+            });
+            queryClient.invalidateQueries({ queryKey: ["platform-stores"] });
+            queryClient.invalidateQueries({ queryKey: ["platform-users"] });
+        },
+        onError: (error: any) => {
+            notify({
+                title: "No se pudo eliminar",
+                message:
+                    error.response?.data?.message ||
+                    "Inténtalo nuevamente en unos segundos.",
+                tone: "error",
+            });
+        },
     });
 
     function handleEnter(store: PlatformStore) {
@@ -200,10 +234,26 @@ export default function PlatformStoresTab() {
                                         <div className="actions-cell">
                                             <button
                                                 type="button"
-                                                title="Entrar a esta tienda"
+                                                title="Entrar al panel administrativo"
                                                 onClick={() => handleEnter(store)}
                                             >
                                                 <LogIn size={15} />
+                                            </button>
+                                            <button
+                                                type="button"
+                                                title="Ver tienda pública"
+                                                onClick={() => openStorefront(store.subdomain)}
+                                            >
+                                                <ExternalLink size={15} />
+                                            </button>
+                                            <button
+                                                type="button"
+                                                title="Eliminar permanentemente"
+                                                disabled={isDeleting}
+                                                className="danger"
+                                                onClick={() => setStoreToDelete(store)}
+                                            >
+                                                <Trash2 size={15} />
                                             </button>
                                         </div>
                                     </td>
@@ -243,6 +293,16 @@ export default function PlatformStoresTab() {
                     </div>
                 </div>
             )}
+
+            <ConfirmDialog
+                isOpen={Boolean(storeToDelete)}
+                isPending={isDeleting}
+                title="Eliminar tienda permanentemente"
+                confirmLabel="Eliminar para siempre"
+                description={`Esto borra "${storeToDelete?.name}" (${storeToDelete?.subdomain}) y TODO lo que le pertenece — usuarios, roles, categorías, productos, configuración y suscripción — de forma DEFINITIVA. Úsalo solo para corregir errores de creación, no para desactivar una tienda real.`}
+                onClose={() => setStoreToDelete(null)}
+                onConfirm={() => storeToDelete && remove(storeToDelete.id)}
+            />
         </div>
     );
 }

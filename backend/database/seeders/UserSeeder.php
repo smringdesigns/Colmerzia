@@ -2,30 +2,81 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use App\Models\Role;
 use App\Models\Store;
-use Illuminate\Support\Str;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        $store = Store::first();
+        /*
+        |--------------------------------------------------------------------------
+        | Tienda principal
+        |--------------------------------------------------------------------------
+        */
 
-        $role = Role::where('slug', 'super-admin')->firstOrFail();
+        $store = Store::where('subdomain', 'colmerzia')->firstOrFail();
 
-        $user = User::create([
-            'store_id' => $store->id,
-            'uuid' => Str::uuid(),
-            'name' => 'Super Administrador',
-            'email' => 'elmusdevops@gmail.com',
-            'email_verified_at' => now(), // verificado su correo electrónico
-            'password' => bcrypt('Root123'),
-            'is_active' => true,
+        /*
+        |--------------------------------------------------------------------------
+        | Rol de super administrador
+        |--------------------------------------------------------------------------
+        */
+
+        $role = Role::where('store_id', $store->id)
+            ->where('slug', 'super-admin')
+            ->firstOrFail();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Crear o recuperar usuario administrador
+        |--------------------------------------------------------------------------
+        |
+        | El correo electrónico es único en toda la plataforma.
+        | Por eso primero buscamos el usuario existente.
+        |
+        */
+
+        $user = User::firstOrCreate(
+            [
+                'email' => 'elmusdevops@gmail.com',
+            ],
+            [
+                'store_id' => $store->id,
+                'uuid' => (string) Str::uuid(),
+                'name' => 'Super Administrador',
+                'email_verified_at' => now(),
+                'password' => Hash::make('Root123'),
+                'is_active' => true,
+            ]
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | Mantener el usuario asociado a la tienda principal
+        |--------------------------------------------------------------------------
+        */
+
+        if ($user->store_id !== $store->id) {
+            $user->store_id = $store->id;
+            $user->save();
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Mantener el usuario como super administrador
+        |--------------------------------------------------------------------------
+        |
+        | syncWithoutDetaching evita duplicar la relación en role_user.
+        |
+        */
+
+        $user->roles()->syncWithoutDetaching([
+            $role->id,
         ]);
-
-        $user->roles()->attach($role);
     }
 }

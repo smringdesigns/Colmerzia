@@ -10,20 +10,48 @@ class StoreSeeder extends Seeder
 {
     public function run(): void
     {
-        $store = Store::factory()->create([
-            'name' => 'Colmerzia',
-            'subdomain' => 'colmerzia',
-            'email' => 'elmusdevops@gmail.com',
-        ]);
+        /*
+         * Tienda principal para desarrollo local.
+         *
+         * No se crean productos, categorías, clientes ni
+         * otros datos ficticios desde este seeder.
+         */
+        $store = Store::firstOrCreate(
+            [
+                'subdomain' => 'colmerzia',
+            ],
+            [
+                'name' => 'Colmerzia',
+                'email' => 'elmusdevops@gmail.com',
+                'is_active' => true,
+                'is_verified' => true,
+                'business_type' => 'retail',
+            ]
+        );
 
-        // Sin esto, EnsureSubscriptionIsWritable bloquea cualquier
-        // escritura (crear productos, staff, bodegas, etc.) en la
-        // tienda semilla: ninguna petición no-GET funcionaría en local.
-        Subscription::factory()->for($store)->plan('business')->create();
+        /*
+         * La aplicación necesita una suscripción para permitir
+         * operaciones de escritura en la tienda.
+         *
+         * Si ya existe, no crea otra.
+         */
+        if (! $store->subscription()->exists()) {
+            Subscription::factory()
+                ->for($store)
+                ->plan('business')
+                ->create();
+        }
 
-        $store->settings()->create([
-            'currency' => 'COP',
-            'timezone' => 'America/Bogota',
-        ]);
+        /*
+         * Configuración básica de la tienda.
+         *
+         * Solo se crea si todavía no existe.
+         */
+        if (! $store->settings()->exists()) {
+            $store->settings()->create([
+                'currency' => 'COP',
+                'timezone' => 'America/Bogota',
+            ]);
+        }
     }
 }

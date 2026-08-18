@@ -2,17 +2,26 @@
 
 namespace Database\Seeders;
 
+use App\Models\Permission;
 use App\Models\Role;
 use App\Models\Store;
-use App\Models\Permission;
-use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class RoleSeeder extends Seeder
 {
     public function run(): void
     {
-        $store = Store::firstOrFail();
+        /*
+        |--------------------------------------------------------------------------
+        | Obtener la tienda principal
+        |--------------------------------------------------------------------------
+        |
+        | El seeder trabaja sobre la tienda principal de desarrollo.
+        |
+        */
+
+        $store = Store::where('subdomain', 'colmerzia')->firstOrFail();
 
         /*
         |--------------------------------------------------------------------------
@@ -22,11 +31,13 @@ class RoleSeeder extends Seeder
 
         $permissions = Permission::all();
 
-
         /*
         |--------------------------------------------------------------------------
-        | Crear roles
+        | Roles del sistema
         |--------------------------------------------------------------------------
+        |
+        | Estos son los roles base que necesita Colmerzia.
+        |
         */
 
         $roles = [
@@ -37,21 +48,41 @@ class RoleSeeder extends Seeder
 
         foreach ($roles as $roleSlug) {
 
-            $role = Role::create([
-                'store_id'  => $store->id,
-                'uuid'      => Str::uuid(),
-                'name'      => ucfirst($roleSlug),
-                'slug'      => $roleSlug,
-                'is_system' => true,
-            ]);
+            /*
+            |--------------------------------------------------------------------------
+            | Buscar el rol o crearlo
+            |--------------------------------------------------------------------------
+            |
+            | Evita errores de duplicados al ejecutar varias veces:
+            |
+            | roles_store_id_slug_unique
+            |
+            */
 
+            $role = Role::firstOrCreate(
+                [
+                    'store_id' => $store->id,
+                    'slug' => $roleSlug,
+                ],
+                [
+                    'uuid' => (string) Str::uuid(),
+                    'name' => match ($roleSlug) {
+                        'super-admin' => 'Super-admin',
+                        'admin' => 'Admin',
+                        'employee' => 'Employee',
+                        default => ucfirst($roleSlug),
+                    },
+                    'is_system' => true,
+                ]
+            );
 
             /*
             |--------------------------------------------------------------------------
             | Super administrador
             |--------------------------------------------------------------------------
-            | Tiene todos los permisos del sistema.
-            |--------------------------------------------------------------------------
+            |
+            | Tiene todos los permisos disponibles.
+            |
             */
 
             if ($roleSlug === 'super-admin') {
@@ -61,14 +92,14 @@ class RoleSeeder extends Seeder
                 );
             }
 
-
             /*
             |--------------------------------------------------------------------------
             | Administrador
             |--------------------------------------------------------------------------
-            | Tiene permisos de gestión, pero no necesariamente
-            | permisos globales del sistema.
-            |--------------------------------------------------------------------------
+            |
+            | Puede administrar la tienda, pero no recibe permisos
+            | relacionados con configuración global ni gestión de roles.
+            |
             */
 
             if ($roleSlug === 'admin') {
@@ -84,14 +115,14 @@ class RoleSeeder extends Seeder
                 );
             }
 
-
             /*
             |--------------------------------------------------------------------------
             | Empleado
             |--------------------------------------------------------------------------
-            | Puede consultar y operar sobre productos,
-            | inventario y clientes.
-            |--------------------------------------------------------------------------
+            |
+            | Permisos básicos para operar productos, inventario,
+            | clientes, pedidos y pagos.
+            |
             */
 
             if ($roleSlug === 'employee') {
@@ -100,13 +131,17 @@ class RoleSeeder extends Seeder
                     'slug',
                     [
                         'products.view',
+
                         'customers.view',
                         'customers.create',
+
                         'inventory.view',
                         'inventory.create',
                         'inventory.update',
+
                         'orders.view',
                         'orders.create',
+
                         'payments.view',
                         'payments.create',
                     ]
