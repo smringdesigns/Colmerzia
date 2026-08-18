@@ -108,6 +108,17 @@ export async function getPlatformUsers(params?: {
 }
 
 /**
+ * Elimina un usuario de forma PERMANENTE, sin importar la tienda a
+ * la que pertenezca. A diferencia de deleteUser() (features/users),
+ * esto no es soft-delete: libera el correo (único en toda la
+ * plataforma) para poder volver a usarlo. Úsalo solo para corregir
+ * errores reales, no como borrado rutinario de staff.
+ */
+export async function deletePlatformUser(id: number): Promise<void> {
+    await api.delete(`/v1/platform/users/${id}`);
+}
+
+/**
  * Cambia el tenant activo del panel a la tienda indicada y recarga.
  *
  * Como super-admin, tu propio token de Sanctum sirve para operar

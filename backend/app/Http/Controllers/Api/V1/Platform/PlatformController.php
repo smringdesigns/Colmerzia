@@ -122,4 +122,48 @@ class PlatformController extends Controller
 
         return UserResource::collection($users);
     }
+
+    /**
+     * Elimina un usuario de forma PERMANENTE (forceDelete), sin
+     * importar a qué tienda pertenezca.
+     *
+     * A diferencia de UserController::destroy() (soft delete, dentro
+     * de la propia tienda), esto es a propósito destructivo: existe
+     * para que un super-admin pueda revertir errores de verdad —
+     * ej. una tienda de prueba creada con el subdominio o el correo
+     * mal escrito — liberando el email (columna única en toda la
+     * plataforma) y el subdominio para poder reintentar.
+     *
+     * Protecciones:
+     * - Nadie puede eliminarse a sí mismo por esta vía.
+     * - No se puede eliminar al último usuario con rol 'super-admin'
+     *   restante (te dejaría sin forma de volver a entrar aquí).
+     */
+    public function destroyUser(Request $request, int $id)
+    {
+        $user = User::withTrashed()->findOrFail($id);
+
+        if ($request->user()->id === $user->id) {
+            abort(422, 'No puedes eliminar tu propia cuenta desde acá.');
+        }
+
+        if ($user->hasRole('super-admin')) {
+
+            $remainingSuperAdmins = User::whereHas(
+                'roles',
+                fn ($q) => $q->where('slug', 'super-admin')
+            )->where('id', '!=', $user->id)->count();
+
+            if ($remainingSuperAdmins === 0) {
+                abort(422, 'No puedes eliminar al último super-admin de la plataforma.');
+            }
+        }
+
+        $user->roles()->detach();
+        $user->forceDelete();
+
+        return response()->json([
+            'message' => 'Usuario eliminado permanentemente.',
+        ]);
+    }
 }
