@@ -24,6 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
         | store.active
         | subscription.writable
         | feature
+        | super-admin
         |
         */
 
@@ -40,6 +41,9 @@ return Application::configure(basePath: dirname(__DIR__))
 
             // Validar funcionalidades según plan
             'feature' => \App\Http\Middleware\EnsureFeatureAvailable::class,
+
+            // Restringir rutas de plataforma solo a super-admin
+            'super-admin' => \App\Http\Middleware\EnsureIsSuperAdmin::class,
 
         ]);
 

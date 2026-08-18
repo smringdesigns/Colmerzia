@@ -5,9 +5,12 @@ import {
     Warehouse,
     ShoppingCart,
     Settings,
+    Building2,
 } from "lucide-react";
 
 import { NavLink } from "react-router-dom";
+
+import { useAuthStore } from "../../store/authStore";
 
 const menu = [
     {
@@ -43,6 +46,9 @@ const menu = [
 ];
 
 export default function Sidebar() {
+    const { hasRole } = useAuthStore();
+    const isSuperAdmin = hasRole("super-admin");
+
     return (
         <aside className="sidebar">
             <div className="sidebar-brand">
@@ -66,6 +72,18 @@ export default function Sidebar() {
                         <span>{item.name}</span>
                     </NavLink>
                 ))}
+
+                {isSuperAdmin && (
+                    <NavLink
+                        to="/admin"
+                        className={({ isActive }) =>
+                            isActive ? "sidebar-link active" : "sidebar-link"
+                        }
+                    >
+                        <Building2 size={18} />
+                        <span>Todas las tiendas</span>
+                    </NavLink>
+                )}
             </nav>
 
             <div className="sidebar-cta">

@@ -85,6 +85,14 @@ class Store extends Model
     }
 
     /**
+     * Productos de la tienda.
+     */
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
+    /**
      * Relación:
      * Una tienda tiene una suscripción.
      */
