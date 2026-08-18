@@ -10,13 +10,13 @@ import CustomerForm from "../pages/CustomerForm";
 import Inventory from "../pages/Inventory";
 import Orders from "../pages/Orders";
 import OrderDetail from "../pages/OrderDetail";
-import ComingSoon from "../pages/ComingSoon";
+import CheckEmail from "../pages/CheckEmail"; // <-- 1. Importamos el nuevo componente
 import CreateAccount from "../pages/CreateAccount";
 import ForgotPassword from "../pages/ForgotPassword";
 import ResetPassword from "../pages/ResetPassword";
 import VerifyEmail from "../features/auth/VerifyEmail";
-import CheckEmail from "../pages/CheckEmail"; // <-- 1. Importamos el nuevo componente
 import CreateStore from "../pages/CreateStore";
+import PlatformStores from "../pages/PlatformStores";
 import Settings from "../pages/Settings";
 import NotFound from "../pages/NotFound";
 import ProtectedRoute from "../components/auth/ProtectedRoute";
@@ -43,11 +43,6 @@ export const router = createBrowserRouter([
             { path: "/verify-email", element: <VerifyEmail /> },
 
             { path: "/onboarding", element: <CreateStore /> },
-
-            {
-                path: "/admin",
-                element: <ComingSoon title="Panel Global de Colmerzia (Super Admin)" />
-            },
 
 
             {
@@ -96,6 +91,10 @@ export const router = createBrowserRouter([
                     // Configuración
                     { path: "settings", element: <Settings /> },
                     { path: "configuracion", element: <Settings /> },
+
+
+                    // Plataforma (solo super-admin)
+                    { path: "admin", element: <PlatformStores /> },
 
 
                     { path: "*", element: <NotFound /> },

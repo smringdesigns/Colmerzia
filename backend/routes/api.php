@@ -25,6 +25,9 @@ use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Controllers\Api\V1\RoleController;
 use App\Http\Controllers\Api\V1\PermissionController;
 
+// Plataforma (super-admin, cruza todas las tiendas)
+use App\Http\Controllers\Api\V1\Platform\PlatformController;
+
 // Storefront
 use App\Http\Controllers\Api\V1\Storefront\CartController;
 use App\Http\Controllers\Api\V1\Storefront\CheckoutController;
@@ -174,6 +177,29 @@ Route::prefix('v1')->group(function () {
             '/stores',
             [StoreController::class, 'store']
         )->middleware('throttle:register');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Plataforma (solo super-admin, sin tenant)
+        |--------------------------------------------------------------------------
+        |
+        | A propósito viven acá, fuera del grupo 'tenant' de más abajo:
+        | necesitan ver datos de TODAS las tiendas a la vez, así que
+        | resolver un tenant primero sería contradictorio. La única
+        | protección que necesitan es 'super-admin'.
+        |
+        */
+
+        Route::prefix('platform')
+            ->middleware('super-admin')
+            ->group(function () {
+
+                Route::get('/stores', [PlatformController::class, 'stores']);
+                Route::get('/stores/{id}', [PlatformController::class, 'showStore']);
+                Route::get('/users', [PlatformController::class, 'users']);
+
+            });
 
     });
 

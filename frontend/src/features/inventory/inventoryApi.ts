@@ -51,7 +51,7 @@ export async function getWarehouses(): Promise<Warehouse[]> {
 
     const res = await api.get("/v1/warehouses");
 
-    return res.data.value;
+    return res.data;
 }
 
 
