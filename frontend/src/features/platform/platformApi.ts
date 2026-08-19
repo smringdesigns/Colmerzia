@@ -160,7 +160,7 @@ export function switchToStore(subdomain: string): void {
  * desarrollo del storefront (5174) para no romper el entorno local.
  */
 export function getStorefrontUrl(subdomain: string): string {
-    const base = import.meta.env.VITE_STOREFRONT_URL ?? "http://localhost:5174";
+    const base = import.meta.env.VITE_STOREFRONT_URL ?? "http://colmerzia.localhost:5174";
 
     try {
         const url = new URL(base);
