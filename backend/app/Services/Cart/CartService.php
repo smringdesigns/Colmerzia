@@ -6,6 +6,7 @@ use App\Exceptions\CartException;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Coupon;
+use App\Models\Customer;
 use App\Models\DiscountRule;
 use App\Models\Product;
 use App\Models\ProductVariant;
@@ -19,8 +20,37 @@ class CartService
     ) {
     }
 
-    public function resolveCart(int $storeId, ?string $guestToken): array
+    /**
+     * Resuelve el carrito activo de la petición actual.
+     *
+     * - Si hay un cliente autenticado (Sanctum), su carrito se
+     *   busca/crea por customer_id — así el mismo cliente ve su
+     *   carrito sin importar desde qué dispositivo entre.
+     * - Si no hay cliente autenticado, se comporta exactamente igual
+     *   que antes: por guest_token, creando uno nuevo si hace falta.
+     */
+    public function resolveCart(int $storeId, ?string $guestToken, ?Customer $customer = null): array
     {
+        if ($customer) {
+            $cart = Cart::where('store_id', $storeId)
+                ->where('customer_id', $customer->id)
+                ->where('status', Cart::STATUS_ACTIVE)
+                ->first();
+
+            if ($cart) {
+                return [$cart, $guestToken];
+            }
+
+            $cart = Cart::create([
+                'store_id' => $storeId,
+                'customer_id' => $customer->id,
+                'status' => Cart::STATUS_ACTIVE,
+                'last_activity_at' => now(),
+            ]);
+
+            return [$cart, $guestToken];
+        }
+
         if ($guestToken) {
             $cart = Cart::where('store_id', $storeId)
                 ->where('guest_token', $guestToken)

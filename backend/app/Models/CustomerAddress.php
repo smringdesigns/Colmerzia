@@ -6,34 +6,46 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * OJO: este modelo se reescribió porque el $fillable anterior usaba
+ * nombres de columna que no existen en la tabla ('name', 'recipient',
+ * 'address', 'reference') — la migración real usa 'label',
+ * 'recipient_name', 'address_line_1'/'address_line_2', 'notes'.
+ * Crear un registro con los nombres viejos habría fallado con un
+ * error SQL de columna inexistente; nunca se llegó a usar.
+ */
 class CustomerAddress extends Model
 {
     use HasFactory, SoftDeletes;
 
-    /**
-     * Campos asignables masivamente.
-     */
     protected $fillable = [
         'customer_id',
-        'name',
-        'recipient',
+        'uuid',
+        'label',
+        'recipient_name',
         'phone',
+        'address_line_1',
+        'address_line_2',
         'country',
         'state',
         'city',
-        'address',
         'postal_code',
-        'reference',
+        'latitude',
+        'longitude',
+        'is_shipping',
+        'is_billing',
         'is_default',
+        'notes',
     ];
 
-    /**
-     * Conversión automática de tipos.
-     */
     protected function casts(): array
     {
         return [
+            'is_shipping' => 'boolean',
+            'is_billing' => 'boolean',
             'is_default' => 'boolean',
+            'latitude' => 'decimal:7',
+            'longitude' => 'decimal:7',
         ];
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Services\Checkout;
 
+use App\Contracts\Payments\PaymentGatewayInterface;
 use App\Exceptions\CartException;
 use App\Models\Cart;
 use App\Models\Coupon;
@@ -15,20 +16,22 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 /**
- * Convierte un carrito activo en una orden.
+ * Convierte un carrito activo en una orden, e inicia el cobro con la
+ * pasarela de pago configurada (ver PaymentGatewayInterface).
  *
- * NOTA sobre pagos: esto crea la Order en estado 'pending' /
- * payment_status 'pending'. No se integra ninguna pasarela de pago
- * real todavía (mismo criterio usado en el sistema de planes) — el
- * registro en `payments` queda como responsabilidad de un paso
- * posterior (webhook de la pasarela, o confirmación manual), no de
- * este servicio.
+ * La pasarela activa por defecto es ManualPaymentGateway
+ * (contraentrega/transferencia) — la orden y el pago quedan en
+ * estado 'pending' hasta confirmación manual. Cuando se integre una
+ * pasarela real (PSE, Wompi, tarjeta), el binding cambia en
+ * AppServiceProvider y este servicio no necesita tocarse: solo pasa
+ * a devolver una redirect_url real en vez de null.
  */
 class CheckoutService
 {
     public function __construct(
         private readonly CartService $cartService,
-        private readonly InventoryService $inventoryService
+        private readonly InventoryService $inventoryService,
+        private readonly PaymentGatewayInterface $paymentGateway
     ) {
     }
 
@@ -36,10 +39,20 @@ class CheckoutService
      * @param array{name:string,email:string,phone?:string} $customerData
      * @param array $shippingAddress
      */
-    public function checkout(Cart $cart, array $customerData, array $shippingAddress): Order
-    {
+    public function checkout(
+        Cart $cart,
+        array $customerData,
+        array $shippingAddress,
+        string $paymentMethod = 'cash'
+    ): Order {
         if (!$cart->isActive()) {
             throw new CartException('Este carrito ya no está disponible.');
+        }
+
+        if (!in_array($paymentMethod, $this->paymentGateway->supportedMethods(), true)) {
+            throw new CartException(
+                "El método de pago '{$paymentMethod}' no está disponible."
+            );
         }
 
         $items = $cart->items()->get();
@@ -48,7 +61,7 @@ class CheckoutService
             throw new CartException('El carrito está vacío.');
         }
 
-        return DB::transaction(function () use ($cart, $items, $customerData, $shippingAddress) {
+        return DB::transaction(function () use ($cart, $items, $customerData, $shippingAddress, $paymentMethod) {
 
             // Re-valida stock DENTRO de la transacción, con lock, para
             // evitar que dos checkouts simultáneos vendan la misma
@@ -129,6 +142,13 @@ class CheckoutService
             }
 
             $cart->update(['status' => Cart::STATUS_CONVERTED]);
+
+            // Inicia el cobro. Con la pasarela manual esto solo crea
+            // el registro en `payments` en estado 'pending' — con una
+            // pasarela real, acá es donde llegaría la redirect_url
+            // (ej. la pantalla de PSE) que el frontend necesita
+            // mostrarle al cliente para completar el pago.
+            $this->paymentGateway->initiate($order, $paymentMethod);
 
             return $order->fresh(['items', 'payments']);
         });

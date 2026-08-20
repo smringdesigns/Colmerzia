@@ -12,6 +12,8 @@ use App\Contracts\Auth\AuthServiceInterface;
 use App\Services\Auth\AuthService;
 use App\Contracts\Onboarding\StoreOnboardingServiceInterface;
 use App\Services\Onboarding\StoreOnboardingService;
+use App\Contracts\Payments\PaymentGatewayInterface;
+use App\Services\Payments\ManualPaymentGateway;
 use App\Models\User;
 
 class AppServiceProvider extends ServiceProvider
@@ -26,6 +28,14 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             StoreOnboardingServiceInterface::class,
             StoreOnboardingService::class
+        );
+
+        // Pasarela de pago por defecto: contraentrega/transferencia
+        // manual. Cuando se integre PSE/Wompi de verdad, este bind
+        // cambia a la clase nueva y nada más en el sistema se toca.
+        $this->app->bind(
+            PaymentGatewayInterface::class,
+            ManualPaymentGateway::class
         );
     }
 

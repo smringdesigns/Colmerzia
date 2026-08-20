@@ -11,9 +11,18 @@ class Payment extends Model
 
     protected $fillable = [
         'order_id',
+        'uuid',
+        'provider',
         'method',
+        'provider_payment_id',
+        'reference',
         'status',
         'amount',
+        'fee',
+        'net_amount',
+        'currency',
+        'gateway_response',
+        'metadata',
         'paid_at',
     ];
 
@@ -21,6 +30,10 @@ class Payment extends Model
     {
         return [
             'amount' => 'decimal:2',
+            'fee' => 'decimal:2',
+            'net_amount' => 'decimal:2',
+            'gateway_response' => 'array',
+            'metadata' => 'array',
             'paid_at' => 'datetime',
         ];
     }

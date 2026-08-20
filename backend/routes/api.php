@@ -25,12 +25,14 @@ use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Controllers\Api\V1\RoleController;
 use App\Http\Controllers\Api\V1\PermissionController;
 
-// Plataforma
+// Plataforma (super-admin, cruza todas las tiendas)
 use App\Http\Controllers\Api\V1\Platform\PlatformController;
 
 // Storefront
 use App\Http\Controllers\Api\V1\Storefront\CartController;
 use App\Http\Controllers\Api\V1\Storefront\CheckoutController;
+use App\Http\Controllers\Api\V1\Storefront\CustomerAddressController;
+use App\Http\Controllers\Api\V1\Storefront\CustomerAuthController;
 use App\Http\Controllers\Api\V1\Storefront\ProductController as StorefrontProductController;
 use App\Http\Controllers\Api\V1\Storefront\CategoryController as StorefrontCategoryController;
 use App\Http\Controllers\Api\V1\Storefront\StoreController as StorefrontStoreController;
@@ -47,7 +49,6 @@ use App\Http\Controllers\Api\V1\Storefront\StoreController as StorefrontStoreCon
 |
 | ├── Públicas
 | │   ├── onboarding
-| │   ├── business-types
 | │   ├── register
 | │   ├── login
 | │   ├── password
@@ -56,8 +57,7 @@ use App\Http\Controllers\Api\V1\Storefront\StoreController as StorefrontStoreCon
 | ├── Autenticadas sin tenant
 | │   ├── me
 | │   ├── logout
-| │   ├── stores
-| │   └── platform
+| │   └── stores
 | |
 | └── Multi-tenant
 |     │
@@ -97,47 +97,34 @@ Route::prefix('v1')->group(function () {
     |--------------------------------------------------------------------------
     */
 
-    // ---------------------------------------------------------------------
     // Onboarding
-    // ---------------------------------------------------------------------
-
     Route::post(
         '/onboarding',
         [StoreOnboardingController::class, 'store']
     )->middleware('throttle:register');
 
-
-    // Catálogo de tipos de negocio
+    // Catálogo de tipos de negocio (para el <select> del onboarding)
     Route::get(
         '/business-types',
         [StoreOnboardingController::class, 'businessTypes']
     );
 
 
-    // ---------------------------------------------------------------------
     // Registro
-    // ---------------------------------------------------------------------
-
     Route::post(
         '/register',
         [AuthController::class, 'register']
     )->middleware('throttle:register');
 
 
-    // ---------------------------------------------------------------------
     // Login
-    // ---------------------------------------------------------------------
-
     Route::post(
         '/login',
         [AuthController::class, 'login']
     )->middleware('throttle:login');
 
 
-    // ---------------------------------------------------------------------
     // Recuperación de contraseña
-    // ---------------------------------------------------------------------
-
     Route::post(
         '/forgot-password',
         [AuthController::class, 'forgotPassword']
@@ -149,10 +136,7 @@ Route::prefix('v1')->group(function () {
     )->middleware('throttle:6,1');
 
 
-    // ---------------------------------------------------------------------
     // Verificación de correo
-    // ---------------------------------------------------------------------
-
     Route::get(
         '/email/verify/{id}/{hash}',
         [AuthController::class, 'verifyEmail']
@@ -172,40 +156,25 @@ Route::prefix('v1')->group(function () {
 
     Route::middleware('auth:sanctum')->group(function () {
 
-        // -----------------------------------------------------------------
         // Usuario autenticado
-        // -----------------------------------------------------------------
-
         Route::get(
             '/me',
             [AuthController::class, 'me']
         );
 
-
-        // -----------------------------------------------------------------
         // Logout
-        // -----------------------------------------------------------------
-
         Route::post(
             '/logout',
             [AuthController::class, 'logout']
         );
 
-
-        // -----------------------------------------------------------------
-        // Reenviar verificación de correo
-        // -----------------------------------------------------------------
-
+        // Reenviar verificación
         Route::post(
             '/email/verification-notification',
             [AuthController::class, 'sendVerificationEmail']
         )->middleware('throttle:6,1');
 
-
-        // -----------------------------------------------------------------
         // Crear tienda
-        // -----------------------------------------------------------------
-
         Route::post(
             '/stores',
             [StoreController::class, 'store']
@@ -214,15 +183,13 @@ Route::prefix('v1')->group(function () {
 
         /*
         |--------------------------------------------------------------------------
-        | Plataforma
+        | Plataforma (solo super-admin, sin tenant)
         |--------------------------------------------------------------------------
         |
-        | Estas rutas son exclusivamente para el super-admin.
-        |
-        | IMPORTANTE:
-        | No utilizan el middleware "tenant" porque el super-admin
-        | necesita consultar y administrar información de todas
-        | las tiendas de la plataforma.
+        | A propósito viven acá, fuera del grupo 'tenant' de más abajo:
+        | necesitan ver datos de TODAS las tiendas a la vez, así que
+        | resolver un tenant primero sería contradictorio. La única
+        | protección que necesitan es 'super-admin'.
         |
         */
 
@@ -230,45 +197,14 @@ Route::prefix('v1')->group(function () {
             ->middleware('super-admin')
             ->group(function () {
 
-                // ---------------------------------------------------------
-                // Tiendas
-                // ---------------------------------------------------------
+                Route::get('/stores', [PlatformController::class, 'stores']);
+                Route::get('/stores/{id}', [PlatformController::class, 'showStore']);
+                Route::delete('/stores/{id}', [PlatformController::class, 'destroyStore']);
+                Route::get('/users', [PlatformController::class, 'users']);
+                Route::delete('/users/{id}', [PlatformController::class, 'destroyUser']);
 
-                // Listar todas las tiendas
-                Route::get(
-                    '/stores',
-                    [PlatformController::class, 'stores']
-                );
-
-                // Ver una tienda específica
-                Route::get(
-                    '/stores/{id}',
-                    [PlatformController::class, 'showStore']
-                );
-
-                // Eliminar una tienda
-                Route::delete(
-                    '/stores/{id}',
-                    [PlatformController::class, 'destroyStore']
-                );
-
-
-                // ---------------------------------------------------------
-                // Usuarios
-                // ---------------------------------------------------------
-
-                // Listar todos los usuarios
-                Route::get(
-                    '/users',
-                    [PlatformController::class, 'users']
-                );
-
-                // Eliminar un usuario
-                Route::delete(
-                    '/users/{id}',
-                    [PlatformController::class, 'destroyUser']
-                );
             });
+
     });
 
 
@@ -292,9 +228,11 @@ Route::prefix('v1')->group(function () {
 
         Route::prefix('storefront')->group(function () {
 
-            // -----------------------------------------------------------------
-            // Información de la tienda
-            // -----------------------------------------------------------------
+            /*
+            |--------------------------------------------------------------------------
+            | Información de la tienda
+            |--------------------------------------------------------------------------
+            */
 
             Route::get(
                 '/store',
@@ -302,9 +240,11 @@ Route::prefix('v1')->group(function () {
             );
 
 
-            // -----------------------------------------------------------------
-            // Catálogo
-            // -----------------------------------------------------------------
+            /*
+            |--------------------------------------------------------------------------
+            | Catálogo
+            |--------------------------------------------------------------------------
+            */
 
             Route::get(
                 '/products',
@@ -324,6 +264,67 @@ Route::prefix('v1')->group(function () {
 
             /*
             |--------------------------------------------------------------------------
+            | Cuenta de cliente
+            |--------------------------------------------------------------------------
+            |
+            | Registro/login son públicos (obvio). "Mi cuenta" y
+            | direcciones requieren 'customer' — el mismo tipo de
+            | chequeo que 'super-admin', pero para distinguir un
+            | Customer autenticado de un User del panel.
+            |
+            */
+
+            Route::prefix('auth')->group(function () {
+
+                Route::post(
+                    '/register',
+                    [CustomerAuthController::class, 'register']
+                )->middleware('throttle:register');
+
+                Route::post(
+                    '/login',
+                    [CustomerAuthController::class, 'login']
+                )->middleware('throttle:login');
+
+            });
+
+            Route::middleware('customer')->group(function () {
+
+                Route::post(
+                    '/auth/logout',
+                    [CustomerAuthController::class, 'logout']
+                );
+
+                Route::get(
+                    '/me',
+                    [CustomerAuthController::class, 'me']
+                );
+
+                Route::get(
+                    '/addresses',
+                    [CustomerAddressController::class, 'index']
+                );
+
+                Route::post(
+                    '/addresses',
+                    [CustomerAddressController::class, 'store']
+                );
+
+                Route::put(
+                    '/addresses/{id}',
+                    [CustomerAddressController::class, 'update']
+                );
+
+                Route::delete(
+                    '/addresses/{id}',
+                    [CustomerAddressController::class, 'destroy']
+                );
+
+            });
+
+
+            /*
+            |--------------------------------------------------------------------------
             | Carrito y Checkout
             |--------------------------------------------------------------------------
             |
@@ -333,10 +334,7 @@ Route::prefix('v1')->group(function () {
 
             Route::middleware('subscription.writable')->group(function () {
 
-                // -------------------------------------------------------------
                 // Carrito
-                // -------------------------------------------------------------
-
                 Route::get(
                     '/cart',
                     [CartController::class, 'show']
@@ -368,15 +366,14 @@ Route::prefix('v1')->group(function () {
                 );
 
 
-                // -------------------------------------------------------------
                 // Checkout
-                // -------------------------------------------------------------
-
                 Route::post(
                     '/checkout',
                     [CheckoutController::class, 'store']
                 );
+
             });
+
         });
 
 
@@ -638,6 +635,7 @@ Route::prefix('v1')->group(function () {
                     '/permissions',
                     [PermissionController::class, 'index']
                 )->middleware('can:roles.view');
+
             });
 
 
@@ -646,8 +644,8 @@ Route::prefix('v1')->group(function () {
             | 3.3 PEDIDOS
             |--------------------------------------------------------------------------
             |
-            | Los pedidos existentes pueden gestionarse aunque la
-            | suscripción esté en modo de solo lectura.
+            | Los pedidos existentes pueden gestionarse aunque
+            | la suscripción esté en modo de solo lectura.
             |
             */
 
@@ -665,6 +663,9 @@ Route::prefix('v1')->group(function () {
                 '/orders/{order}/status',
                 [OrderController::class, 'updateStatus']
             )->middleware('can:orders.update');
+
         });
+
     });
+
 });

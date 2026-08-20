@@ -8,6 +8,7 @@ use App\Http\Requests\Storefront\AddCartItemRequest;
 use App\Http\Requests\Storefront\ApplyCouponRequest;
 use App\Http\Requests\Storefront\UpdateCartItemRequest;
 use App\Http\Resources\Storefront\CartResource;
+use App\Models\Customer;
 use App\Services\Cart\CartService;
 use Illuminate\Http\Request;
 
@@ -16,6 +17,20 @@ class CartController extends Controller
     public function __construct(
         private readonly CartService $cartService
     ) {
+    }
+
+    /**
+     * Si la petición trae un token Sanctum válido de un Customer
+     * (no de un User de panel), lo devuelve — si no, null, y el
+     * carrito se resuelve como invitado por X-Guest-Token, igual
+     * que siempre. No es un middleware porque estas rutas son
+     * públicas: deben funcionar CON o SIN sesión de cliente.
+     */
+    private function authenticatedCustomer(Request $request): ?Customer
+    {
+        $user = $request->user('sanctum');
+
+        return $user instanceof Customer ? $user : null;
     }
 
     /**
@@ -28,7 +43,8 @@ class CartController extends Controller
     {
         [$cart, $guestToken] = $this->cartService->resolveCart(
             $this->currentStoreId($request),
-            $request->header('X-Guest-Token')
+            $request->header('X-Guest-Token'),
+            $this->authenticatedCustomer($request)
         );
 
         return (new CartResource(
@@ -48,7 +64,8 @@ class CartController extends Controller
     {
         [$cart, $guestToken] = $this->cartService->resolveCart(
             $this->currentStoreId($request),
-            $request->header('X-Guest-Token')
+            $request->header('X-Guest-Token'),
+            $this->authenticatedCustomer($request)
         );
 
         try {
@@ -85,7 +102,8 @@ class CartController extends Controller
     ) {
         [$cart, $guestToken] = $this->cartService->resolveCart(
             $this->currentStoreId($request),
-            $request->header('X-Guest-Token')
+            $request->header('X-Guest-Token'),
+            $this->authenticatedCustomer($request)
         );
 
         try {
@@ -119,7 +137,8 @@ class CartController extends Controller
     ) {
         [$cart, $guestToken] = $this->cartService->resolveCart(
             $this->currentStoreId($request),
-            $request->header('X-Guest-Token')
+            $request->header('X-Guest-Token'),
+            $this->authenticatedCustomer($request)
         );
 
         try {
@@ -151,7 +170,8 @@ class CartController extends Controller
     ) {
         [$cart, $guestToken] = $this->cartService->resolveCart(
             $this->currentStoreId($request),
-            $request->header('X-Guest-Token')
+            $request->header('X-Guest-Token'),
+            $this->authenticatedCustomer($request)
         );
 
         try {
@@ -182,7 +202,8 @@ class CartController extends Controller
     {
         [$cart, $guestToken] = $this->cartService->resolveCart(
             $this->currentStoreId($request),
-            $request->header('X-Guest-Token')
+            $request->header('X-Guest-Token'),
+            $this->authenticatedCustomer($request)
         );
 
         $this->cartService->removeCoupon($cart);

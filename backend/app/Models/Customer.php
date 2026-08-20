@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Concerns\BelongsToStore;
+use Laravel\Sanctum\HasApiTokens;
 
 class Customer extends Model
 {
-    use HasFactory, SoftDeletes, BelongsToStore;
+    use HasFactory, SoftDeletes, BelongsToStore, HasApiTokens;
 
     /**
      * Campos asignables masivamente.
@@ -21,12 +22,20 @@ class Customer extends Model
         'last_name',
         'email',
         'phone',
+        'password',
         'document_type',
         'document_number',
         'company',
         'birth_date',
         'notes',
         'is_active',
+    ];
+
+    /**
+     * Nunca se serializan hacia afuera.
+     */
+    protected $hidden = [
+        'password',
     ];
 
     /**
@@ -37,7 +46,18 @@ class Customer extends Model
         return [
             'birth_date' => 'date',
             'is_active'  => 'boolean',
+            'password'   => 'hashed',
         ];
+    }
+
+    /**
+     * True si el cliente ya se registró con contraseña propia (vs.
+     * un registro "fantasma" creado solo por hacer un checkout como
+     * invitado, que nunca definió contraseña).
+     */
+    public function hasAccount(): bool
+    {
+        return !empty($this->password);
     }
 
     /**

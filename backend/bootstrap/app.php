@@ -25,6 +25,7 @@ return Application::configure(basePath: dirname(__DIR__))
         | subscription.writable
         | feature
         | super-admin
+        | customer
         |
         */
 
@@ -44,6 +45,9 @@ return Application::configure(basePath: dirname(__DIR__))
 
             // Restringir rutas de plataforma solo a super-admin
             'super-admin' => \App\Http\Middleware\EnsureIsSuperAdmin::class,
+
+            // Restringir rutas de "mi cuenta" del storefront a clientes
+            'customer' => \App\Http\Middleware\EnsureIsCustomer::class,
 
         ]);
 
