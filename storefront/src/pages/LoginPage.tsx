@@ -2,13 +2,17 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
 
-import { loginCustomer, extractErrorMessage } from "../features/customer/customerApi";
+import {
+    loginCustomer,
+    extractErrorMessage,
+} from "../features/customer/customerApi";
 import { useCustomerAuthStore } from "../lib/customerAuthStore";
 import { useUIStore } from "../lib/uiStore";
 import { useCart } from "../features/cart/useCart";
 
 export default function LoginPage() {
     const navigate = useNavigate();
+
     const setSession = useCustomerAuthStore((s) => s.setSession);
     const showToast = useUIStore((s) => s.showToast);
     const { refetch: refetchCart } = useCart();
@@ -18,70 +22,114 @@ export default function LoginPage() {
 
     const { mutate: submit, isPending } = useMutation({
         mutationFn: () => loginCustomer({ email, password }),
+
         onSuccess: ({ data, token }) => {
             setSession(data, token);
-            refetchCart(); // por si el carrito de invitado se reasignó al loguearse
+            refetchCart();
+
             showToast(`Hola, ${data.first_name}.`, "success");
             navigate("/cuenta");
         },
+
         onError: (error) => {
-            showToast(extractErrorMessage(error, "Correo o contraseña incorrectos."), "error");
+            showToast(
+                extractErrorMessage(
+                    error,
+                    "Correo o contraseña incorrectos."
+                ),
+                "error"
+            );
         },
     });
 
     return (
-        <main className="mx-auto max-w-md px-5 py-16">
-            <h1 className="font-display text-3xl">Iniciar sesión</h1>
-            <p className="mt-2 text-sm text-[var(--color-ink-soft)]">
-                Entra para ver tus pedidos y usar tus direcciones guardadas.
-            </p>
+        <main className="min-h-[calc(100vh-5rem)] bg-[#faf8ff] px-4 py-10 sm:px-6 sm:py-14">
+            <div className="mx-auto w-full max-w-md">
 
-            <form
-                className="mt-8 flex flex-col gap-4"
-                onSubmit={(event) => {
-                    event.preventDefault();
-                    submit();
-                }}
-            >
-                <label className="flex flex-col gap-1">
-                    <span className="text-xs text-[var(--color-ink-soft)]">
-                        Correo electrónico
+                {/* Encabezado */}
+                <div className="mb-8 text-center">
+                    <span className="mb-3 inline-flex items-center rounded-full bg-[#eaedff] px-3 py-1 text-xs font-semibold text-[#4648d4]">
+                        Tu cuenta
                     </span>
-                    <input
-                        required
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="field-input"
-                    />
-                </label>
 
-                <label className="flex flex-col gap-1">
-                    <span className="text-xs text-[var(--color-ink-soft)]">Contraseña</span>
-                    <input
-                        required
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="field-input"
-                    />
-                </label>
+                    <h1 className="text-3xl font-bold tracking-tight text-[#131b2e] sm:text-4xl">
+                        Iniciar sesión
+                    </h1>
 
-                <button
-                    type="submit"
-                    disabled={isPending}
-                    className="mt-2 w-full rounded-md bg-[var(--color-pine)] py-3 text-sm font-medium text-[var(--color-stone)] transition hover:bg-[var(--color-pine-dark)] disabled:opacity-50"
-                >
-                    {isPending ? "Entrando..." : "Entrar"}
-                </button>
-            </form>
+                    <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-[#686777]">
+                        Entra para consultar tus pedidos, gestionar tus
+                        direcciones y continuar con tus compras.
+                    </p>
+                </div>
 
-            <p className="mt-6 text-center text-sm text-[var(--color-ink-soft)]">
-                ¿No tienes cuenta?{" "}
-                <Link to="/registro" className="text-[var(--color-pine)] underline">
-                    Regístrate
-                </Link>
-            </p>
+                {/* Tarjeta */}
+                <div className="rounded-2xl border border-[#e2e1eb] bg-white p-5 shadow-[0_8px_30px_rgba(35,35,60,0.06)] sm:p-8">
+
+                    <form
+                        className="space-y-5"
+                        onSubmit={(event) => {
+                            event.preventDefault();
+                            submit();
+                        }}
+                    >
+                        {/* Correo */}
+                        <label className="flex flex-col gap-2">
+                            <span className="text-sm font-semibold text-[#343344]">
+                                Correo electrónico
+                            </span>
+
+                            <input
+                                required
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="ejemplo@correo.com"
+                                autoComplete="email"
+                                className="h-12 rounded-xl border border-[#d9d8e3] bg-[#fcfcfe] px-4 text-sm text-[#131b2e] outline-none transition placeholder:text-[#a3a2ad] focus:border-[#4648d4] focus:bg-white focus:ring-4 focus:ring-[#4648d4]/10"
+                            />
+                        </label>
+
+                        {/* Contraseña */}
+                        <label className="flex flex-col gap-2">
+                            <span className="text-sm font-semibold text-[#343344]">
+                                Contraseña
+                            </span>
+
+                            <input
+                                required
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="••••••••"
+                                autoComplete="current-password"
+                                className="h-12 rounded-xl border border-[#d9d8e3] bg-[#fcfcfe] px-4 text-sm text-[#131b2e] outline-none transition placeholder:text-[#a3a2ad] focus:border-[#4648d4] focus:bg-white focus:ring-4 focus:ring-[#4648d4]/10"
+                            />
+                        </label>
+
+                        {/* Botón */}
+                        <button
+                            type="submit"
+                            disabled={isPending}
+                            className="mt-2 h-12 w-full rounded-xl bg-[#4648d4] px-5 text-sm font-bold text-white shadow-sm transition hover:bg-[#383ab9] hover:shadow-md focus:outline-none focus:ring-4 focus:ring-[#4648d4]/20 disabled:cursor-not-allowed disabled:opacity-60"
+                        >
+                            {isPending ? "Entrando..." : "Iniciar sesión"}
+                        </button>
+                    </form>
+
+                    {/* Registro */}
+                    <div className="mt-6 border-t border-[#eeeef3] pt-6 text-center">
+                        <p className="text-sm text-[#686777]">
+                            ¿No tienes una cuenta?{" "}
+                            <Link
+                                to="/registro"
+                                className="font-semibold text-[#4648d4] transition hover:text-[#383ab9] hover:underline"
+                            >
+                                Crea tu cuenta
+                            </Link>
+                        </p>
+                    </div>
+                </div>
+            </div>
         </main>
     );
 }

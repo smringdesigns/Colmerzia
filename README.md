@@ -1,520 +1,1072 @@
 # 🛒 Colmerzia
 
-Colmerzia es una plataforma web para la gestión comercial y administrativa de tiendas y negocios.
+> Plataforma SaaS multi-tenant para la gestión comercial, administrativa y de comercio electrónico de múltiples negocios.
 
-El proyecto busca centralizar diferentes procesos de una operación comercial, incluyendo la gestión de productos, categorías, marcas, inventario, clientes, ventas, usuarios y otros módulos administrativos.
+Colmerzia es una plataforma desarrollada para centralizar la operación de diferentes tiendas y negocios dentro de una misma aplicación.
 
-La aplicación está construida con una arquitectura separada entre **Backend** y **Frontend**, comunicados mediante una API REST.
+El sistema permite gestionar usuarios, roles, productos, inventario, bodegas, clientes, pedidos y configuración de cada tienda. Además, incorpora un **Storefront público independiente** que permite a cada negocio ofrecer su catálogo, registrar clientes y realizar procesos de compra.
 
-Todo el entorno de desarrollo se ejecuta utilizando **Docker y Docker Compose**. Docker se encarga de proporcionar el entorno de ejecución de la aplicación, incluyendo las dependencias necesarias para el Backend y el Frontend.
+El proyecto está construido bajo una arquitectura desacoplada y está compuesto por tres aplicaciones principales:
 
----
+* **Backend API** — Laravel + PostgreSQL.
+* **Panel Administrativo** — React + TypeScript.
+* **Storefront** — React + TypeScript.
 
-## 📌 Estado del proyecto
-
-> 🚧 Colmerzia se encuentra actualmente en desarrollo activo.
-
-Actualmente se está construyendo la base de la plataforma, incluyendo:
-
-- Arquitectura de la aplicación.
-- Infraestructura Docker.
-- Sistema de autenticación.
-- Gestión de usuarios.
-- Arquitectura multiempresa.
-- Gestión de tiendas.
-- API REST.
-- Gestión de productos.
-- Categorías.
-- Marcas.
-- Frontend administrativo.
-- Persistencia de datos en PostgreSQL.
+Todo el entorno de desarrollo está orquestado mediante **Docker Compose**.
 
 ---
 
-## 🏗️ Arquitectura del proyecto
+# 📋 Tabla de contenidos
 
-Colmerzia utiliza una arquitectura desacoplada entre Backend y Frontend.
+* [Características](#-características)
+* [Arquitectura](#️-arquitectura)
+* [Multi-tenancy](#-multi-tenancy)
+* [Stack tecnológico](#-stack-tecnológico)
+* [Estructura del proyecto](#-estructura-del-proyecto)
+* [Servicios Docker](#-servicios-docker)
+* [Módulos principales](#-módulos-principales)
+* [API](#-api)
+* [Requisitos](#-requisitos)
+* [Instalación](#-instalación)
+* [Variables de entorno](#️-variables-de-entorno)
+* [Comandos útiles](#-comandos-útiles)
+* [Puertos y servicios](#-puertos-y-servicios)
+* [Estado del proyecto](#-estado-del-proyecto)
+
+---
+
+# 🚀 Características
+
+## 🏢 Gestión multi-tenant
+
+Colmerzia está diseñada para gestionar múltiples tiendas o espacios de trabajo dentro de una misma plataforma.
+
+Cada tenant mantiene sus propios datos, incluyendo:
+
+* Usuarios.
+* Productos.
+* Clientes.
+* Inventario.
+* Bodegas.
+* Pedidos.
+* Configuración.
+* Storefront.
+* Suscripciones.
+
+El aislamiento de datos se gestiona mediante la resolución del tenant y scopes aplicados a los modelos correspondientes.
+
+---
+
+## 🏪 Gestión de tiendas
+
+La plataforma permite:
+
+* Crear tiendas mediante onboarding.
+* Crear nuevos espacios de trabajo.
+* Configurar información de la tienda.
+* Gestionar el estado de una tienda.
+* Identificar cada tienda mediante UUID.
+* Administrar información comercial.
+* Gestionar el tipo de negocio.
+
+---
+
+## 👑 Administración de plataforma
+
+Existe un nivel de administración global para usuarios con el rol:
 
 ```text
-┌──────────────────────────────────────┐
-│                                      │
-│               FRONTEND               │
-│                                      │
-│          React + TypeScript          │
-│               + Vite                 │
-│                                      │
-└──────────────────┬───────────────────┘
-                   │
-                   │ HTTP / REST API
-                   │
-┌──────────────────▼───────────────────┐
-│               BACKEND                │
-│                                      │
-│               Laravel                │
-│                 PHP                  │
-│                                      │
-└───────────────┬───────────┬──────────┘
-                │           │
-                │           │
-      ┌─────────▼──────┐ ┌──▼──────────┐
-      │                │ │             │
-      │   PostgreSQL   │ │    Redis    │
-      │                │ │             │
-      └────────────────┘ └─────────────┘
+super-admin
 ```
 
-Los servicios son administrados mediante: **Docker Compose**
+El Super Admin puede operar fuera del contexto de un tenant y administrar información global de la plataforma, incluyendo:
+
+* Visualización de tiendas.
+* Consulta detallada de tiendas.
+* Eliminación de tiendas.
+* Gestión global de usuarios.
 
 ---
 
-## 🧰 Tecnologías utilizadas
+## 👥 Gestión de usuarios
 
-### Backend
-- PHP
-- Laravel
-- Laravel Sanctum
-- Spatie Permission
-- Eloquent ORM
-- REST API
+El panel administrativo permite gestionar:
 
-### Frontend
-- React
-- TypeScript
-- Vite
-- Material UI
-- TanStack Query
-- Zustand
-- React Hook Form
-- Zod
+* Usuarios.
+* Estado de usuarios.
+* Activación y desactivación.
+* Roles.
+* Permisos.
+* Último acceso.
 
-### Base de datos
-- PostgreSQL
-
-### Infraestructura
-- Docker
-- Docker Compose
-- Nginx
-- Redis
-- Mailpit
-
-### Herramientas
-- Git
-- GitHub
-- Visual Studio Code
-- Postman
+Los usuarios administrativos se autentican mediante Laravel Sanctum.
 
 ---
 
-## 🐳 Docker
+## 🔐 Roles y permisos
 
-El proyecto utiliza Docker para ejecutar los diferentes servicios de la aplicación. La configuración principal se encuentra en: `docker-compose.yml`
+El sistema incorpora control de acceso granular mediante permisos.
 
-Docker se encarga de proporcionar el entorno de ejecución completo del proyecto. Esto incluye:
+Algunos módulos protegidos incluyen:
 
-- **Entorno de ejecución del Backend:** PHP, Composer, Dependencias de Laravel.
-- **Entorno de ejecución del Frontend:** Node.js, npm, Dependencias de React.
-- **Servicios adicionales:** PostgreSQL, Redis, Nginx, Mailpit.
+```text
+products.view
+products.create
+products.update
+products.delete
 
-**Los principales servicios son:**
+customers.view
+customers.create
+customers.update
+customers.delete
 
-| Servicio | Descripción |
-|----------|-------------|
-| `backend` | API desarrollada con Laravel |
-| `frontend` | Aplicación web desarrollada con React |
-| `postgres` | Base de datos PostgreSQL |
-| `redis` | Sistema de cache y colas |
-| `nginx` | Servidor web y proxy |
-| `mailpit` | Servidor de correo electrónico para desarrollo |
+inventory.view
+inventory.create
+inventory.update
+
+users.view
+users.create
+users.update
+users.delete
+
+roles.view
+roles.create
+roles.update
+roles.delete
+
+orders.view
+orders.update
+
+settings.view
+settings.update
+```
 
 ---
 
-## 📋 Requisitos
+## 📦 Gestión de productos
 
-Para ejecutar el proyecto se requiere tener instalado:
+El módulo administrativo permite:
 
-- Docker Desktop
-- Git
-- Visual Studio Code (opcional)
-
-**No es necesario instalar directamente en el sistema local:** PHP, Composer, Node.js, npm, PostgreSQL o Redis. Estas herramientas y servicios son gestionados mediante los contenedores Docker del proyecto.
+* Crear productos.
+* Consultar productos.
+* Editar productos.
+* Eliminar productos.
+* Gestionar variantes.
+* Gestionar imágenes.
+* Asociar categorías.
+* Gestionar disponibilidad.
+* Exponer productos al Storefront.
 
 ---
 
-## 🚀 Instalación
+## 🏷️ Categorías y marcas
 
-### 1. Clonar el repositorio
+La arquitectura del dominio contempla:
+
+* Categorías.
+* Marcas.
+* Productos.
+* Variantes.
+* Imágenes.
+
+Estos elementos forman parte del catálogo comercial de cada tienda.
+
+---
+
+## 🏬 Bodegas
+
+Cada tienda puede gestionar múltiples bodegas.
+
+Las funcionalidades incluyen:
+
+* Crear bodegas.
+* Consultar bodegas.
+* Actualizar información.
+* Eliminar bodegas.
+* Definir una bodega como principal.
+
+---
+
+## 📊 Inventario
+
+El inventario se administra mediante entidades específicas:
+
+```text
+Inventory
+InventoryMovement
+Warehouse
+```
+
+Cada registro de inventario permite controlar:
+
+* Stock.
+* Stock reservado.
+* Stock mínimo.
+* Producto o variante.
+* Bodega.
+* Movimientos de inventario.
+
+El sistema incluye comandos y servicios para sincronización y administración de stock.
+
+---
+
+## 🛍️ Storefront
+
+El proyecto incluye una aplicación pública independiente para comercio electrónico.
+
+El Storefront permite:
+
+* Consultar información de la tienda.
+* Visualizar productos.
+* Consultar detalle de productos.
+* Navegar categorías.
+* Registrar clientes.
+* Iniciar sesión como cliente.
+* Gestionar direcciones.
+* Gestionar carrito de compras.
+* Modificar cantidades.
+* Eliminar productos.
+* Aplicar cupones.
+* Realizar checkout.
+
+---
+
+## 👤 Clientes
+
+Los clientes del Storefront son independientes de los usuarios administrativos.
+
+Las funcionalidades incluyen:
+
+* Registro.
+* Inicio de sesión.
+* Autenticación.
+* Perfil.
+* Direcciones.
+* Carrito.
+* Pedidos.
+
+---
+
+## 🛒 Carrito de compras
+
+El módulo de carrito permite:
+
+* Consultar el carrito.
+* Agregar productos.
+* Actualizar cantidades.
+* Eliminar productos.
+* Aplicar cupones.
+* Eliminar cupones.
+
+El dominio está implementado mediante:
+
+```text
+Cart
+CartItem
+Coupon
+CartService
+```
+
+---
+
+## 💳 Checkout y pedidos
+
+El flujo comercial incluye:
+
+```text
+Carrito
+   │
+   ▼
+Validación de inventario
+   │
+   ▼
+Aplicación de descuentos
+   │
+   ▼
+Checkout
+   │
+   ▼
+Pedido
+   │
+   ▼
+Pago
+```
+
+El sistema incluye:
+
+* Pedidos.
+* Detalles de pedido.
+* Estados.
+* Pagos.
+* Métodos de pago.
+* Transacciones.
+* Descuentos.
+* Reglas comerciales.
+
+---
+
+## 💰 Suscripciones
+
+La arquitectura incluye soporte para planes y suscripciones.
+
+Algunas operaciones de escritura están protegidas mediante:
+
+```text
+subscription.writable
+```
+
+Esto permite controlar qué funcionalidades pueden ser modificadas dependiendo del estado de la suscripción.
+
+---
+
+# 🏗️ Arquitectura
+
+La arquitectura general del sistema está compuesta por tres aplicaciones independientes:
+
+```text
+                         ┌──────────────────────┐
+                         │       USUARIOS       │
+                         └──────────┬───────────┘
+                                    │
+                    ┌───────────────┼───────────────┐
+                    │                               │
+                    ▼                               ▼
+        ┌──────────────────────┐        ┌──────────────────────┐
+        │  PANEL ADMINISTRATIVO│        │      STOREFRONT      │
+        │                      │        │                      │
+        │ React + TypeScript   │        │ React + TypeScript   │
+        │      + Vite          │        │      + Vite          │
+        │                      │        │                      │
+        └──────────┬───────────┘        └──────────┬───────────┘
+                   │                               │
+                   └───────────────┬───────────────┘
+                                   │
+                                   │ HTTP / REST API
+                                   ▼
+                       ┌──────────────────────┐
+                       │       NGINX          │
+                       │      Puerto 8080     │
+                       └──────────┬───────────┘
+                                  │
+                                  ▼
+                       ┌──────────────────────┐
+                       │       BACKEND        │
+                       │                      │
+                       │ Laravel 13 + PHP 8.3 │
+                       │                      │
+                       └───────┬──────┬───────┘
+                               │      │
+                ┌──────────────┘      └──────────────┐
+                ▼                                    ▼
+       ┌──────────────────┐                 ┌──────────────────┐
+       │    PostgreSQL    │                 │      Redis       │
+       │                  │                 │                  │
+       │   Base de datos  │                 │ Cache y colas    │
+       └──────────────────┘                 └──────────────────┘
+                                                     │
+                                                     ▼
+                                            ┌──────────────────┐
+                                            │     Horizon      │
+                                            │ Gestión de colas │
+                                            └──────────────────┘
+```
+
+---
+
+# 🏢 Multi-tenancy
+
+La API está organizada en tres niveles principales:
+
+```text
+/api/v1
+│
+├── Públicas
+│   ├── onboarding
+│   ├── business-types
+│   ├── register
+│   ├── login
+│   ├── forgot-password
+│   └── reset-password
+│
+├── Autenticadas sin tenant
+│   ├── me
+│   ├── logout
+│   ├── stores
+│   └── platform
+│
+└── Multi-tenant
+    │
+    ├── Storefront público
+    │   ├── store
+    │   ├── products
+    │   ├── categories
+    │   ├── auth
+    │   ├── addresses
+    │   ├── cart
+    │   └── checkout
+    │
+    └── Panel administrativo
+        ├── products
+        ├── customers
+        ├── warehouses
+        ├── inventory
+        ├── settings
+        ├── users
+        ├── roles
+        ├── permissions
+        └── orders
+```
+
+Las rutas dependientes de una tienda utilizan los middlewares:
+
+```text
+tenant
+store.active
+```
+
+Esto permite resolver el contexto de la tienda antes de ejecutar las operaciones correspondientes.
+
+---
+
+# 🧠 Arquitectura del Backend
+
+El Backend utiliza una organización orientada a responsabilidades:
+
+```text
+Request
+   │
+   ▼
+Controller
+   │
+   ▼
+Service
+   │
+   ├── DTO
+   │
+   ├── Model
+   │
+   ├── Event
+   │
+   ├── Job
+   │
+   └── External Contract
+   │
+   ▼
+Resource
+   │
+   ▼
+JSON Response
+```
+
+La estructura incorpora:
+
+* Controllers.
+* Services.
+* Contracts.
+* DTOs.
+* Requests.
+* Resources.
+* Models.
+* Events.
+* Listeners.
+* Jobs.
+* Policies.
+* Middleware.
+* Notifications.
+* Mail.
+* Exceptions.
+* Enums.
+* Support.
+
+---
+
+# 🧰 Stack tecnológico
+
+## Backend
+
+* PHP 8.3+
+* Laravel 13
+* Laravel Sanctum
+* Laravel Horizon
+* Laravel Telescope
+* Laravel Tinker
+* Laravel Pail
+* PHPUnit
+* Predis
+
+## Frontend administrativo
+
+* React 19
+* TypeScript
+* Vite
+* React Router
+* TanStack Query
+* Zustand
+* React Hook Form
+* Zod
+* Axios
+* Tailwind CSS
+* Lucide React
+
+## Storefront
+
+* React 19
+* TypeScript
+* Vite
+* React Router
+* TanStack Query
+* Zustand
+* Axios
+* Tailwind CSS
+
+## Persistencia y servicios
+
+* PostgreSQL 17
+* Redis 7
+* Nginx
+* Mailpit
+
+## Infraestructura
+
+* Docker
+* Docker Compose
+
+---
+
+# 📁 Estructura del proyecto
+
+```text
+Colmerzia/
+│
+├── backend/                  # API REST y lógica de negocio
+│   │
+│   ├── app/
+│   │   ├── Console/
+│   │   ├── Contracts/
+│   │   ├── DTOs/
+│   │   ├── Enums/
+│   │   ├── Events/
+│   │   ├── Exceptions/
+│   │   ├── Http/
+│   │   │   ├── Controllers/
+│   │   │   ├── Middleware/
+│   │   │   ├── Requests/
+│   │   │   └── Resources/
+│   │   ├── Jobs/
+│   │   ├── Listeners/
+│   │   ├── Mail/
+│   │   ├── Models/
+│   │   ├── Notifications/
+│   │   ├── Policies/
+│   │   ├── Providers/
+│   │   ├── Services/
+│   │   └── Support/
+│   │
+│   ├── config/
+│   ├── database/
+│   ├── routes/
+│   ├── tests/
+│   └── ...
+│
+├── frontend/                 # Panel administrativo
+│   ├── src/
+│   ├── public/
+│   └── ...
+│
+├── storefront/               # Tienda pública
+│   ├── src/
+│   ├── public/
+│   └── ...
+│
+├── docker/
+│   ├── nginx/
+│   ├── node/
+│   └── php/
+│
+├── infrastructure/           # Recursos de infraestructura
+│
+├── scripts/                  # Scripts de automatización
+│
+├── docs/                     # Documentación adicional
+│
+├── docker-compose.yml
+│
+└── README.md
+```
+
+---
+
+# 🐳 Servicios Docker
+
+El proyecto se ejecuta mediante los siguientes servicios:
+
+| Servicio   | Contenedor             | Función               |
+| ---------- | ---------------------- | --------------------- |
+| Backend    | `colmerzia_backend`    | API Laravel           |
+| Frontend   | `colmerzia_frontend`   | Panel administrativo  |
+| Storefront | `colmerzia_storefront` | Tienda pública        |
+| Nginx      | `colmerzia_nginx`      | Servidor web          |
+| PostgreSQL | `colmerzia_postgres`   | Base de datos         |
+| Redis      | `colmerzia_redis`      | Cache y colas         |
+| Mailpit    | `colmerzia_mailpit`    | Correos de desarrollo |
+
+---
+
+# 📦 Módulos principales
+
+## Plataforma
+
+```text
+Platform
+├── Stores
+├── Users
+└── Super Admin
+```
+
+## Administración de tienda
+
+```text
+Store
+├── Products
+├── Customers
+├── Warehouses
+├── Inventory
+├── Settings
+├── Users
+├── Roles
+├── Permissions
+└── Orders
+```
+
+## Catálogo
+
+```text
+Catalog
+├── Categories
+├── Brands
+├── Products
+├── Product Variants
+└── Product Images
+```
+
+## Inventario
+
+```text
+Inventory
+├── Warehouses
+├── Stock
+├── Reserved Stock
+├── Minimum Stock
+└── Inventory Movements
+```
+
+## Comercio electrónico
+
+```text
+Storefront
+├── Store
+├── Catalog
+├── Customers
+├── Addresses
+├── Cart
+├── Coupons
+├── Checkout
+├── Orders
+└── Payments
+```
+
+---
+
+# 🌐 API
+
+La API utiliza la siguiente base:
+
+```text
+http://localhost:8080/api/v1
+```
+
+Ejemplos:
+
+## Autenticación
+
+```text
+POST /api/v1/login
+POST /api/v1/register
+GET  /api/v1/me
+POST /api/v1/logout
+```
+
+## Onboarding
+
+```text
+POST /api/v1/onboarding
+GET  /api/v1/business-types
+```
+
+## Productos
+
+```text
+GET    /api/v1/products
+POST   /api/v1/products
+GET    /api/v1/products/{product}
+PUT    /api/v1/products/{product}
+DELETE /api/v1/products/{product}
+```
+
+## Inventario
+
+```text
+GET   /api/v1/inventory
+PATCH /api/v1/inventory/{inventory}
+GET   /api/v1/inventory/{inventory}/movements
+```
+
+## Storefront
+
+```text
+GET /api/v1/storefront/store
+GET /api/v1/storefront/products
+GET /api/v1/storefront/products/{slug}
+GET /api/v1/storefront/categories
+```
+
+## Carrito
+
+```text
+GET    /api/v1/storefront/cart
+POST   /api/v1/storefront/cart/items
+PATCH  /api/v1/storefront/cart/items/{item}
+DELETE /api/v1/storefront/cart/items/{item}
+```
+
+## Checkout
+
+```text
+POST /api/v1/storefront/checkout
+```
+
+---
+
+# ⚙️ Requisitos
+
+Para ejecutar el proyecto se recomienda tener instalado:
+
+* Docker Desktop.
+* Docker Compose.
+* Git.
+* Visual Studio Code u otro editor.
+
+No es necesario instalar directamente en el sistema:
+
+* PHP.
+* Composer.
+* Node.js.
+* npm.
+* PostgreSQL.
+* Redis.
+
+Estos servicios son ejecutados mediante Docker.
+
+---
+
+# 🚀 Instalación
+
+## 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/smringdesigns/Colmerzia.git
-cd colmerzia
+git clone <URL_DEL_REPOSITORIO>
 ```
 
-### 2. Configurar las variables de entorno
+```bash
+cd Colmerzia
+```
 
-Configurar los archivos `.env` requeridos por el proyecto. El Backend utiliza `backend/.env`.
+---
 
-Las variables de entorno deben coincidir con los servicios definidos en `docker-compose.yml`.
+## 2. Configurar variables de entorno
 
-**Ejemplo de configuración:**
+Crear el archivo principal:
+
+```bash
+cp .env.example .env
+```
+
+Configurar las variables necesarias para Docker.
+
+Luego configurar el Backend:
+
+```bash
+cp backend/.env.example backend/.env
+```
+
+---
+
+## 3. Levantar los servicios
+
+```bash
+docker compose up -d --build
+```
+
+Verificar el estado:
+
+```bash
+docker compose ps
+```
+
+---
+
+## 4. Instalar dependencias
+
+### Backend
+
+```bash
+docker compose exec backend composer install
+```
+
+### Frontend administrativo
+
+```bash
+docker compose exec frontend npm install
+```
+
+### Storefront
+
+```bash
+docker compose exec storefront npm install
+```
+
+---
+
+## 5. Generar la clave de Laravel
+
+```bash
+docker compose exec backend php artisan key:generate
+```
+
+---
+
+## 6. Ejecutar migraciones
+
+```bash
+docker compose exec backend php artisan migrate
+```
+
+---
+
+# 🔧 Variables de entorno
+
+## Backend
+
+Archivo:
+
+```text
+backend/.env
+```
+
+Configuración principal:
+
 ```env
 APP_NAME=Colmerzia
 APP_ENV=local
 APP_DEBUG=true
+APP_URL=http://localhost:8080
+```
 
+## Base de datos
+
+```env
 DB_CONNECTION=pgsql
 DB_HOST=postgres
 DB_PORT=5432
-DB_DATABASE=colmerzia
+DB_DATABASE=db_colmerzia
 DB_USERNAME=postgres
 DB_PASSWORD=postgres
+```
 
+## Redis
+
+```env
 REDIS_HOST=redis
-```
-*(Los valores reales pueden variar según la configuración definida en el archivo docker-compose.yml).*
-
-### 3. Construir y levantar el proyecto
-
-Desde la raíz del proyecto ejecutar:
-
-```bash
-docker compose up -d --build
+REDIS_PORT=6379
 ```
 
-Este comando se encarga de construir las imágenes Docker, crear la red y volúmenes, instalar dependencias de Backend y Frontend, e iniciar los servicios.
+## Colas
 
-### 4. Verificar los contenedores
-
-```bash
-docker compose ps
+```env
+QUEUE_CONNECTION=redis
 ```
-Los servicios deben aparecer activos y funcionando.
 
-### 5. Ver los logs
+## Cache
 
-Para ver los logs de todos los servicios:
-```bash
-docker compose logs -f
+```env
+CACHE_STORE=redis
 ```
-Para ver los logs del Backend:
-```bash
-docker compose logs -f backend
-```
-Para ver los logs del Frontend:
-```bash
-docker compose logs -f frontend
+
+## Correo
+
+```env
+MAIL_MAILER=smtp
+MAIL_HOST=mailpit
+MAIL_PORT=1025
 ```
 
 ---
 
-## ⚙️ Backend
+# 🔌 Puertos y servicios
 
-El Backend de Colmerzia está desarrollado utilizando **Laravel + PHP**.
-
-Su responsabilidad principal es gestionar la lógica de negocio, autenticación, usuarios, permisos, tiendas, productos, categorías, marcas, la base de datos, y exponer la API REST.
-
-### 📂 Estructura del Backend
-```text
-backend/
-│
-├── app/
-│   ├── Http/
-│   │   ├── Controllers/Api/V1/
-│   │   ├── Requests/
-│   │   └── Resources/
-│   ├── Models/
-│   └── Services/
-├── database/
-│   ├── factories/
-│   ├── migrations/
-│   └── seeders/
-├── routes/
-│   ├── api.php
-│   └── web.php
-├── config/
-├── storage/
-├── Dockerfile
-├── composer.json
-└── .env
-```
-
-### 🔐 Autenticación
-
-La autenticación de la API se realiza mediante **Laravel Sanctum**. El usuario autenticado puede acceder a los recursos autorizados de la aplicación.
-La arquitectura utiliza el concepto de tienda: `store_id`. Esto permite relacionar los usuarios y los recursos con una tienda específica.
-
-### 🏪 Arquitectura Multiempresa
-
-Colmerzia está diseñada para soportar múltiples tiendas. Los datos pertenecientes a una tienda se filtran mediante `store_id`.
-
-**Ejemplo:**
-```text
-Usuario
-   │
-   └── store_id = 1
-          │
-          ├── Productos
-          ├── Categorías
-          ├── Clientes
-          └── Pedidos
-```
-Esto permite evitar que los datos de una tienda sean visibles para otra tienda.
-
-### 🛍️ Módulo de productos
-
-Actualmente el Backend cuenta con un módulo de productos que permite: Crear, consultar (específico o listado), actualizar, eliminar, buscar, filtrar y paginar productos.
-
-**Endpoints de productos:**
-```http
-GET    /api/v1/products
-POST   /api/v1/products
-GET    /api/v1/products/{id}
-PUT    /api/v1/products/{id}
-DELETE /api/v1/products/{id}
-```
-
-**Funcionalidades del listado:**
-- **Búsqueda (name, sku):** `/api/v1/products?search=laptop`
-- **Filtro por estado:** `/api/v1/products?is_active=true`
-- **Filtro por categoría:** `/api/v1/products?category_id=1`
-- **Paginación:** `/api/v1/products?per_page=15`
-
-**Slugs:** Los productos generan automáticamente un slug único por tienda.
-- `Laptop Lenovo IdeaPad` ➡️ `laptop-lenovo-ideapad`
-- Si existe ➡️ `laptop-lenovo-ideapad-1`
+| Servicio   | URL / Puerto                   |
+| ---------- | ------------------------------ |
+| API        | `http://localhost:8080`        |
+| API V1     | `http://localhost:8080/api/v1` |
+| Frontend   | `http://localhost:5173`        |
+| Storefront | `http://localhost:5174`        |
+| PostgreSQL | `localhost:5433`               |
+| Redis      | `localhost:6379`               |
+| Mailpit    | `http://localhost:8025`        |
 
 ---
 
-## 🖥️ Frontend
+# 🛠️ Comandos útiles
 
-El Frontend está desarrollado utilizando **React + TypeScript + Vite**. Su responsabilidad es proporcionar la interfaz visual de la plataforma.
+## Levantar servicios
 
-### 📂 Estructura del Frontend
-```text
-frontend/
-│
-├── src/
-│   ├── components/  (Componentes reutilizables)
-│   ├── features/    (Funcionalidades agrupadas por módulo)
-│   ├── hooks/       (Hooks personalizados)
-│   ├── layouts/     (Layouts de la aplicación)
-│   ├── pages/       (Páginas de la aplicación)
-│   ├── services/    (Comunicación con la API)
-│   ├── stores/      (Estados globales)
-│   ├── types/       (Tipos TypeScript)
-│   └── App.tsx
-│
-├── Dockerfile
-├── package.json
-├── tsconfig.json
-└── vite.config.ts
-```
-
----
-
-## 🗄️ Base de datos (PostgreSQL)
-
-La base de datos se ejecuta dentro de un contenedor Docker. El Backend se conecta al servicio mediante: `DB_HOST=postgres`.
-
-**Migraciones y Seeders:**
 ```bash
-# Migraciones
-docker compose exec backend php artisan migrate
-
-# Migraciones y seeders
-docker compose exec backend php artisan migrate --seed
-
-# Solo seeders
-docker compose exec backend php artisan db:seed
-```
-
----
-
-## 🔴 Otros Servicios Auxiliares
-
-### Redis
-Se utiliza como servicio auxiliar para cache, colas y procesamiento de tareas en segundo plano. Se ejecuta mediante Docker.
-
-### 📧 Mailpit
-Se utiliza durante el desarrollo para capturar los correos enviados por la aplicación (recuperación de contraseña, notificaciones, etc.) sin necesidad de enviar correos reales.
-
-### 🌐 Nginx
-Funciona como servidor web y proxy. Recibe solicitudes, redirige peticiones, sirve la aplicación y comunica el Frontend con el Backend.
-
----
-
-## 📁 Estructura general del proyecto
-
-```text
-colmerzia/
-│
-├── backend/
-│   ├── app/
-│   ├── config/
-│   ├── database/
-│   ├── routes/
-│   ├── storage/
-│   ├── Dockerfile
-│   ├── composer.json
-│   └── .env
-│
-├── frontend/
-│   ├── src/
-│   ├── public/
-│   ├── Dockerfile
-│   ├── package.json
-│   └── vite.config.ts
-│
-├── docker/
-│   ├── backend/
-│   ├── frontend/
-│   └── nginx/
-│
-├── docker-compose.yml
-├── .gitignore
-└── README.md
-```
-
-### ✅ Implementado (Esencial para la infraestructura)
-
-* **`predis/predis` (Cliente de Redis)**
-  * **Estado:** Instalado y activo.
-  * **Propósito:** Actúa como el puente de comunicación entre la aplicación (PHP) y el contenedor de Redis en Docker. Es el motor principal para que la caché y el sistema de colas de la plataforma funcionen correctamente.
-  * **Comando de instalación:**
-    ```bash
-    composer require predis/predis
-    ```
-
-* **`laravel/horizon` (Monitor de Colas)**
-  * **Estado:** Instalado, configurado y migrado.
-  * **Propósito:** Panel de control para administrar y monitorear los trabajos en segundo plano (Redis queues). Es vital para manejar tareas pesadas en el SaaS (como envío masivo de correos o procesamiento de pagos) sin congelar la aplicación. 
-  * *Nota de infraestructura: Su funcionamiento requiere que la imagen de Docker de PHP tenga compiladas las extensiones `pcntl` y `posix`.*
-  * **Comandos de instalación:**
-    ```bash
-    composer require laravel/horizon
-    php artisan horizon:install
-    ```
-
-* **`laravel/telescope` (Asistente de Depuración)**
-  * **Estado:** Instalado (Exclusivo para el entorno de desarrollo `--dev`).
-  * **Propósito:** Herramienta de monitoreo local. Intercepta y muestra todas las consultas a la base de datos, errores del sistema, peticiones de red y correos atrapados por Mailpit. Es clave para depurar la comunicación entre la API (Laravel) y el Frontend (React).
-  * **Comandos de instalación:**
-    ```bash
-    composer require laravel/telescope --dev
-    php artisan telescope:install
-    ```
-
----
-
-## 🐳 Comandos Útiles
-
-### Docker
-```bash
-# Iniciar los servicios
 docker compose up -d
-
-# Construir y levantar los servicios
-docker compose up -d --build
-
-# Construir las imágenes
-docker compose build
-
-# Ver el estado y logs
-docker compose ps
-docker compose logs -f
-docker compose logs -f backend
-docker compose logs -f frontend
-
-# Detener servicios (y eliminar contenedores/volúmenes)
-docker compose stop
-docker compose down
-docker compose down -v  # ⚠️ Elimina datos persistentes
-docker compose restart
 ```
 
-### Backend (Artisan)
+## Reconstruir servicios
+
+```bash
+docker compose up -d --build
+```
+
+## Detener servicios
+
+```bash
+docker compose down
+```
+
+## Ver logs
+
+```bash
+docker compose logs -f
+```
+
+## Logs del Backend
+
+```bash
+docker compose logs -f backend
+```
+
+## Ejecutar comandos Artisan
+
 ```bash
 docker compose exec backend php artisan
+```
+
+Ejemplo:
+
+```bash
 docker compose exec backend php artisan migrate
-docker compose exec backend php artisan migrate --seed
-docker compose exec backend php artisan optimize:clear
-docker compose exec backend bash
 ```
 
-### Frontend (npm)
+---
+
+# 🧪 Pruebas
+
+El Backend utiliza PHPUnit.
+
+Para ejecutar las pruebas:
+
 ```bash
-docker compose exec frontend npm run build
-docker compose exec frontend npm <comando>
+docker compose exec backend php artisan test
 ```
 
----
+Para ejecutar una prueba específica:
 
-## 🔧 Flujo de desarrollo general
-
-1. Iniciar el entorno: `docker compose up -d` (usar `--build` si hay cambios en configuración).
-2. Verificar: `docker compose ps`
-3. Ejecutar migraciones si es necesario: `docker compose exec backend php artisan migrate`
-4. Limpiar caché si es necesario: `docker compose exec backend php artisan optimize:clear`
-5. Revisar logs en caso de error: `docker compose logs -f`
-
----
-
-## 🌿 Git y Convenciones
-
-El proyecto utiliza Git para el control de versiones.
-
-### Flujo recomendado
 ```bash
-git checkout -b feature/nombre-de-la-funcionalidad
-git status
-git add .
-git commit -m "feat: descripción del cambio"
-git push origin feature/nombre-de-la-funcionalidad
+docker compose exec backend php artisan test --filter=NombreDelTest
 ```
 
-### Convención de commits
-- `feat:` agrega nueva funcionalidad (ej. *feat: agrega módulo de productos*)
-- `fix:` corrige un error (ej. *fix: corrige filtro de productos*)
-- `refactor:` reorganiza el código sin cambiar comportamiento
-- `docs:` actualiza documentación
-- `chore:` tareas de mantenimiento (ej. *chore: actualiza configuración de Docker*)
+---
+
+# 📈 Procesos asíncronos
+
+El proyecto utiliza Redis como infraestructura para:
+
+* Colas.
+* Cache.
+* Procesamiento asíncrono.
+
+La arquitectura incluye Jobs como:
+
+```text
+GenerateProductImagesJob
+SendWelcomeEmailJob
+```
+
+También utiliza:
+
+```text
+Events
+Listeners
+Notifications
+Mail
+```
+
+Laravel Horizon está incluido para administrar y monitorear los procesos de cola.
 
 ---
 
-## 🔒 Variables de entorno
+# 🔒 Seguridad
 
-Los archivos `.env` contienen información sensible y **no deben subirse al repositorio**.
-El `.gitignore` debe incluir `.env` y `.env.*` pero permitir `!.env.example`. 
-Mantén siempre el `.env.example` actualizado con la estructura, pero sin datos reales.
+La aplicación incorpora diferentes capas de seguridad:
 
----
-
-## 📌 Funcionalidades actuales y 🚧 Próximos módulos
-
-**Actualmente implementado:**
-- Arquitectura separada (Laravel + React) con Docker Compose.
-- Base de datos en PostgreSQL, Cache en Redis, Proxy Nginx, Mailpit.
-- Autenticación con Laravel Sanctum y Gestión de usuarios.
-- Arquitectura multiempresa (separación por `store_id`).
-- Módulo de productos, categorías y marcas con búsqueda, filtrado, paginación y slugs únicos.
-- Soft Delete y UUIDs.
-
-**Próximos módulos a implementar:**
-- Gestión avanzada de tiendas e inventario (movimientos).
-- Gestión de clientes, pedidos y ventas.
-- Gestión de empleados (roles y permisos avanzados).
-- Configuración de tienda y métodos de pago.
-- Reportes, dashboard con métricas y estadísticas comerciales.
+* Autenticación mediante Laravel Sanctum.
+* Roles y permisos.
+* Policies.
+* Middleware de autorización.
+* Verificación de correo.
+* Recuperación de contraseña.
+* Rate limiting.
+* URLs firmadas.
+* Resolución del tenant.
+* Validación de tienda activa.
+* Control de suscripciones.
+* Separación entre usuarios administrativos y clientes.
 
 ---
 
-## 🤝 Contribución
-Las contribuciones al proyecto son bienvenidas. Sigue el flujo de ramas recomendado, verifica el funcionamiento antes de hacer commit, y crea un Pull Request.
+# 🚧 Estado del proyecto
 
-## 📄 Licencia
-Este proyecto se encuentra actualmente en desarrollo. La licencia definitiva del proyecto será definida posteriormente.
+> **Colmerzia se encuentra actualmente en desarrollo activo.**
+
+La arquitectura base del sistema incluye los principales módulos administrativos y de comercio electrónico.
+
+Actualmente se continúa trabajando en:
+
+* Consolidación del flujo completo de inventario.
+* Mejoras en el proceso de checkout.
+* Integración y evolución de métodos de pago.
+* Automatización de procesos.
+* Cobertura de pruebas.
+* Mejoras de experiencia de usuario.
+* Optimización de la arquitectura multi-tenant.
+* Evolución del Storefront.
+* Nuevas funcionalidades administrativas.
 
 ---
 
-**🚀 Colmerzia**  
-*Gestión comercial moderna, modular y escalable.*  
-Construido con: Laravel | React | TypeScript | PostgreSQL | Redis | Docker
+# 📄 Licencia
+
+Este proyecto se encuentra en desarrollo y la licencia será definida posteriormente.
+
+---
+
+<div align="center">
+
+**Colmerzia** 🛒
+
+*Plataforma SaaS para la gestión comercial y comercio electrónico.*
+
+</div>
