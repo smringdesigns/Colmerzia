@@ -7,25 +7,21 @@ return [
     | Cross-Origin Resource Sharing (CORS) Configuration
     |--------------------------------------------------------------------------
     |
-    | 'allowed_origins' se controla 100% por la variable de entorno
-    | CORS_ALLOWED_ORIGINS (separada por comas), asi el codigo no cambia
-    | entre entornos:
-    |
-    |   Desarrollo:  CORS_ALLOWED_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
-    |   Produccion:  CORS_ALLOWED_ORIGINS=https://tu-dominio-real.com
-    |
-    | Nunca uses '*' en produccion aunque supports_credentials sea false:
-    | limitar el origen reduce la superficie de abuso (scraping, bots
-    | golpeando la API desde cualquier pagina) aunque no haya cookies de por medio.
+    | Los orígenes explícitos se controlan mediante CORS_ALLOWED_ORIGINS.
+    | Los subdominios locales de las tiendas se permiten mediante
+    | allowed_origins_patterns.
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'paths' => [
+        'api/*',
+        'sanctum/csrf-cookie',
+    ],
 
     'allowed_methods' => ['*'],
 
     'allowed_origins' => array_values(array_filter(array_map(
-    'trim',
+        'trim',
         explode(',', env(
             'CORS_ALLOWED_ORIGINS',
             'http://localhost:5173,http://127.0.0.1:5173,http://localhost:5174,http://127.0.0.1:5174'
@@ -33,16 +29,22 @@ return [
     ))),
 
     'allowed_origins_patterns' => [
-        // Permite localhost y cualquier IP local en puerto 5173 (Admin) y 5174 (Storefront)
+
+        // Admin y Storefront locales
         '#^http://localhost:517[34]$#',
+
+        // 127.0.0.1 para Admin y Storefront
         '#^http://127\.0\.0\.1:517[34]$#',
-        
-        // Permite CUALQUIER subdominio local de colmerzia en esos puertos
-        // Ej: http://lemarc.colmerzia.localhost:5174
-        '#^http://.*\.colmerzia\.localhost:517[34]$#',
-        
-        // Permite tu dominio base local sin subdominio
-        '#^http://colmerzia\.localhost:517[34]$#'
+
+        // Cualquier subdominio de localhost
+        //
+        // Ejemplos:
+        // http://colmerzia.localhost:5174
+        // http://lecmarc.localhost:5174
+        // http://otra-tienda.localhost:5174
+        //
+        // También permite el puerto 5173 del panel administrativo.
+        '#^http://[a-z0-9-]+\.localhost:517[34]$#i',
     ],
 
     'allowed_headers' => ['*'],
@@ -51,9 +53,16 @@ return [
 
     'max_age' => 0,
 
-    // false porque el frontend usa Bearer token (Authorization header),
-    // no cookies de sesion. Si en algun momento se migra a auth por cookie
-    // (Sanctum SPA stateful), esto debe pasar a true.
+    /*
+    |--------------------------------------------------------------------------
+    | Credentials
+    |--------------------------------------------------------------------------
+    |
+    | Actualmente el frontend utiliza Bearer Token mediante Authorization,
+    | no cookies de sesión para la autenticación de la API.
+    |
+    */
+
     'supports_credentials' => false,
 
 ];

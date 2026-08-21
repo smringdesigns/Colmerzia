@@ -80,6 +80,7 @@ export function useCart() {
     return {
         cart: cartQuery.data,
         isLoading: cartQuery.isLoading,
+        refetch: cartQuery.refetch,
         addItem,
         updateItem,
         removeItem,

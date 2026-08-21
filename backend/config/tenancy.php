@@ -7,23 +7,46 @@ return [
     | Dominios centrales
     |--------------------------------------------------------------------------
     |
-    | Estos son los dominios "sin tienda": el sitio de marketing, el
-    | panel de super-admin de Colmerzia, o el propio localhost cuando
-    | se prueba sin subdominio. Cualquier otro host que llegue como
-    | "algo.<uno-de-estos-dominios>" se interpreta como el subdominio
-    | de una tienda concreta.
+    | Dominios que pertenecen a Colmerzia y que no representan una tienda.
     |
-    | En local, agrega algo como esto a tu /etc/hosts (o configura un
-    | DNS wildcard con dnsmasq) para poder probar subdominios:
+    | Desarrollo:
+    |   localhost
+    |   127.0.0.1
     |
-    |   127.0.0.1 colmerzia.test
-    |   127.0.0.1 tienda-demo.colmerzia.test
+    | Producción:
+    |   colmerzia.com
     |
     */
 
     'central_domains' => array_filter(array_map(
         'trim',
-        explode(',', env('TENANCY_CENTRAL_DOMAINS', 'localhost,127.0.0.1'))
+        explode(',', env(
+            'TENANCY_CENTRAL_DOMAINS',
+            'localhost,127.0.0.1'
+        ))
     )),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Dominio base de las tiendas
+    |--------------------------------------------------------------------------
+    |
+    | Desarrollo:
+    |   localhost
+    |
+    | Producción:
+    |   colmerzia.com
+    |
+    | Una tienda quedaría:
+    |
+    |   colmerzia.localhost
+    |   colmerzia.colmerzia.com
+    |
+    */
+
+    'store_domain' => env(
+        'TENANCY_STORE_DOMAIN',
+        'localhost'
+    ),
 
 ];

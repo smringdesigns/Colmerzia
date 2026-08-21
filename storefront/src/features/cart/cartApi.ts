@@ -25,12 +25,12 @@ export interface Cart {
 }
 
 export interface CheckoutPayload {
-    customer: {
+    customer?: {
         name: string;
         email: string;
         phone?: string;
     };
-    shipping_address: {
+    shipping_address?: {
         line1: string;
         line2?: string;
         city: string;
@@ -38,6 +38,8 @@ export interface CheckoutPayload {
         country: string;
         postal_code?: string;
     };
+    shipping_address_id?: number;
+    payment_method: string;
 }
 
 export interface OrderConfirmation {

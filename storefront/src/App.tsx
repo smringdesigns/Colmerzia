@@ -10,9 +10,15 @@ import Home from "./pages/Home";
 import ProductPage from "./pages/ProductPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import ConfirmationPage from "./pages/ConfirmationPage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import AccountPage from "./pages/AccountPage";
 import { getStoreInfo } from "./features/store/storeApi";
+import { useCustomerBootstrap } from "./features/customer/useCustomerBootstrap";
 
 export default function App() {
+    useCustomerBootstrap();
+
     const { data: store } = useQuery({
         queryKey: ["store-info"],
         queryFn: getStoreInfo,
@@ -35,6 +41,9 @@ export default function App() {
                     <Route path="/productos/:slug" element={<ProductPage />} />
                     <Route path="/checkout" element={<CheckoutPage />} />
                     <Route path="/confirmacion" element={<ConfirmationPage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/registro" element={<RegisterPage />} />
+                    <Route path="/cuenta" element={<AccountPage />} />
                     <Route
                         path="*"
                         element={
