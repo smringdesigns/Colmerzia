@@ -86,3 +86,138 @@
     padding: 28px;
   }
 }
+
+/* =========================================================
+   Impresión — factura de pedido (recibo 80mm de mostrador)
+   ========================================================= */
+
+/* El bloque de recibo solo existe para impresión — en pantalla
+   nunca se muestra. */
+.print-only {
+  display: none;
+}
+
+@media print {
+  /* Papel térmico estándar de mostrador: 80mm de ancho, alto
+     automático — el navegador no debe forzar el tamaño de una
+     hoja carta/A4. El alto queda libre a propósito porque un
+     pedido puede traer uno o veinte productos; no hay forma de
+     saber cuánto papel va a usar de antemano. */
+  @page {
+    size: 80mm auto;
+    margin: 0;
+  }
+
+  html,
+  body {
+    width: 80mm;
+    background: #fff !important;
+  }
+
+  /* Todo el layout de escritorio (sidebar, header, tarjetas,
+     tabla ancha, controles de estado) desaparece — el recibo de
+     80mm es una vista completamente distinta, no una versión
+     recortada de la de pantalla. */
+  .sidebar,
+  .topbar,
+  [data-no-print="true"] {
+    display: none !important;
+  }
+
+  .admin-shell,
+  .admin-content,
+  .admin-main {
+    display: block !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    height: auto !important;
+  }
+
+  #order-invoice {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  .receipt-print {
+    width: 76mm;
+    margin: 0 auto;
+    padding: 2mm 0;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 10.5px;
+    line-height: 1.45;
+    color: #000;
+  }
+
+  .receipt-print p {
+    margin: 0;
+  }
+
+  .receipt-print-header {
+    text-align: center;
+    margin-bottom: 6px;
+  }
+
+  .receipt-print-title {
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  .receipt-print-divider {
+    border-top: 1px dashed #000;
+    margin: 6px 0;
+  }
+
+  .receipt-print-block {
+    margin-bottom: 6px;
+  }
+
+  .receipt-print-label {
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 9.5px;
+    letter-spacing: 0.04em;
+    margin-bottom: 2px !important;
+  }
+
+  .receipt-print-item {
+    margin-bottom: 4px;
+  }
+
+  .receipt-print-item-name {
+    font-weight: 700;
+  }
+
+  .receipt-print-item-line,
+  .receipt-print-totals > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .receipt-print-totals {
+    display: grid;
+    gap: 2px;
+  }
+
+  .receipt-print-total-final {
+    font-weight: 700;
+    font-size: 12px;
+    border-top: 1px dashed #000;
+    padding-top: 4px;
+    margin-top: 2px;
+  }
+
+  .receipt-print-footer {
+    text-align: center;
+    margin-top: 8px;
+    font-style: italic;
+  }
+}

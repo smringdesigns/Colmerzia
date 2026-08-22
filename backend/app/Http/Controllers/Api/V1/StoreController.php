@@ -174,6 +174,7 @@ class StoreController extends Controller
                     'timezone',
                     'logo_path',
                     'theme_colors',
+                    'social_links',
                 ])
                 ->toArray();
 

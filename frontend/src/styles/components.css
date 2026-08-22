@@ -259,9 +259,23 @@
   padding: 0;
 }
 
+/* .table-panel tiene padding:0 a propósito, para que el fondo del
+   encabezado de la tabla llegue de borde a borde de la tarjeta. Pero
+   cuando además metemos un título (ej. "Productos" en el detalle de
+   pedido) o un bloque de totales dentro de ese mismo Panel, esos SÍ
+   necesitan su propio respiro — si no, quedan pegados a las esquinas. */
+.table-panel .form-section-heading {
+  padding: 18px 20px 0;
+}
+
+.table-panel .order-totals {
+  padding: 16px 20px 20px;
+}
+
 .windmill-table-wrap {
   width: 100%;
   overflow-x: auto;
+  padding: 0 4px;
 }
 
 .windmill-table {
@@ -295,6 +309,32 @@
 
 .windmill-table tbody tr:hover {
   background: #fafafa;
+}
+
+/* =========================================================
+   Tabla de productos del pedido (factura)
+   ========================================================= */
+
+.order-items-table {
+  table-layout: fixed;
+}
+
+.order-items-table th,
+.order-items-table td {
+  padding: 9px 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.order-items-table .cell-wrap {
+  white-space: normal;
+  word-break: break-word;
+}
+
+.order-items-table .cell-numeric {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
 }
 
 .primary-cell {
@@ -501,6 +541,11 @@
   max-width: 320px;
   margin-left: auto;
   padding-top: 16px;
+}
+
+.order-header-actions {
+  display: flex;
+  gap: 10px;
 }
 
 .order-totals > div {

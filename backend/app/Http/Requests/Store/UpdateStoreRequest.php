@@ -24,7 +24,10 @@ class UpdateStoreRequest extends BaseRequest
     {
         return [
 
-            // Datos generales de la tienda
+            // =========================================================
+            // DATOS GENERALES DE LA TIENDA
+            // =========================================================
+
             'name' => [
                 'sometimes',
                 'required',
@@ -39,7 +42,10 @@ class UpdateStoreRequest extends BaseRequest
                 Rule::in(BusinessTypeRegistry::slugs()),
             ],
 
-            // Configuración extendida (store_settings)
+            // =========================================================
+            // CONFIGURACIÓN EXTENDIDA
+            // =========================================================
+
             'contact_email' => [
                 'sometimes',
                 'nullable',
@@ -85,6 +91,51 @@ class UpdateStoreRequest extends BaseRequest
                 'string',
                 'max:32',
             ],
+
+            // =========================================================
+            // REDES SOCIALES
+            // =========================================================
+
+            'social_links' => [
+                'sometimes',
+                'nullable',
+                'array',
+            ],
+
+            'social_links.facebook' => [
+                'sometimes',
+                'nullable',
+                'url',
+                'max:2048',
+            ],
+
+            'social_links.instagram' => [
+                'sometimes',
+                'nullable',
+                'url',
+                'max:2048',
+            ],
+
+            'social_links.tiktok' => [
+                'sometimes',
+                'nullable',
+                'url',
+                'max:2048',
+            ],
+
+            'social_links.youtube' => [
+                'sometimes',
+                'nullable',
+                'url',
+                'max:2048',
+            ],
+
+            'social_links.x' => [
+                'sometimes',
+                'nullable',
+                'url',
+                'max:2048',
+            ],
         ];
     }
 
@@ -92,14 +143,20 @@ class UpdateStoreRequest extends BaseRequest
     {
         return [
 
-            'name.required' => 'El nombre de la tienda es obligatorio.',
+            'name.required' =>
+                'El nombre de la tienda es obligatorio.',
 
-            'business_type.in' => 'El tipo de negocio seleccionado no es válido.',
+            'business_type.in' =>
+                'El tipo de negocio seleccionado no es válido.',
 
-            'contact_email.email' => 'Ingrese un correo de contacto válido.',
+            'contact_email.email' =>
+                'Ingrese un correo de contacto válido.',
 
-            'currency.size' => 'La moneda debe ser un código ISO de 3 letras (ej: USD, COP, MXN).',
+            'currency.size' =>
+                'La moneda debe ser un código ISO de 3 letras (ej: USD, COP, MXN).',
 
+            'social_links.*.url' =>
+                'Ingrese una URL válida para la red social.',
         ];
     }
 }

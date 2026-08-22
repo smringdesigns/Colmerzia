@@ -5,29 +5,46 @@
     margin: 0;
     background-color: #faf8ff;
     color: #131b2e;
-    font-family: 'Inter', sans-serif;
+    font-family: "Inter", sans-serif;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     letter-spacing: -0.01em;
   }
 }
 
-/* Skeletons de carga modernos */
+/* ─────────────────────────────────────────────
+   Skeletons
+───────────────────────────────────────────── */
+
 @keyframes skeleton-pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
 }
 
 .skeleton {
-    background: #eaedff;
-    border-radius: 0.5rem;
-    animation: skeleton-pulse 1.4s ease-in-out infinite;
+  background: #eaedff;
+  border-radius: 0.5rem;
+  animation: skeleton-pulse 1.4s ease-in-out infinite;
 }
 
-/* Scrollbar personalizado moderno */
+/* ─────────────────────────────────────────────
+   Scrollbar
+───────────────────────────────────────────── */
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;

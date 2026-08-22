@@ -20,6 +20,7 @@ class StoreSetting extends Model
         'timezone',
         'logo_path',
         'theme_colors',
+        'social_links',
     ];
 
     /**
@@ -28,8 +29,12 @@ class StoreSetting extends Model
     protected function casts(): array
     {
         return [
-            // Convierte automáticamente el JSON de la base de datos a un Array de PHP y viceversa
-            'theme_colors' => 'array', 
+            // Convierte automáticamente el JSON de la base de datos
+            // a un Array de PHP y viceversa.
+            'theme_colors' => 'array',
+
+            // Redes sociales de la tienda.
+            'social_links' => 'array',
         ];
     }
 

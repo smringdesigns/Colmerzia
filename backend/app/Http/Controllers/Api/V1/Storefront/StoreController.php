@@ -28,9 +28,12 @@ class StoreController extends Controller
 
         $store = \App\Models\Store::with('settings')->findOrFail($storeId);
 
-        $storefrontLayout = $store->business_type && BusinessTypeRegistry::exists($store->business_type)
-            ? BusinessTypeRegistry::storefrontLayout($store->business_type)
-            : 'catalog';
+        $storefrontLayout = $store->business_type
+            && BusinessTypeRegistry::exists($store->business_type)
+                ? BusinessTypeRegistry::storefrontLayout(
+                    $store->business_type
+                )
+                : 'catalog';
 
         return response()->json([
             'success' => true,
@@ -39,10 +42,21 @@ class StoreController extends Controller
                 'subdomain' => $store->subdomain,
                 'business_type' => $store->business_type,
                 'storefront_layout' => $storefrontLayout,
+
                 'logo_path' => $store->settings?->logo_path,
+
                 'contact_email' => $store->settings?->contact_email,
                 'contact_phone' => $store->settings?->contact_phone,
+
                 'currency' => $store->settings?->currency ?? 'COP',
+
+                /*
+                 * Redes sociales públicas de la tienda.
+                 *
+                 * Cada tienda puede tener sus propias redes.
+                 * Si no existen, se devuelve un array vacío.
+                 */
+                'social_links' => $store->settings?->social_links ?? [],
             ],
         ]);
     }

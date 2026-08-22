@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft, Save } from "lucide-react";
+import { ArrowLeft, Printer, Save } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import Badge from "../components/ui/Badge";
@@ -116,18 +116,33 @@ export default function OrderDetail() {
         shippingStatus !== order.shipping_status;
 
     return (
-        <div className="form-page">
-            <PageHeader
-                eyebrow="Pedidos"
-                title={order.order_number}
-                subtitle={formatDateTime(order.created_at)}
-                action={
-                    <Button type="button" variant="secondary" onClick={() => navigate("/orders")}>
-                        <ArrowLeft size={16} />
-                        Volver
-                    </Button>
-                }
-            />
+        <div className="form-page" id="order-invoice">
+            <div data-no-print="true">
+                <PageHeader
+                    eyebrow="Pedidos"
+                    title={order.order_number}
+                    subtitle={formatDateTime(order.created_at)}
+                    action={
+                        <div className="order-header-actions">
+                            <Button
+                                type="button"
+                                variant="secondary"
+                                onClick={() => window.print()}
+                            >
+                                <Printer size={16} />
+                                Imprimir factura
+                            </Button>
+                            <Button
+                                type="button"
+                                variant="secondary"
+                                onClick={() => navigate("/orders")}
+                            >
+                                <ArrowLeft size={16} />
+                                Volver
+                            </Button>
+                        </div>
+                    }
+                />
 
             <div className="form-grid two">
                 <Panel className="form-section">
@@ -166,24 +181,31 @@ export default function OrderDetail() {
                     <h2>Productos</h2>
                 </div>
                 <div className="windmill-table-wrap">
-                    <table className="windmill-table">
+                    <table className="windmill-table order-items-table">
+                        <colgroup>
+                            <col style={{ width: "36%" }} />
+                            <col style={{ width: "16%" }} />
+                            <col style={{ width: "12%" }} />
+                            <col style={{ width: "18%" }} />
+                            <col style={{ width: "18%" }} />
+                        </colgroup>
                         <thead>
                             <tr>
                                 <th>Producto</th>
                                 <th>SKU</th>
-                                <th>Cantidad</th>
-                                <th>Precio unitario</th>
-                                <th>Total</th>
+                                <th className="cell-numeric">Cantidad</th>
+                                <th className="cell-numeric">Precio unitario</th>
+                                <th className="cell-numeric">Total</th>
                             </tr>
                         </thead>
                         <tbody>
                             {order.items?.map((item) => (
                                 <tr key={item.id}>
-                                    <td>{item.product_name}</td>
+                                    <td className="cell-wrap">{item.product_name}</td>
                                     <td>{item.product_sku ?? "-"}</td>
-                                    <td>{item.quantity}</td>
-                                    <td>{formatMoney(item.unit_price)}</td>
-                                    <td>{formatMoney(item.total)}</td>
+                                    <td className="cell-numeric">{item.quantity}</td>
+                                    <td className="cell-numeric">{formatMoney(item.unit_price)}</td>
+                                    <td className="cell-numeric">{formatMoney(item.total)}</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -282,6 +304,88 @@ export default function OrderDetail() {
                     </Button>
                 </div>
             </Panel>
+            </div>
+
+            {/* ----------------------------------------------------------
+                Vista de impresión: recibo 80mm (formato estándar de
+                mostrador). Invisible en pantalla — solo aparece al
+                imprimir, en vez de intentar encajar el layout de
+                escritorio de arriba en un papel angosto.
+                ---------------------------------------------------------- */}
+            <div className="print-only receipt-print">
+                <div className="receipt-print-header">
+                    <p className="receipt-print-title">Factura de venta</p>
+                    <p>{order.order_number}</p>
+                    <p>{formatDateTime(order.created_at)}</p>
+                </div>
+
+                <div className="receipt-print-divider" />
+
+                <div className="receipt-print-block">
+                    <p className="receipt-print-label">Cliente</p>
+                    <p>{order.customer_snapshot?.name ?? "Sin datos"}</p>
+                    {order.customer_snapshot?.email && <p>{order.customer_snapshot.email}</p>}
+                    {order.customer_snapshot?.phone && <p>{order.customer_snapshot.phone}</p>}
+                </div>
+
+                <div className="receipt-print-block">
+                    <p className="receipt-print-label">Envío</p>
+                    {order.shipping_address ? (
+                        <>
+                            <p>{order.shipping_address.line1}</p>
+                            {order.shipping_address.line2 && <p>{order.shipping_address.line2}</p>}
+                            <p>
+                                {order.shipping_address.city}
+                                {order.shipping_address.state ? `, ${order.shipping_address.state}` : ""}
+                            </p>
+                            <p>{order.shipping_address.country}</p>
+                        </>
+                    ) : (
+                        <p>Sin dirección registrada.</p>
+                    )}
+                </div>
+
+                <div className="receipt-print-divider" />
+
+                <div className="receipt-print-items">
+                    {order.items?.map((item) => (
+                        <div className="receipt-print-item" key={item.id}>
+                            <p className="receipt-print-item-name">{item.product_name}</p>
+                            <div className="receipt-print-item-line">
+                                <span>
+                                    {item.quantity} × {formatMoney(item.unit_price)}
+                                </span>
+                                <span>{formatMoney(item.total)}</span>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                <div className="receipt-print-divider" />
+
+                <div className="receipt-print-totals">
+                    <div>
+                        <span>Subtotal</span>
+                        <span>{formatMoney(order.subtotal)}</span>
+                    </div>
+                    <div>
+                        <span>Descuento</span>
+                        <span>-{formatMoney(order.discount)}</span>
+                    </div>
+                    <div>
+                        <span>Envío</span>
+                        <span>{formatMoney(order.shipping)}</span>
+                    </div>
+                    <div className="receipt-print-total-final">
+                        <span>TOTAL</span>
+                        <span>{formatMoney(order.total)}</span>
+                    </div>
+                </div>
+
+                <div className="receipt-print-divider" />
+
+                <p className="receipt-print-footer">¡Gracias por su compra!</p>
+            </div>
         </div>
     );
 }

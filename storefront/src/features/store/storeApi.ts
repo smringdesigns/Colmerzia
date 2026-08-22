@@ -1,5 +1,13 @@
 import { api } from "../../api/client";
 
+export interface StoreSocialLinks {
+    facebook?: string | null;
+    instagram?: string | null;
+    tiktok?: string | null;
+    youtube?: string | null;
+    x?: string | null;
+}
+
 export interface StoreInfo {
     name: string;
     subdomain: string;
@@ -7,6 +15,7 @@ export interface StoreInfo {
     contact_email: string | null;
     contact_phone: string | null;
     currency: string;
+    social_links: StoreSocialLinks;
 }
 
 export async function getStoreInfo(): Promise<StoreInfo> {

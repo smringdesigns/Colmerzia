@@ -5,7 +5,15 @@
 .form-page {
   display: grid;
   gap: 22px;
-  max-width: 900px;
+  max-width: 1180px;
+}
+
+/* El wrapper que agrupamos para poder ocultarlo entero al imprimir
+   (ver responsive.css) no debe "contar" como un solo hijo del grid
+   de .form-page en pantalla — si no, el gap de 22px entre bloques
+   desaparece porque grid-gap solo aplica entre hijos DIRECTOS. */
+[data-no-print="true"] {
+  display: contents;
 }
 
 /* =========================================================
