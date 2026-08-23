@@ -117,29 +117,36 @@ class ProductController extends Controller
         |--------------------------------------------------------------------------
         | Agregar stock disponible
         |--------------------------------------------------------------------------
+        |
+        | Antes esto llamaba a availableStock() (defaultWarehouse() +
+        | firstOrCreate()) UNA VEZ POR PRODUCTO/VARIANTE, o sea varias
+        | queries de más por cada fila de la página. Ahora resolvemos
+        | todo el stock de la página en un solo query batch.
         */
+
+        $productIds = $products->pluck('id')->all();
+
+        $variantIds = $products
+            ->flatMap(fn ($product) => $product->variants->pluck('id'))
+            ->all();
+
+        $stock = $this->inventoryService->availableStockBatch(
+            $storeId,
+            $productIds,
+            $variantIds
+        );
 
         foreach ($products as $product) {
 
             if (!$product->has_variants) {
 
-                $product->available_stock =
-                    $this->inventoryService->availableStock(
-                        $storeId,
-                        $product->id,
-                        null
-                    );
+                $product->available_stock = $stock['products'][$product->id] ?? 0;
 
             } else {
 
                 foreach ($product->variants as $variant) {
 
-                    $variant->available_stock =
-                        $this->inventoryService->availableStock(
-                            $storeId,
-                            $product->id,
-                            $variant->id
-                        );
+                    $variant->available_stock = $stock['variants'][$variant->id] ?? 0;
                 }
             }
         }

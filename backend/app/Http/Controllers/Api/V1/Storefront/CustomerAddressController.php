@@ -21,9 +21,27 @@ class CustomerAddressController extends Controller
     {
         $customer = $request->user('sanctum');
 
-        return CustomerAddressResource::collection(
-            $customer->addresses()->orderByDesc('is_default')->get()
-        );
+        // OJO: CustomerAddressResource::collection(...) envuelve la
+        // respuesta en {"data": [...]}  (comportamiento por defecto
+        // de Laravel para colecciones de Resources). El $wrap = null
+        // definido en CustomerAddressResource solo aplica cuando se
+        // devuelve UN resource individual (como en store()/update()
+        // más abajo), no cuando se arma una colección con
+        // ::collection() — esa usa su propio wrap ('data') sin
+        // importar lo que diga la clase del resource.
+        //
+        // El resto del backend evita esto resolviendo manualmente
+        // cada resource y devolviendo un array plano (ver
+        // Storefront\ProductController::index, OrderController
+        // admin, etc.) — replicamos el mismo patrón acá para que
+        // getCustomerAddresses() en el frontend reciba un array
+        // real, no {data: [...]}.
+        $addresses = $customer->addresses()
+            ->orderByDesc('is_default')
+            ->get()
+            ->map(fn ($address) => (new CustomerAddressResource($address))->resolve());
+
+        return response()->json($addresses);
     }
 
     public function store(SaveCustomerAddressRequest $request)

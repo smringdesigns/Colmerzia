@@ -1,5 +1,7 @@
 import { create } from "zustand";
 
+import { queryClient } from "../lib/queryClient";
+
 interface Role {
     id: number;
     name: string;
@@ -108,6 +110,12 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
         localStorage.removeItem("token");
         localStorage.removeItem("tenant_subdomain");
+
+        // Limpia todo el caché de TanStack Query. Sin esto, si otro
+        // usuario (de otra tienda) inicia sesión en la misma pestaña
+        // sin recargar la página, vería por unos segundos los datos
+        // cacheados de la tienda anterior antes del refetch.
+        queryClient.clear();
 
         set({
             user: null,
