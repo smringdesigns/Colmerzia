@@ -12,6 +12,7 @@ export interface StoreInfo {
     name: string;
     subdomain: string;
     logo_path: string | null;
+    logo_url: string | null;
     contact_email: string | null;
     contact_phone: string | null;
     currency: string;

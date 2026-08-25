@@ -10,6 +10,7 @@ import CustomerForm from "../pages/CustomerForm";
 import Inventory from "../pages/Inventory";
 import Orders from "../pages/Orders";
 import OrderDetail from "../pages/OrderDetail";
+import SalesReport from "../pages/SalesReport";
 import CheckEmail from "../pages/CheckEmail"; // <-- 1. Importamos el nuevo componente
 import CreateAccount from "../pages/CreateAccount";
 import ForgotPassword from "../pages/ForgotPassword";
@@ -86,6 +87,11 @@ export const router = createBrowserRouter([
 
                     { path: "pedidos", element: <Orders /> },
                     { path: "pedidos/:id", element: <OrderDetail /> },
+
+
+                    // Ventas / Informes
+                    { path: "reports/sales", element: <SalesReport /> },
+                    { path: "informes/ventas", element: <SalesReport /> },
 
 
                     // Configuración

@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Save } from "lucide-react";
+import { Save, Upload, X } from "lucide-react";
 
 import Button from "../../../components/ui/Button";
 import Panel from "../../../components/ui/Panel";
@@ -8,7 +8,9 @@ import TextField from "../../../components/ui/TextField";
 import { useToast } from "../../../components/ui/useToast";
 import {
     getMyStore,
+    removeStoreLogo,
     updateStoreSettings,
+    uploadStoreLogo,
     type UpdateStoreSettingsPayload,
 } from "../../stores/storeApi";
 
@@ -76,6 +78,86 @@ export default function GeneralSettingsTab() {
             },
         });
     }, [data]);
+
+    // =========================================================
+    // LOGO DE LA TIENDA
+    // =========================================================
+
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const { mutate: uploadLogo, isPending: isUploadingLogo } = useMutation({
+        mutationFn: uploadStoreLogo,
+
+        onSuccess: () => {
+            notify({
+                title: "Logo actualizado",
+                message: "El logo de tu tienda se actualizó correctamente.",
+                tone: "success",
+            });
+
+            queryClient.invalidateQueries({ queryKey: ["settings", "store"] });
+            queryClient.invalidateQueries({ queryKey: ["store-info"] });
+        },
+
+        onError: (error: any) => {
+            notify({
+                title: "No se pudo subir el logo",
+                message:
+                    error.response?.data?.message ||
+                    "Revisa que el archivo sea una imagen de máximo 2 MB.",
+                tone: "error",
+            });
+        },
+    });
+
+    const { mutate: deleteLogo, isPending: isRemovingLogo } = useMutation({
+        mutationFn: removeStoreLogo,
+
+        onSuccess: () => {
+            notify({
+                title: "Logo eliminado",
+                message: "Se quitó el logo de tu tienda.",
+                tone: "success",
+            });
+
+            queryClient.invalidateQueries({ queryKey: ["settings", "store"] });
+            queryClient.invalidateQueries({ queryKey: ["store-info"] });
+        },
+
+        onError: () => {
+            notify({
+                title: "No se pudo eliminar el logo",
+                message: "Intenta de nuevo en unos segundos.",
+                tone: "error",
+            });
+        },
+    });
+
+    function handleLogoFileChange(
+        event: React.ChangeEvent<HTMLInputElement>
+    ) {
+        const file = event.target.files?.[0];
+
+        // Limpiamos el input para poder volver a elegir el MISMO
+        // archivo más adelante si hace falta (si no, el navegador no
+        // dispara onChange de nuevo con el mismo file).
+        event.target.value = "";
+
+        if (!file) return;
+
+        if (file.size > 2 * 1024 * 1024) {
+            notify({
+                title: "Archivo muy pesado",
+                message: "El logo no puede pesar más de 2 MB.",
+                tone: "error",
+            });
+            return;
+        }
+
+        uploadLogo(file);
+    }
+
+    const logoUrl = data?.data?.settings?.logo_url ?? null;
 
     // =========================================================
     // GUARDAR CONFIGURACIÓN
@@ -176,6 +258,99 @@ export default function GeneralSettingsTab() {
 
     return (
         <Panel>
+
+            {/* =================================================
+                LOGO DE LA TIENDA
+            ================================================= */}
+
+            <div
+                style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "20px",
+                    paddingBottom: "28px",
+                    marginBottom: "28px",
+                    borderBottom: "1px solid var(--border-color, #e5e7eb)",
+                }}
+            >
+                <div
+                    style={{
+                        width: 72,
+                        height: 72,
+                        borderRadius: 16,
+                        border: "1px solid var(--border-color, #e5e7eb)",
+                        background: "#faf8ff",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        overflow: "hidden",
+                        flexShrink: 0,
+                    }}
+                >
+                    {logoUrl ? (
+                        <img
+                            src={logoUrl}
+                            alt="Logo de la tienda"
+                            style={{
+                                width: "100%",
+                                height: "100%",
+                                objectFit: "cover",
+                            }}
+                        />
+                    ) : (
+                        <span style={{ fontSize: 12, color: "#9ca3af" }}>
+                            Sin logo
+                        </span>
+                    )}
+                </div>
+
+                <div style={{ flex: 1, minWidth: 0 }}>
+                    <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700 }}>
+                        Logo de la tienda
+                    </h3>
+                    <p style={{ margin: "6px 0 12px", fontSize: 13, color: "#6b7280" }}>
+                        Se muestra en tu storefront público. JPG, PNG, WEBP o
+                        SVG, máximo 2 MB.
+                    </p>
+
+                    <div style={{ display: "flex", gap: 10 }}>
+                        <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept="image/png,image/jpeg,image/webp,image/svg+xml"
+                            onChange={handleLogoFileChange}
+                            style={{ display: "none" }}
+                        />
+
+                        <Button
+                            type="button"
+                            variant="secondary"
+                            disabled={isUploadingLogo}
+                            onClick={() => fileInputRef.current?.click()}
+                        >
+                            <Upload size={16} />
+                            {isUploadingLogo
+                                ? "Subiendo..."
+                                : logoUrl
+                                ? "Cambiar logo"
+                                : "Subir logo"}
+                        </Button>
+
+                        {logoUrl && (
+                            <Button
+                                type="button"
+                                variant="secondary"
+                                disabled={isRemovingLogo}
+                                onClick={() => deleteLogo()}
+                            >
+                                <X size={16} />
+                                {isRemovingLogo ? "Quitando..." : "Quitar"}
+                            </Button>
+                        )}
+                    </div>
+                </div>
+            </div>
+
             <form onSubmit={handleSubmit}>
 
                 {/* =================================================

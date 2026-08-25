@@ -75,10 +75,10 @@ export default function Header() {
                     to="/"
                     className="group flex min-w-0 items-center gap-3"
                 >
-                    {store?.logo_path ? (
+                    {store?.logo_url ? (
                         <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-[#e2e1eb] bg-[#faf8ff] transition group-hover:border-[#4648d4]/30">
                             <img
-                                src={store.logo_path}
+                                src={store.logo_url}
                                 alt={store.name ?? "Logo"}
                                 className="h-full w-full object-cover"
                             />

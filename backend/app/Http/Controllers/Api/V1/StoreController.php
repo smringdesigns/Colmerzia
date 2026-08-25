@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Store\CreateWorkspaceRequest;
 use App\Http\Requests\Store\UpdateStoreRequest;
+use App\Http\Requests\Store\UploadStoreLogoRequest;
 use App\Models\Category;
 use App\Models\Role;
 use App\Models\Store;
@@ -13,6 +14,7 @@ use App\Support\BusinessTypes\BusinessTypeRegistry;
 use App\Support\Plans\PlanRegistry;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class StoreController extends Controller
@@ -193,6 +195,64 @@ class StoreController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Configuración actualizada correctamente.',
+            'data' => $store->fresh()->load('settings'),
+        ]);
+    }
+
+    /**
+     * POST /api/v1/settings/store/logo (Panel de Configuración -> logo)
+     *
+     * Endpoint separado del update() general porque este recibe un
+     * archivo (multipart/form-data), no JSON. Guarda con nombre
+     * aleatorio en storage/app/public/stores/{id}/logo (disco
+     * "public") y borra el logo anterior para no acumular archivos
+     * huérfanos cada vez que el usuario cambia el logo.
+     */
+    public function uploadLogo(UploadStoreLogoRequest $request)
+    {
+        $store = $this->resolveCurrentStore($request);
+
+        $settings = $store->settings;
+
+        if ($settings?->logo_path) {
+            Storage::disk('public')->delete($settings->logo_path);
+        }
+
+        $path = $request->file('logo')->store(
+            "stores/{$store->id}/logo",
+            'public'
+        );
+
+        if ($settings) {
+            $settings->update(['logo_path' => $path]);
+        } else {
+            $store->settings()->create(['logo_path' => $path]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Logo actualizado correctamente.',
+            'data' => $store->fresh()->load('settings'),
+        ]);
+    }
+
+    /**
+     * DELETE /api/v1/settings/store/logo
+     */
+    public function removeLogo(Request $request)
+    {
+        $store = $this->resolveCurrentStore($request);
+
+        $settings = $store->settings;
+
+        if ($settings?->logo_path) {
+            Storage::disk('public')->delete($settings->logo_path);
+            $settings->update(['logo_path' => null]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Logo eliminado.',
             'data' => $store->fresh()->load('settings'),
         ]);
     }

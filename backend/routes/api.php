@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\V1\Onboarding\StoreOnboardingController;
 use App\Http\Controllers\Api\V1\ProductController;
 use App\Http\Controllers\Api\V1\CustomerController;
 use App\Http\Controllers\Api\V1\OrderController;
+use App\Http\Controllers\Api\V1\SalesReportController;
 use App\Http\Controllers\Api\V1\WarehouseController;
 use App\Http\Controllers\Api\V1\InventoryController;
 use App\Http\Controllers\Api\V1\StoreController;
@@ -550,6 +551,16 @@ Route::prefix('v1')->group(function () {
                     [StoreController::class, 'update']
                 )->middleware('can:settings.update');
 
+                Route::post(
+                    '/settings/store/logo',
+                    [StoreController::class, 'uploadLogo']
+                )->middleware('can:settings.update');
+
+                Route::delete(
+                    '/settings/store/logo',
+                    [StoreController::class, 'removeLogo']
+                )->middleware('can:settings.update');
+
 
                 /*
                 |--------------------------------------------------------------------------
@@ -663,6 +674,27 @@ Route::prefix('v1')->group(function () {
                 '/orders/{order}/status',
                 [OrderController::class, 'updateStatus']
             )->middleware('can:orders.update');
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | 3.4 REPORTES DE VENTAS
+            |--------------------------------------------------------------------------
+            |
+            | Reutiliza el permiso orders.view: el reporte es una
+            | vista derivada de los pedidos, no un recurso nuevo.
+            |
+            */
+
+            Route::get(
+                '/reports/sales',
+                [SalesReportController::class, 'summary']
+            )->middleware('can:orders.view');
+
+            Route::get(
+                '/reports/sales/export',
+                [SalesReportController::class, 'export']
+            )->middleware('can:orders.view');
 
         });
 

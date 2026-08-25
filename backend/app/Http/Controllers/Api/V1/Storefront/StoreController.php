@@ -44,6 +44,7 @@ class StoreController extends Controller
                 'storefront_layout' => $storefrontLayout,
 
                 'logo_path' => $store->settings?->logo_path,
+                'logo_url' => $store->settings?->logo_url,
 
                 'contact_email' => $store->settings?->contact_email,
                 'contact_phone' => $store->settings?->contact_phone,

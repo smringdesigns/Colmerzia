@@ -19,6 +19,7 @@ class OrderItem extends Model
         'product_snapshot',
         'quantity',
         'unit_price',
+        'unit_cost',
         'discount',
         'tax',
         'total',
@@ -29,6 +30,7 @@ class OrderItem extends Model
         return [
             'quantity' => 'integer',
             'unit_price' => 'decimal:2',
+            'unit_cost' => 'decimal:2',
             'discount' => 'decimal:2',
             'tax' => 'decimal:2',
             'total' => 'decimal:2',

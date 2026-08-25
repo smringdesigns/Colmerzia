@@ -113,11 +113,16 @@ class CheckoutService
                     'product_name' => $product?->name ?? 'Producto eliminado',
                     'product_sku' => $variant?->sku ?? $product?->sku,
                     'product_snapshot' => [
-                        'product' => $product?->only(['id', 'name', 'sku', 'price']),
-                        'variant' => $variant?->only(['id', 'name', 'sku', 'price', 'attributes']),
+                        'product' => $product?->only(['id', 'name', 'sku', 'price', 'cost_price']),
+                        'variant' => $variant?->only(['id', 'name', 'sku', 'price', 'cost_price', 'attributes']),
                     ],
                     'quantity' => $item->quantity,
                     'unit_price' => $item->unit_price,
+                    // Snapshot del costo en el momento de la venta (no el
+                    // cost_price ACTUAL del producto): así el reporte de
+                    // ganancias de un mes ya cerrado no cambia si después
+                    // ajustás el costo del producto hoy.
+                    'unit_cost' => $variant?->cost_price ?? $product?->cost_price ?? 0,
                     'discount' => $item->discount,
                     'tax' => $item->tax,
                     'total' => $item->total,

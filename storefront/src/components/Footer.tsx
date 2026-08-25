@@ -69,10 +69,10 @@ export default function Footer() {
 
                             {/* Logo */}
 
-                            {store?.logo_path ? (
+                            {store?.logo_url ? (
                                 <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-[#dcdce8] bg-white shadow-[0_2px_8px_rgba(35,35,60,0.04)]">
                                     <img
-                                        src={store.logo_path}
+                                        src={store.logo_url}
                                         alt={
                                             store.name ??
                                             "Logo"

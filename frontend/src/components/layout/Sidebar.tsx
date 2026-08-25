@@ -4,6 +4,7 @@ import {
     Users,
     Warehouse,
     ShoppingCart,
+    TrendingUp,
     Settings,
     Building2,
 } from "lucide-react";
@@ -37,6 +38,11 @@ const menu = [
         name: "Pedidos",
         path: "/orders",
         icon: ShoppingCart,
+    },
+    {
+        name: "Ventas",
+        path: "/reports/sales",
+        icon: TrendingUp,
     },
     {
         name: "Configuración",

@@ -39,6 +39,24 @@ class StoreSetting extends Model
     }
 
     /**
+     * Atributo calculado, no una columna: se agrega siempre al JSON
+     * de este modelo para que el frontend (admin o storefront) nunca
+     * tenga que armar la URL del logo a mano a partir de logo_path
+     * (que es una ruta relativa tipo "stores/3/logo/xyz.png", no
+     * usable directo en un <img src>).
+     */
+    protected $appends = ['logo_url'];
+
+    protected function logoUrl(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(
+            get: fn () => $this->logo_path
+                ? \Illuminate\Support\Facades\Storage::disk('public')->url($this->logo_path)
+                : null,
+        );
+    }
+
+    /**
      * Relación Inversa:
      * Esta configuración pertenece a una única tienda.
      */
