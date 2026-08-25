@@ -1,10 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import {
-  QueryClient,
-  QueryClientProvider,
-} from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 
+import { queryClient } from "./lib/queryClient";
 import { ToastProvider } from "./components/ui/ToastProvider";
 import AppRoot from "./App";
 
@@ -17,8 +15,6 @@ import "./styles/layout.css";
 import "./styles/components.css";
 import "./styles/pages.css";
 import "./styles/responsive.css";
-
-const queryClient = new QueryClient();
 
 ReactDOM.createRoot(
   document.getElementById("root")!

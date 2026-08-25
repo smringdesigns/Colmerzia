@@ -100,6 +100,69 @@ class InventoryService
         return $inventory->available();
     }
 
+    /**
+     * Versión "batch" de availableStock(), pensada para listados
+     * (ej. ProductController::index) donde antes se llamaba a
+     * availableStock() una vez POR PRODUCTO/VARIANTE dentro de un
+     * foreach: eso significaba repetir defaultWarehouse() (1 query)
+     * y un firstOrCreate() (1-2 queries, con escritura incluida en
+     * un endpoint de solo lectura) por cada fila de la página.
+     *
+     * Aquí resolvemos la bodega UNA sola vez y traemos en una sola
+     * consulta (`whereIn`) el inventario existente de todos los
+     * productos/variantes pedidos. A propósito NO creamos filas de
+     * Inventory que no existan: un listado es de solo lectura, así
+     * que un producto sin fila de inventario todavía simplemente se
+     * reporta con 0 disponibles. La fila real se crea la primera vez
+     * que algo la necesita de verdad (ajuste de stock, checkout,
+     * etc. — todos pasan por inventoryRow()).
+     *
+     * @param array<int> $productIds
+     * @param array<int> $variantIds product_variant_id de las variantes a resolver (sin incluir null)
+     * @return array{products: array<int,int>, variants: array<int,int>}
+     *         'products' => [product_id => stock] (fila con product_variant_id NULL)
+     *         'variants' => [product_variant_id => stock]
+     */
+    public function availableStockBatch(int $storeId, array $productIds, array $variantIds = []): array
+    {
+        if (empty($productIds) && empty($variantIds)) {
+            return ['products' => [], 'variants' => []];
+        }
+
+        $warehouse = $this->defaultWarehouse($storeId);
+
+        $rows = Inventory::where('warehouse_id', $warehouse->id)
+            ->where(function ($query) use ($productIds, $variantIds) {
+                if (!empty($productIds)) {
+                    $query->orWhere(function ($q) use ($productIds) {
+                        $q->whereIn('product_id', $productIds)
+                          ->whereNull('product_variant_id');
+                    });
+                }
+
+                if (!empty($variantIds)) {
+                    $query->orWhereIn('product_variant_id', $variantIds);
+                }
+            })
+            ->get();
+
+        $products = [];
+        $variants = [];
+
+        foreach ($rows as $row) {
+            if ($row->product_variant_id !== null) {
+                $variants[$row->product_variant_id] = $row->available();
+            } else {
+                $products[$row->product_id] = $row->available();
+            }
+        }
+
+        return [
+            'products' => $products,
+            'variants' => $variants,
+        ];
+    }
+
 
     /**
      * Valida disponibilidad de stock.

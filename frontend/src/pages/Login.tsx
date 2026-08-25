@@ -8,6 +8,7 @@ import Button from "../components/ui/Button";
 import TextField from "../components/ui/TextField";
 import { login } from "../features/auth/authApi";
 import { useAuthStore } from "../store/authStore";
+import { queryClient } from "../lib/queryClient";
 
 /**
  * Validación del formulario con Zod.
@@ -54,6 +55,12 @@ export default function Login() {
                 data.email,
                 data.password
             );
+
+            // Limpia el caché de queries ANTES de setear el nuevo
+            // usuario/tenant: si en esta misma pestaña había datos
+            // cacheados de otra tienda (sesión anterior), evita que
+            // se muestren por un instante mientras cargan los nuevos.
+            queryClient.clear();
 
             setUser(res.user);
             setToken(res.token);
