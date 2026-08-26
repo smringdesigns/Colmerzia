@@ -1,0 +1,246 @@
+@import "tailwindcss";
+
+/* =========================================================
+   SISTEMA DE DISEÑO — COLMERZIA
+   ========================================================= */
+
+@theme {
+    /* -----------------------------------------------------
+       Colores principales
+    ----------------------------------------------------- */
+
+    --color-paper: #ffffff;
+    --color-paper-soft: #faf8ff;
+    --color-paper-raised: #ffffff;
+    --color-paper-line: #e2e8f0;
+
+    --color-ink: #131b2e;
+    --color-ink-soft: #464554;
+    --color-ink-faint: #767586;
+
+    --color-stamp: #4648d4;
+    --color-stamp-soft: #f2f3ff;
+    --color-stamp-dark: #3638b5;
+
+    /* -----------------------------------------------------
+       Acentos secundarios
+       ----------------------------------------------------- */
+
+    --color-gold: #c7c4d7;
+    --color-gold-soft: #f2f3ff;
+
+    --color-forest: #3f7d5c;
+    --color-forest-soft: #e4f0e8;
+
+    /* -----------------------------------------------------
+       Tipografía
+       ----------------------------------------------------- */
+
+    --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
+    --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+/* =========================================================
+   BASE
+   ========================================================= */
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        margin: 0;
+        background-color: var(--color-paper);
+        color: var(--color-ink);
+        font-family: var(--font-sans);
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+    }
+
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: var(--font-display);
+        letter-spacing: -0.02em;
+        margin: 0;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+        font: inherit;
+    }
+
+    a {
+        color: inherit;
+    }
+}
+
+/* =========================================================
+   FONDO LANDING
+   ========================================================= */
+
+.ledger-bg {
+    background-color: var(--color-paper-soft);
+
+    background-image:
+        linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.65),
+            rgba(250, 248, 255, 0.95)
+        ),
+        repeating-linear-gradient(
+            to bottom,
+            transparent 0,
+            transparent 35px,
+            rgba(199, 196, 215, 0.35) 35px,
+            rgba(199, 196, 215, 0.35) 36px
+        );
+}
+
+/* =========================================================
+   RECIBO — ELEMENTO DISTINTIVO
+   ========================================================= */
+
+.receipt-card {
+    position: relative;
+
+    background: var(--color-paper-raised);
+
+    border: 1px solid var(--color-paper-line);
+
+    box-shadow:
+        0 24px 60px -20px rgba(19, 27, 46, 0.18),
+        0 8px 24px -16px rgba(19, 27, 46, 0.12);
+}
+
+/* ---------------------------------------------------------
+   Borde perforado
+   --------------------------------------------------------- */
+
+.receipt-card::before {
+    content: "";
+
+    position: absolute;
+
+    top: -1px;
+    left: 0;
+    right: 0;
+
+    height: 12px;
+
+    background-image: radial-gradient(
+        circle at 12px 0,
+        transparent 7px,
+        var(--color-paper-soft) 7.5px
+    );
+
+    background-size: 24px 12px;
+    background-repeat: repeat-x;
+}
+
+/* =========================================================
+   SELLO
+   ========================================================= */
+
+.receipt-stamp {
+    font-family: var(--font-display);
+
+    font-weight: 700;
+
+    color: var(--color-stamp);
+
+    border: 3px solid var(--color-stamp);
+
+    border-radius: 9999px;
+
+    transform: rotate(-9deg);
+
+    letter-spacing: 0.08em;
+
+    opacity: 0.9;
+}
+
+/* =========================================================
+   SKELETON
+   ========================================================= */
+
+@keyframes skeleton-pulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.skeleton {
+    background: var(--color-stamp-soft);
+
+    border-radius: 0.5rem;
+
+    animation: skeleton-pulse 1.4s ease-in-out infinite;
+}
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-paper-soft);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-gold);
+
+    border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-stamp);
+}
+
+/* =========================================================
+   ACCESIBILIDAD
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 640px) {
+    .receipt-card {
+        box-shadow:
+            0 16px 40px -20px rgba(19, 27, 46, 0.18);
+    }
+}
