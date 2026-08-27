@@ -1,0 +1,107 @@
+# =============================================================
+# Dockerfile de PRODUCCIÓN del backend.
+#
+# El docker/php/Dockerfile original (dev) NO copia código ni
+# corre composer install a propósito: depende 100% del bind
+# mount (./backend:/var/www/html) y de que vos corras
+# `composer install` a mano dentro del contenedor. Eso está
+# perfecto para desarrollo (hot-reload de código PHP sin
+# rebuild), pero en producción NO hay bind mount — el código
+# tiene que quedar DENTRO de la imagen, y las dependencias
+# tienen que instalarse en build time, no a mano.
+#
+# Build:
+#   docker build -f docker/php/Dockerfile.prod -t colmerzia-backend .
+# =============================================================
+
+# ---- Etapa 1: instalar dependencias con Composer ----
+FROM composer:2 AS vendor
+
+WORKDIR /app
+
+COPY backend/composer.json backend/composer.lock ./
+
+# --no-scripts porque todavía no está el código de la app acá
+# (los scripts de post-install de Laravel asumen que artisan
+# existe). Los scripts reales corren en la etapa siguiente.
+RUN composer install \
+    --no-dev \
+    --no-interaction \
+    --no-progress \
+    --no-scripts \
+    --optimize-autoloader
+
+
+# ---- Etapa 2: imagen final con PHP-FPM ----
+FROM php:8.4-fpm AS app
+
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    unzip \
+    zip \
+    libpq-dev \
+    libzip-dev \
+    libicu-dev \
+    && docker-php-ext-install pdo_pgsql zip intl pcntl posix opcache \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# OPcache en modo producción: sin esto, PHP recompila cada
+# archivo en cada request (aceptable en dev, lento en prod).
+RUN { \
+        echo 'opcache.enable=1'; \
+        echo 'opcache.memory_consumption=128'; \
+        echo 'opcache.interned_strings_buffer=16'; \
+        echo 'opcache.max_accelerated_files=10000'; \
+        echo 'opcache.validate_timestamps=0'; \
+    } > /usr/local/etc/php/conf.d/opcache-prod.ini
+
+WORKDIR /var/www/html
+
+COPY backend/ .
+COPY --from=vendor /app/vendor ./vendor
+
+# OJO -- a propósito NO corremos aquí config:cache/route:cache: en
+# esta etapa (docker build) todavía no existe el .env.production
+# real (ese se inyecta recién en runtime vía env_file en
+# docker-compose.prod.yml). Si cacheáramos la config ACÁ, quedaría
+# grabada con variables vacías/de build, y una vez que existe un
+# config cache, Laravel IGNORA por completo el .env real —
+# quedaría "sordo" a tus variables de entorno de producción sin
+# ningún error visible. Por eso el cacheo se hace en
+# docker-entrypoint.sh, que corre en cada arranque del contenedor,
+# ya con el .env.production real disponible.
+RUN composer dump-autoload --optimize
+
+# storage/ y bootstrap/cache/ los tiene que poder escribir el
+# usuario con el que corre PHP-FPM (www-data).
+RUN chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
+
+COPY docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+USER www-data
+
+EXPOSE 9000
+
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["php-fpm"]
+
+
+# ---- Etapa 3: nginx que le habla a la etapa "app" por FastCGI ----
+#
+# El reverse-proxy principal (docker/nginx/prod.conf) le habla a
+# ESTE contenedor por HTTP normal, no directo al php-fpm por
+# FastCGI. Evita que el proxy principal necesite acceso al
+# filesystem de Laravel (SCRIPT_FILENAME de fastcgi_pass requiere
+# que nginx pueda "ver" el archivo public/index.php) — acá ese
+# problema desaparece porque este nginx YA tiene su propia copia
+# de public/ horneada en la imagen (COPY --from=app), no depende
+# de ningún volumen compartido.
+FROM nginx:1.28-alpine AS web
+
+COPY docker/php/backend.nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=app /var/www/html/public /var/www/html/public
+
+EXPOSE 80

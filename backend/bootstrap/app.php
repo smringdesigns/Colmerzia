@@ -54,6 +54,36 @@ return Application::configure(basePath: dirname(__DIR__))
 
         /*
         |--------------------------------------------------------------------------
+        | Confiar en el reverse-proxy (nginx) de producción
+        |--------------------------------------------------------------------------
+        |
+        | En producción, Laravel nunca recibe la petición directo de
+        | internet — siempre pasa primero por el nginx que termina el
+        | SSL (docker/nginx/prod.conf), que reenvía con headers
+        | X-Forwarded-*. Sin esto, Laravel cree que TODO el tráfico es
+        | HTTP plano (nunca detecta HTTPS), lo que rompe cosas que
+        | dependen de eso: Storage::url() generando enlaces http://
+        | para el logo de la tienda, cookies de sesión con la bandera
+        | "secure", url()/route() con http:// en vez de https://, etc.
+        |
+        | '*' = confiar en cualquier proxy. Está bien acá porque el
+        | único que le puede hablar a este contenedor por la red
+        | interna de Docker es NUESTRO propio nginx (no está expuesto
+        | a internet directamente) — no es tráfico de terceros.
+        |
+        */
+
+        $middleware->trustProxies(
+            at: '*',
+            headers: Request::HEADER_X_FORWARDED_FOR
+                | Request::HEADER_X_FORWARDED_HOST
+                | Request::HEADER_X_FORWARDED_PORT
+                | Request::HEADER_X_FORWARDED_PROTO,
+        );
+
+
+        /*
+        |--------------------------------------------------------------------------
         | API Rate limiting
         |--------------------------------------------------------------------------
         */

@@ -66,6 +66,7 @@ export async function getProducts(params?: {
     search?: string;
     category_id?: number;
     page?: number;
+    per_page?: number;
 }): Promise<ProductsResponse> {
     const res = await api.get("/v1/storefront/products", { params });
     return res.data;

@@ -11,6 +11,8 @@ export interface StoreSocialLinks {
 export interface StoreInfo {
     name: string;
     subdomain: string;
+    business_type: string | null;
+    storefront_layout: "catalog" | "menu" | "services";
     logo_path: string | null;
     logo_url: string | null;
     contact_email: string | null;
