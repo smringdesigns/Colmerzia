@@ -7,11 +7,14 @@ import {
     TrendingUp,
     Settings,
     Building2,
+    Store,
+    ExternalLink,
 } from "lucide-react";
 
 import { NavLink } from "react-router-dom";
 
 import { useAuthStore } from "../../store/authStore";
+import { openStorefront } from "../../features/platform/platformApi";
 
 const menu = [
     {
@@ -52,8 +55,9 @@ const menu = [
 ];
 
 export default function Sidebar() {
-    const { hasRole } = useAuthStore();
+    const { hasRole, user } = useAuthStore();
     const isSuperAdmin = hasRole("super-admin");
+    const subdomain = user?.store?.subdomain;
 
     return (
         <aside className="sidebar">
@@ -92,10 +96,31 @@ export default function Sidebar() {
                 )}
             </nav>
 
-            <div className="sidebar-cta">
-                <strong>Bienvenido a Colmerzia</strong>
-                <span>Administra productos, pedidos y usuarios desde un solo lugar.</span>
-            </div>
+            {/*
+                "Ver mi tienda" -- antes acá había solo un cuadro
+                decorativo de bienvenida sin ninguna función. Un
+                dueño de tienda nuevo no tenía NINGÚN lugar en todo
+                el panel para encontrar el link público de su propia
+                tienda (openStorefront/getStorefrontUrl ya existían
+                en platformApi.ts, pero solo los usaba el panel de
+                super-admin -- nunca estuvieron conectados acá).
+            */}
+            {subdomain && (
+                <button
+                    type="button"
+                    className="sidebar-cta sidebar-cta-action"
+                    onClick={() => openStorefront(subdomain)}
+                >
+                    <span className="sidebar-cta-icon">
+                        <Store size={18} />
+                    </span>
+                    <span className="sidebar-cta-text">
+                        <strong>Ver mi tienda</strong>
+                        <span>{subdomain}.colmerzia.com</span>
+                    </span>
+                    <ExternalLink size={15} className="sidebar-cta-arrow" />
+                </button>
+            )}
         </aside>
     );
 }
