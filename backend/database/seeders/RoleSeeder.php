@@ -57,11 +57,28 @@ class RoleSeeder extends Seeder
             |
             | roles_store_id_slug_unique
             |
+            | OJO -- super-admin es la ÚNICA excepción que va con
+            | store_id = NULL. Es un rol de plataforma, no de una
+            | tienda puntual: BelongsToStoreOrNullScope (ver
+            | app/Models/Scopes/BelongsToStoreOrNullScope.php) filtra
+            | roles por "store_id = tienda_actual OR store_id IS NULL"
+            | -- si este rol quedara con store_id = $store->id (la
+            | tienda "colmerzia" de desarrollo), un super-admin dejaría
+            | de "verse a sí mismo" como super-admin apenas entrara a
+            | CUALQUIER OTRA tienda (ej. con switchToStore() desde el
+            | panel de plataforma), porque la query de sus roles
+            | quedaría filtrada a la tienda a la que entró. Eso rompía
+            | Gate::before() en AppServiceProvider (el bypass de
+            | super-admin) y todo terminaba en 403 en absolutamente
+            | todo -- productos, clientes, pedidos, todo.
+            |
             */
+
+            $roleStoreId = $roleSlug === 'super-admin' ? null : $store->id;
 
             $role = Role::firstOrCreate(
                 [
-                    'store_id' => $store->id,
+                    'store_id' => $roleStoreId,
                     'slug' => $roleSlug,
                 ],
                 [

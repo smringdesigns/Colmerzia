@@ -27,7 +27,10 @@ class UserSeeder extends Seeder
         |--------------------------------------------------------------------------
         */
 
-        $role = Role::where('store_id', $store->id)
+        // El rol super-admin es un rol de plataforma: store_id = NULL
+        // a propósito (ver el comentario en RoleSeeder.php sobre por
+        // qué). No busques por $store->id acá.
+        $role = Role::whereNull('store_id')
             ->where('slug', 'super-admin')
             ->firstOrFail();
 
