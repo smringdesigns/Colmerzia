@@ -19,6 +19,8 @@ use App\Http\Controllers\Api\V1\ProductController;
 use App\Http\Controllers\Api\V1\CustomerController;
 use App\Http\Controllers\Api\V1\OrderController;
 use App\Http\Controllers\Api\V1\SalesReportController;
+use App\Http\Controllers\Api\V1\CategoryController;
+use App\Http\Controllers\Api\V1\BrandController;
 use App\Http\Controllers\Api\V1\WarehouseController;
 use App\Http\Controllers\Api\V1\InventoryController;
 use App\Http\Controllers\Api\V1\StoreController;
@@ -432,6 +434,70 @@ Route::prefix('v1')->group(function () {
                     '/products/{product}',
                     [ProductController::class, 'destroy']
                 )->middleware('can:products.delete');
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Categorías
+                |--------------------------------------------------------------------------
+                */
+
+                Route::get(
+                    '/categories',
+                    [CategoryController::class, 'index']
+                )->middleware('can:categories.view');
+
+                Route::post(
+                    '/categories',
+                    [CategoryController::class, 'store']
+                )->middleware('can:categories.create');
+
+                Route::put(
+                    '/categories/{category}',
+                    [CategoryController::class, 'update']
+                )->middleware('can:categories.update');
+
+                Route::patch(
+                    '/categories/{category}',
+                    [CategoryController::class, 'update']
+                )->middleware('can:categories.update');
+
+                Route::delete(
+                    '/categories/{category}',
+                    [CategoryController::class, 'destroy']
+                )->middleware('can:categories.delete');
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Marcas
+                |--------------------------------------------------------------------------
+                */
+
+                Route::get(
+                    '/brands',
+                    [BrandController::class, 'index']
+                )->middleware('can:brands.view');
+
+                Route::post(
+                    '/brands',
+                    [BrandController::class, 'store']
+                )->middleware('can:brands.create');
+
+                Route::put(
+                    '/brands/{brand}',
+                    [BrandController::class, 'update']
+                )->middleware('can:brands.update');
+
+                Route::patch(
+                    '/brands/{brand}',
+                    [BrandController::class, 'update']
+                )->middleware('can:brands.update');
+
+                Route::delete(
+                    '/brands/{brand}',
+                    [BrandController::class, 'destroy']
+                )->middleware('can:brands.delete');
 
 
                 /*

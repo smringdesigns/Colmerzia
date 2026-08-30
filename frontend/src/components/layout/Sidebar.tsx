@@ -1,6 +1,8 @@
 import {
     LayoutDashboard,
     Package,
+    FolderTree,
+    Tag,
     Users,
     Warehouse,
     ShoppingCart,
@@ -26,6 +28,16 @@ const menu = [
         name: "Productos",
         path: "/products",
         icon: Package,
+    },
+    {
+        name: "Categorías",
+        path: "/categories",
+        icon: FolderTree,
+    },
+    {
+        name: "Marcas",
+        path: "/brands",
+        icon: Tag,
     },
     {
         name: "Inventario",

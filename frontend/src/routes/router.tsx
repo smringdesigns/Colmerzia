@@ -5,6 +5,8 @@ import Dashboard from "../pages/Dashboard";
 import Login from "../pages/Login";
 import Products from "../pages/Products";
 import ProductForm from "../pages/ProductForm";
+import Categories from "../pages/Categories";
+import Brands from "../pages/Brands";
 import Customers from "../pages/Customers";
 import CustomerForm from "../pages/CustomerForm";
 import Inventory from "../pages/Inventory";
@@ -64,6 +66,16 @@ export const router = createBrowserRouter([
                     { path: "productos", element: <Products /> },
                     { path: "productos/nuevo", element: <ProductForm /> },
                     { path: "productos/:id/editar", element: <ProductForm /> },
+
+
+                    // Categorías
+                    { path: "categories", element: <Categories /> },
+                    { path: "categorias", element: <Categories /> },
+
+
+                    // Marcas
+                    { path: "brands", element: <Brands /> },
+                    { path: "marcas", element: <Brands /> },
 
 
                     // Clientes

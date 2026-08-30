@@ -9,8 +9,11 @@ import { z } from "zod";
 import Button from "../components/ui/Button";
 import PageHeader from "../components/ui/PageHeader";
 import Panel from "../components/ui/Panel";
+import SelectField from "../components/ui/SelectField";
 import TextField from "../components/ui/TextField";
 import { useToast } from "../components/ui/useToast";
+import { getCategories } from "../features/categories/categoriesApi";
+import { getBrands } from "../features/brands/brandsApi";
 import {
     createProduct,
     getProduct,
@@ -26,6 +29,17 @@ const schema = z.object({
     stock: z.coerce.number().int().min(0).optional(),
     short_description: z.string().max(500).optional(),
     description: z.string().optional(),
+    // El <select> manda "" cuando el usuario elige "Sin categoría" --
+    // lo convertimos a null ANTES de que z.coerce.number() lo
+    // procese, porque Number("") es 0, no lo que queremos.
+    category_id: z.preprocess(
+        (val) => (val === "" || val === undefined ? null : val),
+        z.coerce.number().nullable().optional()
+    ),
+    brand_id: z.preprocess(
+        (val) => (val === "" || val === undefined ? null : val),
+        z.coerce.number().nullable().optional()
+    ),
     featured: z.boolean().optional(),
     is_active: z.boolean().optional(),
 });
@@ -50,6 +64,8 @@ export default function ProductForm() {
             featured: false,
             is_active: true,
             stock: 0,
+            category_id: null,
+            brand_id: null,
         },
         resolver: zodResolver(schema),
     });
@@ -58,6 +74,16 @@ export default function ProductForm() {
         enabled: isEditing,
         queryFn: () => getProduct(Number(id)),
         queryKey: ["product", id],
+    });
+
+    const { data: categories } = useQuery({
+        queryFn: getCategories,
+        queryKey: ["categories"],
+    });
+
+    const { data: brands } = useQuery({
+        queryFn: getBrands,
+        queryKey: ["brands"],
     });
 
     useEffect(() => {
@@ -71,6 +97,8 @@ export default function ProductForm() {
             is_active: product.is_active,
             name: product.name,
             price: Number(product.price),
+            category_id: product.category?.id ?? null,
+            brand_id: product.brand?.id ?? null,
             short_description: product.short_description ?? "",
             sku: product.sku,
             stock: product.stock,
@@ -168,6 +196,32 @@ export default function ProductForm() {
                         placeholder="Maximo 500 caracteres"
                         {...register("short_description")}
                     />
+
+                    <div className="form-grid two">
+                        <SelectField
+                            label="Categoría"
+                            options={[
+                                { value: "", label: "Sin categoría" },
+                                ...(categories ?? []).map((category) => ({
+                                    value: String(category.id),
+                                    label: category.name,
+                                })),
+                            ]}
+                            {...register("category_id")}
+                        />
+
+                        <SelectField
+                            label="Marca"
+                            options={[
+                                { value: "", label: "Sin marca" },
+                                ...(brands ?? []).map((brand) => ({
+                                    value: String(brand.id),
+                                    label: brand.name,
+                                })),
+                            ]}
+                            {...register("brand_id")}
+                        />
+                    </div>
 
                     <label className="ui-field">
                         <span>Descripcion completa</span>

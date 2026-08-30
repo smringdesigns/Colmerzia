@@ -149,6 +149,8 @@ class RoleSeeder extends Seeder
                     [
                         'products.view',
 
+                        'categories.view',
+
                         'customers.view',
                         'customers.create',
 

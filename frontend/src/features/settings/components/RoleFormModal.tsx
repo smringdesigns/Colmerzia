@@ -17,6 +17,8 @@ interface RoleFormModalProps {
 // Le da un nombre legible en español a cada módulo de permisos.
 const MODULE_LABELS: Record<string, string> = {
     products: "Productos",
+    categories: "Categorías",
+    brands: "Marcas",
     customers: "Clientes",
     orders: "Pedidos",
     warehouses: "Bodegas",
