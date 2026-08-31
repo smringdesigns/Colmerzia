@@ -24,6 +24,7 @@ use App\Http\Controllers\Api\V1\BrandController;
 use App\Http\Controllers\Api\V1\SearchController;
 use App\Http\Controllers\Api\V1\NotificationController;
 use App\Http\Controllers\Api\V1\ActivityController;
+use App\Http\Controllers\Api\V1\DashboardController;
 use App\Http\Controllers\Api\V1\WarehouseController;
 use App\Http\Controllers\Api\V1\InventoryController;
 use App\Http\Controllers\Api\V1\StoreController;
@@ -651,6 +652,7 @@ Route::prefix('v1')->group(function () {
                 Route::get('/search', [SearchController::class, 'index']);
                 Route::get('/notifications', [NotificationController::class, 'index']);
                 Route::get('/activity', [ActivityController::class, 'index']);
+                Route::get('/dashboard/kpis', [DashboardController::class, 'kpis']);
 
 
                 /*

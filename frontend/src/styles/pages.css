@@ -347,6 +347,7 @@
 }
 
 .stat-card,
+.kpi-card,
 .panel-card {
   border: 1px solid #e5e7eb;
   border-radius: 8px;
@@ -360,12 +361,50 @@
   padding: 20px;
 }
 
+.kpi-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px;
+}
+
+.kpi-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .stat-icon {
   display: grid;
   width: 46px;
   height: 46px;
   place-items: center;
   border-radius: 999px;
+}
+
+.trend-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.trend-badge.positive {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.trend-badge.negative {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.trend-badge.neutral {
+  background: #f3f4f6;
+  color: #6b7280;
 }
 
 .stat-icon.orange {
@@ -390,23 +429,29 @@
 
 .stat-card p,
 .stat-card strong,
-.stat-card span {
+.stat-card span,
+.kpi-card p,
+.kpi-card strong,
+.kpi-card span {
   display: block;
 }
 
-.stat-card p {
+.stat-card p,
+.kpi-card p {
   margin: 0 0 5px;
   color: #6b7280;
   font-size: 13px;
   font-weight: 700;
 }
 
-.stat-card strong {
+.stat-card strong,
+.kpi-card strong {
   color: #111827;
   font-size: 22px;
 }
 
-.stat-card span {
+.stat-card span,
+.kpi-card span {
   margin-top: 4px;
   color: #9ca3af;
   font-size: 12px;

@@ -1,18 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import {
+    Minus,
     Package,
     PackageX,
     ShoppingCart,
+    TrendingDown,
     TrendingUp,
     Truck,
     UserPlus,
     Users,
 } from "lucide-react";
 
-import { getCustomers } from "../features/customers/customersApi";
-import { getProducts } from "../features/products/services/productsApi";
-import { getOrders } from "../features/orders/ordersApi";
+import { getDashboardKpis } from "../features/dashboard/dashboardApi";
 import { getSalesReport, getSalesYearly } from "../features/reports/reportsApi";
 import { getActivity, type ActivityItem } from "../features/activity/activityApi";
 import { relativeTime } from "../lib/relativeTime";
@@ -30,6 +30,31 @@ function formatMoney(value: number | string) {
 function currentMonth() {
     const now = new Date();
     return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+}
+
+function TrendBadge({ trend }: { trend: number | null | undefined }) {
+    if (trend === null || trend === undefined) {
+        return <span className="trend-badge neutral">Nuevo</span>;
+    }
+
+    if (trend === 0) {
+        return (
+            <span className="trend-badge neutral">
+                <Minus size={12} />
+                0%
+            </span>
+        );
+    }
+
+    const isPositive = trend > 0;
+
+    return (
+        <span className={`trend-badge ${isPositive ? "positive" : "negative"}`}>
+            {isPositive ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
+            {isPositive ? "+" : ""}
+            {trend}%
+        </span>
+    );
 }
 
 const ACTIVITY_ICONS: Record<ActivityItem["type"], typeof ShoppingCart> = {
@@ -50,38 +75,14 @@ export default function Dashboard() {
     const navigate = useNavigate();
     const month = currentMonth();
 
-    // Pedimos per_page: 1 porque solo nos interesa el "total" que trae
-    // la paginacion de Laravel, no la lista completa de registros.
-    const { data: productsTotal, isLoading: loadingProductsTotal } = useQuery({
-        queryFn: () => getProducts({ per_page: 1 }),
-        queryKey: ["dashboard", "products", "total"],
+    const { data: kpis, isLoading: loadingKpis } = useQuery({
+        queryFn: getDashboardKpis,
+        queryKey: ["dashboard", "kpis"],
     });
 
-    const { data: productsActive, isLoading: loadingProductsActive } = useQuery({
-        queryFn: () => getProducts({ is_active: true, per_page: 1 }),
-        queryKey: ["dashboard", "products", "active"],
-    });
-
-    const { data: customersTotal, isLoading: loadingCustomersTotal } = useQuery({
-        queryFn: () => getCustomers({ per_page: 1 }),
-        queryKey: ["dashboard", "customers", "total"],
-    });
-
-    const { data: customersActive, isLoading: loadingCustomersActive } = useQuery({
-        queryFn: () => getCustomers({ is_active: true, per_page: 1 }),
-        queryKey: ["dashboard", "customers", "active"],
-    });
-
-    const { data: ordersTotal, isLoading: loadingOrdersTotal } = useQuery({
-        queryFn: () => getOrders({ per_page: 1 }),
-        queryKey: ["dashboard", "orders", "total"],
-    });
-
-    const { data: ordersPending, isLoading: loadingOrdersPending } = useQuery({
-        queryFn: () => getOrders({ status: "pending", per_page: 1 }),
-        queryKey: ["dashboard", "orders", "pending"],
-    });
-
+    // Solo para la ganancia (kpis ya trae ingresos + variación) --
+    // el desglose de costo/ganancia vive en SalesReportController,
+    // no tiene sentido duplicar esa lógica acá.
     const { data: salesReport, isLoading: loadingSales } = useQuery({
         queryFn: () => getSalesReport(month),
         queryKey: ["dashboard", "sales", month],
@@ -98,49 +99,47 @@ export default function Dashboard() {
     });
 
     const catalogHealth =
-        productsTotal && productsTotal.total > 0
-            ? Math.round(((productsActive?.total ?? 0) / productsTotal.total) * 100)
+        kpis && kpis.products.total > 0
+            ? Math.round(((kpis.products.active ?? 0) / kpis.products.total) * 100)
             : 0;
 
     const activeCustomersPct =
-        customersTotal && customersTotal.total > 0
-            ? Math.round(((customersActive?.total ?? 0) / customersTotal.total) * 100)
+        kpis && kpis.customers.total > 0
+            ? Math.round(((kpis.customers.active ?? 0) / kpis.customers.total) * 100)
             : 0;
 
     const cards = [
         {
             title: "Productos",
-            value: loadingProductsTotal ? "…" : String(productsTotal?.total ?? 0),
-            caption: loadingProductsActive
-                ? "Cargando..."
-                : `${productsActive?.total ?? 0} activos`,
+            value: loadingKpis ? "…" : String(kpis?.products.total ?? 0),
+            caption: loadingKpis ? "Cargando..." : `${kpis?.products.active ?? 0} activos`,
+            trend: kpis?.products.trend,
             icon: Package,
             tone: "orange",
         },
         {
             title: "Clientes",
-            value: loadingCustomersTotal ? "…" : String(customersTotal?.total ?? 0),
-            caption: loadingCustomersActive
-                ? "Cargando..."
-                : `${customersActive?.total ?? 0} activos`,
+            value: loadingKpis ? "…" : String(kpis?.customers.total ?? 0),
+            caption: loadingKpis ? "Cargando..." : `${kpis?.customers.active ?? 0} activos`,
+            trend: kpis?.customers.trend,
             icon: Users,
             tone: "blue",
         },
         {
             title: "Pedidos",
-            value: loadingOrdersTotal ? "…" : String(ordersTotal?.total ?? 0),
-            caption: loadingOrdersPending
-                ? "Cargando..."
-                : `${ordersPending?.total ?? 0} pendientes`,
+            value: loadingKpis ? "…" : String(kpis?.orders.total ?? 0),
+            caption: loadingKpis ? "Cargando..." : `${kpis?.orders.pending ?? 0} pendientes`,
+            trend: kpis?.orders.trend,
             icon: ShoppingCart,
             tone: "green",
         },
         {
             title: "Ventas del mes",
-            value: loadingSales ? "…" : formatMoney(salesReport?.summary.revenue ?? 0),
+            value: loadingKpis ? "…" : formatMoney(kpis?.revenue.this_month ?? 0),
             caption: loadingSales
                 ? "Cargando..."
                 : `Ganancia: ${formatMoney(salesReport?.summary.profit ?? 0)}`,
+            trend: kpis?.revenue.trend,
             icon: TrendingUp,
             tone: "purple",
         },
@@ -172,10 +171,13 @@ export default function Dashboard() {
 
             <section className="stats-grid">
                 {cards.map((card) => (
-                    <article className="stat-card" key={card.title}>
-                        <span className={`stat-icon ${card.tone}`}>
-                            <card.icon size={22} />
-                        </span>
+                    <article className="kpi-card" key={card.title}>
+                        <div className="kpi-card-top">
+                            <span className={`stat-icon ${card.tone}`}>
+                                <card.icon size={22} />
+                            </span>
+                            <TrendBadge trend={card.trend} />
+                        </div>
                         <div>
                             <p>{card.title}</p>
                             <strong>{card.value}</strong>
