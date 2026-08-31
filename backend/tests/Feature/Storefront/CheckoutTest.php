@@ -61,6 +61,7 @@ class CheckoutTest extends TestCase
                 'city' => 'Bogotá',
                 'country' => 'Colombia',
             ],
+            'payment_method' => 'cash', // <--- CAMPO AGREGADO AQUÍ
         ];
     }
 

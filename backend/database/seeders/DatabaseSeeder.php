@@ -6,44 +6,17 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Ejecuta los seeders necesarios para dejar
-     * la aplicación lista para trabajar.
-     */
     public function run(): void
     {
         $this->call([
-            // ---------------------------------------------------------
-            // TIENDAS
-            // ---------------------------------------------------------
-            // Crea las tiendas base necesarias para el sistema.
-            StoreSeeder::class,
-
-            // ---------------------------------------------------------
-            // PERMISOS
-            // ---------------------------------------------------------
-            // Permisos del sistema utilizados por Spatie Permission.
+            // Permisos globales de la plataforma.
             PermissionSeeder::class,
 
-            // ---------------------------------------------------------
-            // ROLES
-            // ---------------------------------------------------------
-            // Roles y asignación de permisos.
+            // Crea únicamente el super-admin global con store_id = NULL.
             RoleSeeder::class,
 
-            // ---------------------------------------------------------
-            // USUARIOS
-            // ---------------------------------------------------------
-            // Usuarios iniciales / administrativos.
+            // Crea el administrador global con store_id = NULL.
             UserSeeder::class,
-
-            // ---------------------------------------------------------
-            // DATOS DE PRUEBA
-            // ---------------------------------------------------------
-            // Desactivados para NO crear información ficticia.
-            //
-            // CatalogSeeder::class,
-            // CustomerSeeder::class,
         ]);
     }
 }

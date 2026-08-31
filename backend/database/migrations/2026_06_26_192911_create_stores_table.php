@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('uuid')->unique(); // UUID público
             $table->string('name');
             $table->string('subdomain')->unique(); // Multitenancy
+            $table->string('domain')->nullable()->unique(); // <-- Agrega esta línea
             $table->string('custom_domain')->nullable()->unique(); // Para dominios propios futuros
             
             // Datos de contacto y configuración agregados

@@ -30,6 +30,45 @@ use Illuminate\Http\Request;
 class SalesReportController extends Controller
 {
     /**
+     * Ventas de los últimos 12 meses (incluyendo el actual), para el
+     * gráfico de tendencia del Dashboard. Un solo query agregado en
+     * SQL en vez de 12 llamadas a summary() -- mucho más liviano.
+     */
+    public function yearly(Request $request)
+    {
+        $storeId = $this->currentStoreId($request);
+
+        $start = now('America/Bogota')->subMonths(11)->startOfMonth();
+        $end = now('America/Bogota')->endOfMonth();
+
+        $rows = Order::where('store_id', $storeId)
+            ->where('payment_status', 'paid')
+            ->where('status', '!=', 'cancelled')
+            ->whereBetween('paid_at', [$start, $end])
+            ->selectRaw("to_char(paid_at, 'YYYY-MM') as month, SUM(total) as revenue, COUNT(*) as orders_count")
+            ->groupBy('month')
+            ->get()
+            ->keyBy('month');
+
+        // Completamos los 12 meses aunque no haya ventas en alguno
+        // -- así el gráfico no "salta" meses vacíos.
+        $months = collect(range(0, 11))->map(function ($i) use ($start, $rows) {
+            $month = $start->copy()->addMonths($i);
+            $key = $month->format('Y-m');
+            $row = $rows->get($key);
+
+            return [
+                'month' => $key,
+                'label' => $month->translatedFormat('M'),
+                'revenue' => round((float) ($row->revenue ?? 0), 2),
+                'orders_count' => (int) ($row->orders_count ?? 0),
+            ];
+        });
+
+        return response()->json(['months' => $months]);
+    }
+
+    /**
      * Resumen del mes: ingresos, costos, ganancia, margen, desglose
      * diario y top de productos.
      */

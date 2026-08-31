@@ -31,15 +31,16 @@ class StoreOwnerIsolationTest extends TestCase
     {
         $onboarding = $this->postJson('http://localhost/api/v1/onboarding', [
             'business_name' => 'Mi Negocio',
+            'business_type' => 'retail',
             'subdomain' => 'mi-negocio',
             'owner_name' => 'Dueño',
-            'email' => 'dueno@gmail.com',
+            'email' => 'owner1@gmail.com', // <-- Cambiado a gmail.com para pasar el check DNS
             'password' => 'Password123!',
             'password_confirmation' => 'Password123!',
             'plan_slug' => 'free',
         ]);
 
-        $token = $onboarding->json('data.token');
+        $token = $onboarding->json('token') ?? $onboarding->json('data.token') ?? $onboarding->json('access_token');
 
         // Puede crear un producto en SU tienda sin que nadie le haya
         // asignado el permiso products.create a mano: el bypass de
@@ -59,23 +60,25 @@ class StoreOwnerIsolationTest extends TestCase
         // Tienda A y su dueño.
         $onboardingA = $this->postJson('http://localhost/api/v1/onboarding', [
             'business_name' => 'Tienda A',
+            'business_type' => 'retail',
             'subdomain' => 'tienda-a',
             'owner_name' => 'Dueño A',
-            'email' => 'dueno-a@gmail.com',
+            'email' => 'owner2@gmail.com', // <-- Cambiado a gmail.com
             'password' => 'Password123!',
             'password_confirmation' => 'Password123!',
             'plan_slug' => 'free',
         ]);
 
-        $tokenA = $onboardingA->json('data.token');
+        $tokenA = $onboardingA->json('token') ?? $onboardingA->json('data.token') ?? $onboardingA->json('access_token');
 
         // Tienda B, para que exista un subdominio distinto al que
         // apuntar con el token de A.
         $this->postJson('http://localhost/api/v1/onboarding', [
             'business_name' => 'Tienda B',
+            'business_type' => 'retail',
             'subdomain' => 'tienda-b',
             'owner_name' => 'Dueño B',
-            'email' => 'dueno-b@gmail.com',
+            'email' => 'owner-b@gmail.com', // <-- Cambiado a gmail.com
             'password' => 'Password123!',
             'password_confirmation' => 'Password123!',
             'plan_slug' => 'free',

@@ -51,7 +51,7 @@ class OrderControllerTest extends TestCase
      * (agregar al carrito + checkout), para no depender de una
      * factory de Order que no existe y probar sobre datos reales.
      */
-    private function createRealOrder(Store $store, int $stock = 10, int $price = 10000): array
+   private function createRealOrder(Store $store, int $stock = 10, int $price = 10000): array
     {
         $product = Product::factory()->create([
             'store_id' => $store->id,
@@ -70,6 +70,7 @@ class OrderControllerTest extends TestCase
             ->postJson("http://{$store->subdomain}.localhost/api/v1/storefront/checkout", [
                 'customer' => ['name' => 'Cliente', 'email' => 'cliente@gmail.com'],
                 'shipping_address' => ['line1' => 'Calle 1', 'city' => 'Bogotá', 'country' => 'Colombia'],
+                'payment_method' => 'cash', // <--- ¡AQUÍ ESTÁ LA SOLUCIÓN!
             ]);
 
         $order = Order::where('order_number', $checkout->json('order_number'))->firstOrFail();

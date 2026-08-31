@@ -2,21 +2,23 @@
 
 namespace App\Http\Controllers\Api\V1\Auth;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Contracts\Auth\AuthServiceInterface;
+use App\DTOs\Auth\LoginResponseDTO;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\Auth\LoginResource;
 use App\Http\Resources\User\UserResource;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Auth\Events\PasswordReset;
-use Illuminate\Support\Str;
-use App\Models\User;
 use App\Models\Store;
+use App\Models\User;
 use App\Support\Tenancy\Tenant;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -29,20 +31,15 @@ class AuthController extends Controller
     {
         $this->resolvePublicTenant($request);
 
-        $data = new LoginResource(
-            $this->authService->register(
-                $request->name,
-                $request->email,
-                $request->password
-            )
-        );
-
-        return $data->response()->setStatusCode(201);
+        return (new LoginResource($this->authService->register(
+            $request->name,
+            $request->email,
+            $request->password
+        )))->response()->setStatusCode(201);
     }
 
     public function login(LoginRequest $request): LoginResource
     {
-        // 1. Ejecutamos el servicio intacto como lo tenías
         $this->resolvePublicTenant($request);
 
         $result = $this->authService->login(
@@ -50,23 +47,15 @@ class AuthController extends Controller
             $request->password
         );
 
-        // 2. Validación "antifallos" para inyectar relaciones sin romper nada,
-        // evaluando dinámicamente el tipo de dato que devuelve el servicio.
-        if ($result instanceof User) {
-            $result->load(['store', 'roles']);
-        } elseif (is_array($result) && isset($result['user']) && $result['user'] instanceof User) {
-            $result['user']->load(['store', 'roles']);
-        } elseif (is_object($result) && isset($result->user) && $result->user instanceof User) {
+        if ($result instanceof LoginResponseDTO) {
             $result->user->load(['store', 'roles']);
         }
 
-        // 3. Retornamos el recurso igual que antes
         return new LoginResource($result);
     }
 
     public function me(Request $request): UserResource
     {
-        // Cargamos las relaciones directamente del usuario autenticado en la petición
         return new UserResource(
             $request->user()->load(['store', 'roles'])
         );
@@ -74,64 +63,71 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $this->authService->logout(
-            $request->user()
-        );
+        $this->authService->logout($request->user());
 
         return response()->json([
             'message' => 'Sesión cerrada correctamente.',
         ]);
     }
 
-    /**
-     * Enviar correo de recuperación de contraseña adaptado para API SPA.
-     */
     public function forgotPassword(Request $request)
     {
-        $request->validate(['email' => 'required|email']);
+        $data = $request->validate([
+            'email' => ['required', 'email:rfc', 'max:255'],
+        ]);
 
-        $user = User::where('email', $request->email)->first();
+        $email = strtolower(trim($data['email']));
+        $user = User::query()->where('email', $email)->first();
 
+        // Respuesta uniforme para no revelar si el correo existe.
         if (!$user) {
             return response()->json([
-                'message' => 'Si el correo existe en nuestro sistema, te hemos enviado las instrucciones.'
+                'message' => 'Si el correo existe en nuestro sistema, te hemos enviado las instrucciones.',
             ]);
         }
 
-        $token = Password::broker()->createToken($user);
+        ResetPasswordNotification::createUrlUsing(
+            function ($notifiable, string $token): string {
+                $frontendUrl = rtrim((string) config('app.frontend_url'), '/');
 
-        ResetPasswordNotification::createUrlUsing(function ($notifiable, string $token) {
-            $frontendUrl = env('FRONTEND_URL', 'http://localhost:5173');
-            return "{$frontendUrl}/reset-password?token={$token}&email=" . urlencode($notifiable->getEmailForPasswordReset());
-        });
+                return $frontendUrl
+                    . '/reset-password?token='
+                    . urlencode($token)
+                    . '&email='
+                    . urlencode($notifiable->getEmailForPasswordReset());
+            }
+        );
 
-        $user->sendPasswordResetNotification($token);
+        Password::broker()->sendResetLink(['email' => $email]);
 
         return response()->json([
-            'message' => 'Si el correo existe en nuestro sistema, te hemos enviado las instrucciones para restablecer tu contraseña.'
+            'message' => 'Si el correo existe en nuestro sistema, te hemos enviado las instrucciones para restablecer tu contraseña.',
         ]);
     }
 
-    /**
-     * Restablecer la contraseña usando el token.
-     */
     public function resetPassword(Request $request)
     {
-        $request->validate([
-            'token' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|min:8|confirmed',
+        $data = $request->validate([
+            'token' => ['required', 'string'],
+            'email' => ['required', 'email:rfc', 'max:255'],
+            'password' => ['required', 'confirmed', 'min:8'],
         ]);
 
         $status = Password::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
-            function (User $user, string $password) {
+            [
+                'email' => strtolower(trim($data['email'])),
+                'password' => $data['password'],
+                'password_confirmation' => $data['password_confirmation'],
+                'token' => $data['token'],
+            ],
+            function (User $user, string $password): void {
                 $user->forceFill([
-                    'password' => Hash::make($password)
-                ])->setRememberToken(Str::random(60));
+                    'password' => Hash::make($password),
+                    'remember_token' => Str::random(60),
+                ])->save();
 
-                $user->save();
-
+                // Invalida tokens Bearer después de cambiar la contraseña.
+                $user->tokens()->delete();
                 event(new PasswordReset($user));
             }
         );
@@ -141,41 +137,37 @@ class AuthController extends Controller
             : response()->json(['message' => __($status)], 400);
     }
 
-    /**
-     * Reenviar el enlace de verificación de correo.
-     */
     public function sendVerificationEmail(Request $request)
     {
         if ($request->user()->hasVerifiedEmail()) {
-            return response()->json(['message' => 'El correo ya ha sido verificado.'], 400);
+            return response()->json([
+                'message' => 'El correo ya ha sido verificado.',
+            ], 400);
         }
 
         $request->user()->sendEmailVerificationNotification();
 
-        return response()->json(['message' => '¡Enlace de verificación enviado con éxito!']);
+        return response()->json([
+            'message' => '¡Enlace de verificación enviado con éxito!',
+        ]);
     }
 
-    /**
-     * Confirmar la verificación del correo mediante enlace firmado.
-     */
     public function verifyEmail(Request $request, int $id, string $hash)
     {
-        $user = User::findOrFail($id);
-        $frontendUrl = env('FRONTEND_URL', 'http://localhost:5173');
+        $user = User::query()->findOrFail($id);
+        $frontendUrl = rtrim((string) config('app.frontend_url'), '/');
 
-        if (!hash_equals($hash, sha1($user->getEmailForVerification()))) {
-            abort(403, 'El enlace de verificacion no es valido.');
-        }
+        abort_unless(
+            hash_equals($hash, sha1($user->getEmailForVerification())),
+            403,
+            'El enlace de verificación no es válido.'
+        );
 
-        if ($user->hasVerifiedEmail()) {
-            return redirect("{$frontendUrl}/dashboard?verified=1");
-        }
-
-        if ($user->markEmailAsVerified()) {
+        if (!$user->hasVerifiedEmail() && $user->markEmailAsVerified()) {
             event(new \Illuminate\Auth\Events\Verified($user));
         }
 
-        return redirect("{$frontendUrl}/dashboard?verified=1");
+        return redirect($frontendUrl . '/dashboard?verified=1');
     }
 
     private function resolvePublicTenant(Request $request): void
@@ -190,15 +182,24 @@ class AuthController extends Controller
 
         if (!$subdomain) {
             $host = strtolower($request->getHost());
-            $centralDomains = config('tenancy.central_domains', []);
+            $centralDomains = array_map(
+                static fn (string $domain): string => strtolower(trim($domain)),
+                config('tenancy.central_domains', [])
+            );
 
             if (!in_array($host, $centralDomains, true)) {
-                if (str_ends_with($host, '.localhost')) {
-                    $subdomain = substr($host, 0, -strlen('.localhost'));
-                } elseif (str_ends_with($host, '.127.0.0.1')) {
-                    $subdomain = substr($host, 0, -strlen('.127.0.0.1'));
-                } else {
-                    $subdomain = explode('.', $host)[0] ?? null;
+                foreach ($centralDomains as $domain) {
+                    $suffix = '.' . $domain;
+
+                    if (str_ends_with($host, $suffix)) {
+                        $candidate = substr($host, 0, -strlen($suffix));
+
+                        if ($candidate !== '' && !str_contains($candidate, '.')) {
+                            $subdomain = $candidate;
+                        }
+
+                        break;
+                    }
                 }
             }
         }
@@ -207,14 +208,15 @@ class AuthController extends Controller
             return;
         }
 
-        $store = Store::where('subdomain', $subdomain)->first();
+        $store = Store::query()
+            ->whereRaw('LOWER(BTRIM(subdomain)) = ?', [$subdomain])
+            ->where('is_active', true)
+            ->first();
 
-        if (!$store) {
-            return;
+        if ($store) {
+            Tenant::set($store);
+            app()->instance('tenant', $store);
+            $request->attributes->set('tenant', $store);
         }
-
-        Tenant::set($store);
-        app()->instance('tenant', $store);
-        $request->attributes->set('tenant', $store);
     }
 }

@@ -21,6 +21,9 @@ use App\Http\Controllers\Api\V1\OrderController;
 use App\Http\Controllers\Api\V1\SalesReportController;
 use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\BrandController;
+use App\Http\Controllers\Api\V1\SearchController;
+use App\Http\Controllers\Api\V1\NotificationController;
+use App\Http\Controllers\Api\V1\ActivityController;
 use App\Http\Controllers\Api\V1\WarehouseController;
 use App\Http\Controllers\Api\V1\InventoryController;
 use App\Http\Controllers\Api\V1\StoreController;
@@ -630,6 +633,28 @@ Route::prefix('v1')->group(function () {
 
                 /*
                 |--------------------------------------------------------------------------
+                | Búsqueda global y notificaciones (topbar)
+                |--------------------------------------------------------------------------
+                |
+                | Sin middleware "can:" propio -- cualquier usuario
+                | autenticado puede pegarle a estos dos endpoints, el
+                | filtrado por permiso pasa DENTRO de cada controller
+                | (ej. SearchController no devuelve clientes si el
+                | usuario no tiene customers.view). Quedan dentro del
+                | grupo subscription.writable físicamente, pero no
+                | los afecta: ese middleware deja pasar GET/HEAD/
+                | OPTIONS sin más (solo bloquea escrituras), y estos
+                | dos son de solo lectura.
+                |
+                */
+
+                Route::get('/search', [SearchController::class, 'index']);
+                Route::get('/notifications', [NotificationController::class, 'index']);
+                Route::get('/activity', [ActivityController::class, 'index']);
+
+
+                /*
+                |--------------------------------------------------------------------------
                 | Usuarios / Staff
                 |--------------------------------------------------------------------------
                 */
@@ -755,6 +780,11 @@ Route::prefix('v1')->group(function () {
             Route::get(
                 '/reports/sales',
                 [SalesReportController::class, 'summary']
+            )->middleware('can:orders.view');
+
+            Route::get(
+                '/reports/sales/yearly',
+                [SalesReportController::class, 'yearly']
             )->middleware('can:orders.view');
 
             Route::get(

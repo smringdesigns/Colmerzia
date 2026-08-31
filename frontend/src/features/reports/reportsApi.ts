@@ -43,6 +43,18 @@ export async function getSalesReport(month: string): Promise<SalesReport> {
     return res.data;
 }
 
+export interface SalesYearlyMonth {
+    month: string;
+    label: string;
+    revenue: number;
+    orders_count: number;
+}
+
+export async function getSalesYearly(): Promise<{ months: SalesYearlyMonth[] }> {
+    const res = await api.get("/v1/reports/sales/yearly");
+    return res.data;
+}
+
 /**
  * Descarga el CSV del mes indicado. Dispara la descarga en el
  * navegador directamente (no hay nada que renderizar).

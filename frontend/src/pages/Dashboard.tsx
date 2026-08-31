@@ -1,13 +1,22 @@
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { Package, ShoppingCart, TrendingUp, Users } from "lucide-react";
+import {
+    Package,
+    PackageX,
+    ShoppingCart,
+    TrendingUp,
+    Truck,
+    UserPlus,
+    Users,
+} from "lucide-react";
 
-import Badge from "../components/ui/Badge";
 import { getCustomers } from "../features/customers/customersApi";
 import { getProducts } from "../features/products/services/productsApi";
 import { getOrders } from "../features/orders/ordersApi";
-import { getSalesReport } from "../features/reports/reportsApi";
-import { ORDER_STATUS_LABELS, ORDER_STATUS_TONES } from "../features/orders/statusLabels";
+import { getSalesReport, getSalesYearly } from "../features/reports/reportsApi";
+import { getActivity, type ActivityItem } from "../features/activity/activityApi";
+import { relativeTime } from "../lib/relativeTime";
+import SalesTrendChart from "../components/charts/SalesTrendChart";
 
 function formatMoney(value: number | string) {
     return new Intl.NumberFormat("es-CO", {
@@ -17,18 +26,25 @@ function formatMoney(value: number | string) {
     }).format(Number(value));
 }
 
-function formatDate(iso: string) {
-    return new Date(iso).toLocaleDateString("es-CO", {
-        day: "numeric",
-        month: "short",
-    });
-}
-
 // Mes actual en formato YYYY-MM, tal como lo espera /v1/reports/sales.
 function currentMonth() {
     const now = new Date();
     return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
 }
+
+const ACTIVITY_ICONS: Record<ActivityItem["type"], typeof ShoppingCart> = {
+    order_created: ShoppingCart,
+    order_shipped: Truck,
+    customer_created: UserPlus,
+    low_stock: PackageX,
+};
+
+const ACTIVITY_TONES: Record<ActivityItem["type"], string> = {
+    order_created: "purple",
+    order_shipped: "blue",
+    customer_created: "green",
+    low_stock: "orange",
+};
 
 export default function Dashboard() {
     const navigate = useNavigate();
@@ -66,14 +82,19 @@ export default function Dashboard() {
         queryKey: ["dashboard", "orders", "pending"],
     });
 
-    const { data: recentOrders, isLoading: loadingRecentOrders } = useQuery({
-        queryFn: () => getOrders({ per_page: 5 }),
-        queryKey: ["dashboard", "orders", "recent"],
-    });
-
     const { data: salesReport, isLoading: loadingSales } = useQuery({
         queryFn: () => getSalesReport(month),
         queryKey: ["dashboard", "sales", month],
+    });
+
+    const { data: yearly, isLoading: loadingYearly } = useQuery({
+        queryFn: getSalesYearly,
+        queryKey: ["dashboard", "sales", "yearly"],
+    });
+
+    const { data: activity, isLoading: loadingActivity } = useQuery({
+        queryFn: () => getActivity(8),
+        queryKey: ["dashboard", "activity"],
     });
 
     const catalogHealth =
@@ -164,56 +185,61 @@ export default function Dashboard() {
                 ))}
             </section>
 
+            <section className="dashboard-grid single">
+                <article className="panel-card">
+                    <div className="panel-header">
+                        <div>
+                            <h2>Ventas de los últimos 12 meses</h2>
+                            <p>Ingresos mensuales de pedidos pagados</p>
+                        </div>
+                    </div>
+
+                    {loadingYearly && <div className="empty-state">Cargando...</div>}
+
+                    {!loadingYearly && yearly && (
+                        <SalesTrendChart months={yearly.months} />
+                    )}
+                </article>
+            </section>
+
             <section className="dashboard-grid">
                 <article className="panel-card">
                     <div className="panel-header">
                         <div>
-                            <h2>Órdenes recientes</h2>
-                            <p>Actividad comercial más reciente</p>
+                            <h2>Actividad reciente</h2>
+                            <p>Pedidos, clientes e inventario</p>
                         </div>
                     </div>
 
-                    {loadingRecentOrders && (
-                        <div className="empty-state">Cargando pedidos...</div>
+                    {loadingActivity && (
+                        <div className="empty-state">Cargando actividad...</div>
                     )}
 
-                    {!loadingRecentOrders && recentOrders?.data.length === 0 && (
-                        <div className="empty-state">Todavía no hay pedidos.</div>
+                    {!loadingActivity && activity?.items.length === 0 && (
+                        <div className="empty-state">Todavía no hay actividad reciente.</div>
                     )}
 
-                    {!loadingRecentOrders && recentOrders && recentOrders.data.length > 0 && (
-                        <div className="windmill-table-wrap">
-                            <table className="windmill-table">
-                                <thead>
-                                    <tr>
-                                        <th>Pedido</th>
-                                        <th>Cliente</th>
-                                        <th>Fecha</th>
-                                        <th>Estado</th>
-                                        <th>Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {recentOrders.data.map((order) => (
-                                        <tr
-                                            key={order.id}
-                                            onClick={() => navigate(`/orders/${order.id}`)}
-                                            style={{ cursor: "pointer" }}
-                                        >
-                                            <td>{order.order_number}</td>
-                                            <td>{order.customer_snapshot?.name ?? "—"}</td>
-                                            <td>{formatDate(order.created_at)}</td>
-                                            <td>
-                                                <Badge tone={ORDER_STATUS_TONES[order.status]}>
-                                                    {ORDER_STATUS_LABELS[order.status]}
-                                                </Badge>
-                                            </td>
-                                            <td>{formatMoney(order.total)}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
+                    {!loadingActivity && activity && activity.items.length > 0 && (
+                        <ul className="activity-feed">
+                            {activity.items.map((item, index) => {
+                                const Icon = ACTIVITY_ICONS[item.type];
+                                return (
+                                    <li
+                                        key={`${item.type}-${index}`}
+                                        onClick={() => navigate(item.url)}
+                                    >
+                                        <span className={`activity-icon ${ACTIVITY_TONES[item.type]}`}>
+                                            <Icon size={16} />
+                                        </span>
+                                        <div>
+                                            <p>{item.title}</p>
+                                            <span>{item.subtitle}</span>
+                                        </div>
+                                        <time>{relativeTime(item.at)}</time>
+                                    </li>
+                                );
+                            })}
+                        </ul>
                     )}
                 </article>
 

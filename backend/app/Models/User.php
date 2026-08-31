@@ -2,17 +2,15 @@
 
 namespace App\Models;
 
-use App\Models\Role;
-use App\Models\Store;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Auth\Notifications\VerifyEmail;
-use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -34,47 +32,36 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
-    /**
-     * Relación con la tienda a la que pertenece el usuario.
-     */
     public function store()
     {
         return $this->belongsTo(Store::class);
     }
 
-    /**
-     * Roles asignados al usuario.
-     */
     public function roles()
     {
         return $this->belongsToMany(Role::class);
     }
 
-    /**
-     * Verifica si el usuario tiene un rol específico.
-     */
     public function hasRole(string $role): bool
     {
+        $role = strtolower(trim($role));
+
         return $this->roles()
-            ->where('slug', $role)
+            ->whereRaw('LOWER(BTRIM(slug)) = ?', [$role])
             ->exists();
     }
 
-    /**
-     * Verifica si el usuario tiene un permiso específico.
-     */
     public function hasPermission(string $permission): bool
     {
+        $permission = strtolower(trim($permission));
+
         return $this->roles()
-            ->whereHas('permissions', function ($query) use ($permission) {
-                $query->where('slug', $permission);
+            ->whereHas('permissions', function ($query) use ($permission): void {
+                $query->whereRaw('LOWER(BTRIM(slug)) = ?', [$permission]);
             })
             ->exists();
     }
 
-    /**
-     * Conversión automática de atributos.
-     */
     protected function casts(): array
     {
         return [
@@ -85,31 +72,25 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    /**
-     * Envía el enlace de verificación de correo al frontend con el subdominio dinámico.
-     */
     public function sendEmailVerificationNotification(): void
     {
-        $store = $this->store;
-        $subdomain = $store ? $store->subdomain : 'localhost';
-
-        VerifyEmail::toMailUsing(function ($notifiable, $url) use ($subdomain) {
-            $frontendVerifyUrl = "http://{$subdomain}.localhost:5174/verify-email?verify_url=" . urlencode($url);
+        VerifyEmail::toMailUsing(function ($notifiable, $url): MailMessage {
+            $frontendUrl = rtrim((string) config('app.frontend_url'), '/');
+            $frontendVerifyUrl = $frontendUrl
+                . '/verify-email?verify_url='
+                . urlencode($url);
 
             return (new MailMessage)
                 ->subject('Verifica tu cuenta en Colmerzia')
-                ->line('¡Hemos creado tu tienda exitosamente!')
-                ->line('Para comenzar a usar tu panel y confirmar tus credenciales, haz clic en el siguiente botón:')
+                ->line('Tu cuenta fue creada correctamente.')
+                ->line('Confirma tu correo electrónico haciendo clic en el siguiente botón:')
                 ->action('Verificar mi correo', $frontendVerifyUrl)
-                ->line('Si no creaste una cuenta, puedes ignorar este mensaje.');
+                ->line('Si no creaste esta cuenta, puedes ignorar este mensaje.');
         });
 
         $this->notify(new VerifyEmail);
     }
 
-    /**
-     * Envía el enlace de recuperación de contraseña al frontend React.
-     */
     public function sendPasswordResetNotification($token): void
     {
         $this->notify(new ResetPassword($token));

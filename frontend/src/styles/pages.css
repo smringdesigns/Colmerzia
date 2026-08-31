@@ -343,6 +343,7 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 20px;
+  margin-bottom: 20px;
 }
 
 .stat-card,
@@ -428,6 +429,11 @@
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
   gap: 20px;
+  margin-bottom: 20px;
+}
+
+.dashboard-grid.single {
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .panel-card {
@@ -445,6 +451,100 @@
   margin: 5px 0 0;
   color: #6b7280;
   font-size: 13px;
+}
+
+/* =========================================================
+   Gráfico de ventas (SVG propio, sin librería de charts)
+   ========================================================= */
+
+.sales-trend-chart {
+  width: 100%;
+  height: 240px;
+  margin-top: 8px;
+}
+
+.sales-trend-axis-label {
+  fill: #9ca3af;
+  font-size: 10px;
+}
+
+/* =========================================================
+   Feed de actividad reciente
+   ========================================================= */
+
+.activity-feed {
+  display: flex;
+  flex-direction: column;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.activity-feed li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 4px;
+  border-bottom: 1px solid #f3f4f6;
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+
+.activity-feed li:last-child {
+  border-bottom: 0;
+}
+
+.activity-feed li:hover {
+  background: #f9fafb;
+}
+
+.activity-feed li p {
+  margin: 0;
+  color: #111827;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.activity-feed li span {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.activity-feed li time {
+  flex-shrink: 0;
+  margin-left: auto;
+  color: #9ca3af;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.activity-icon {
+  display: grid;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border-radius: 999px;
+}
+
+.activity-icon.purple {
+  background: #ede9fe;
+  color: #7c3aed;
+}
+
+.activity-icon.blue {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.activity-icon.green {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.activity-icon.orange {
+  background: #ffedd5;
+  color: #f97316;
 }
 
 .data-table {

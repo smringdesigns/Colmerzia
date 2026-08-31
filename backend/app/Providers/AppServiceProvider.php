@@ -16,6 +16,9 @@ use App\Contracts\Payments\PaymentGatewayInterface;
 use App\Services\Payments\ManualPaymentGateway;
 use App\Models\User;
 
+use Laravel\Sanctum\Sanctum;
+use App\Models\PersonalAccessToken;
+
 class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
@@ -41,6 +44,9 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        // Registra el modelo aquí para que use siempre la base de datos central
+        Sanctum::usePersonalAccessTokenModel(\App\Models\PersonalAccessToken::class);
+
         Gate::before(function (User $user, string $ability) {
 
             // Super-admin: acceso total

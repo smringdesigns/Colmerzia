@@ -1,12 +1,14 @@
 import { useState } from "react";
-import { Bell, LogOut, Search, User } from "lucide-react";
+import { LogOut, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { logout as logoutRequest } from "../../features/auth/authApi";
 import { useAuthStore } from "../../store/authStore";
+import GlobalSearch from "./GlobalSearch";
+import NotificationsBell from "./NotificationsBell";
 
 export default function Header() {
     const navigate = useNavigate();
-    const clearSession = useAuthStore((state) => state.logout);
+    const { user, logout: clearSession } = useAuthStore();
     const [isLoggingOut, setIsLoggingOut] = useState(false);
 
     async function logout() {
@@ -25,26 +27,22 @@ export default function Header() {
         }
     }
 
+    const roleName = user?.roles?.[0]?.name ?? "Usuario";
+
     return (
         <header className="topbar">
-            <div className="topbar-search">
-                <Search size={18} />
-                <input type="search" placeholder="Buscar productos, clientes, pedidos..." />
-            </div>
+            <GlobalSearch />
 
             <div className="topbar-actions">
-                <button className="icon-button" type="button" aria-label="Notifications">
-                    <Bell size={19} />
-                    <span className="notification-dot" />
-                </button>
+                <NotificationsBell />
 
                 <div className="user-chip">
                     <span className="avatar">
                         <User size={17} />
                     </span>
                     <div>
-                        <strong>Admin</strong>
-                        <span>Gerencia</span>
+                        <strong>{user?.name ?? "Usuario"}</strong>
+                        <span>{roleName}</span>
                     </div>
                 </div>
 

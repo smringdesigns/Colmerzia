@@ -18,7 +18,6 @@ class StoreOnboardingTest extends TestCase
         parent::setUp();
 
         config(['tenancy.central_domains' => ['localhost']]);
-
         Tenant::clear();
     }
 
@@ -44,6 +43,7 @@ class StoreOnboardingTest extends TestCase
             'password' => 'Password123!',
             'password_confirmation' => 'Password123!',
             'plan_slug' => 'free',
+            'business_type' => 'retail',
         ], $overrides);
     }
 
@@ -55,13 +55,19 @@ class StoreOnboardingTest extends TestCase
         $response->assertJsonPath('data.store.subdomain', 'mi-negocio');
         $response->assertJsonPath('data.subscription.plan', 'free');
         $response->assertJsonPath('data.subscription.status', Subscription::STATUS_TRIALING);
-        $response->assertJsonStructure(['data' => ['store', 'subscription', 'user', 'token']]);
+        $response->assertJsonStructure([
+            'data' => ['store', 'subscription', 'user', 'token'],
+        ]);
 
-        $this->assertDatabaseHas('stores', ['subdomain' => 'mi-negocio']);
+        $this->assertDatabaseHas('stores', [
+            'subdomain' => 'mi-negocio',
+        ]);
+
         $this->assertDatabaseHas('subscriptions', [
             'plan_slug' => 'free',
             'status' => Subscription::STATUS_TRIALING,
         ]);
+
         $this->assertDatabaseHas('users', [
             'email' => 'dueno@gmail.com',
         ]);
@@ -69,28 +75,33 @@ class StoreOnboardingTest extends TestCase
 
     public function test_la_prueba_free_dura_60_dias(): void
     {
-        $response = $this->postJson($this->url(), $this->payload());
+        $this->postJson($this->url(), $this->payload());
 
         $store = Store::where('subdomain', 'mi-negocio')->firstOrFail();
         $subscription = $store->subscription;
 
         $this->assertNotNull($subscription->trial_ends_at);
+
         $this->assertEqualsWithDelta(
             now()->addDays(60)->timestamp,
             $subscription->trial_ends_at->timestamp,
-            5 // margen de segundos por el tiempo que toma correr el test
+            5
         );
     }
 
     public function test_un_plan_pago_arranca_activo_sin_periodo_de_prueba(): void
     {
-        $response = $this->postJson($this->url(), $this->payload(['plan_slug' => 'pro']));
+        $response = $this->postJson(
+            $this->url(),
+            $this->payload(['plan_slug' => 'pro'])
+        );
 
         $response->assertCreated();
         $response->assertJsonPath('data.subscription.plan', 'pro');
         $response->assertJsonPath('data.subscription.status', Subscription::STATUS_ACTIVE);
 
         $store = Store::where('subdomain', 'mi-negocio')->firstOrFail();
+
         $this->assertNull($store->subscription->trial_ends_at);
     }
 
@@ -110,7 +121,9 @@ class StoreOnboardingTest extends TestCase
 
     public function test_no_se_puede_crear_tienda_estando_dentro_del_subdominio_de_otra(): void
     {
-        Store::factory()->create(['subdomain' => 'tienda-existente']);
+        Store::factory()->create([
+            'subdomain' => 'tienda-existente',
+        ]);
 
         $response = $this->postJson(
             'http://tienda-existente.localhost/api/v1/onboarding',
@@ -122,9 +135,14 @@ class StoreOnboardingTest extends TestCase
 
     public function test_no_permite_subdominio_duplicado(): void
     {
-        Store::factory()->create(['subdomain' => 'mi-negocio']);
+        Store::factory()->create([
+            'subdomain' => 'mi-negocio',
+        ]);
 
-        $response = $this->postJson($this->url(), $this->payload());
+        $response = $this->postJson(
+            $this->url(),
+            $this->payload()
+        );
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors('subdomain');
@@ -132,7 +150,12 @@ class StoreOnboardingTest extends TestCase
 
     public function test_no_permite_subdominio_igual_a_un_dominio_central(): void
     {
-        $response = $this->postJson($this->url(), $this->payload(['subdomain' => 'localhost']));
+        $response = $this->postJson(
+            $this->url(),
+            $this->payload([
+                'subdomain' => 'localhost',
+            ])
+        );
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors('subdomain');
@@ -140,7 +163,12 @@ class StoreOnboardingTest extends TestCase
 
     public function test_no_permite_plan_inexistente(): void
     {
-        $response = $this->postJson($this->url(), $this->payload(['plan_slug' => 'plan-que-no-existe']));
+        $response = $this->postJson(
+            $this->url(),
+            $this->payload([
+                'plan_slug' => 'plan-que-no-existe',
+            ])
+        );
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors('plan_slug');
@@ -149,18 +177,24 @@ class StoreOnboardingTest extends TestCase
     public function test_el_endpoint_de_onboarding_tambien_tiene_rate_limit(): void
     {
         for ($i = 1; $i <= 5; $i++) {
-            $response = $this->postJson($this->url(), $this->payload([
-                'subdomain' => "negocio-{$i}",
-                'email' => "dueno-{$i}@gmail.com",
-            ]));
+            $response = $this->postJson(
+                $this->url(),
+                $this->payload([
+                    'subdomain' => "negocio-{$i}",
+                    'email' => "dueno-{$i}@gmail.com",
+                ])
+            );
 
             $response->assertCreated();
         }
 
-        $response = $this->postJson($this->url(), $this->payload([
-            'subdomain' => 'negocio-6',
-            'email' => 'dueno-6@gmail.com',
-        ]));
+        $response = $this->postJson(
+            $this->url(),
+            $this->payload([
+                'subdomain' => 'negocio-6',
+                'email' => 'dueno-6@gmail.com',
+            ])
+        );
 
         $response->assertStatus(429);
     }

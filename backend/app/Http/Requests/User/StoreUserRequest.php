@@ -3,18 +3,18 @@
 namespace App\Http\Requests\User;
 
 use App\Http\Requests\BaseRequest;
+use App\Models\User;
 use App\Support\Tenancy\Tenant;
-use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\Validator;
+use Illuminate\Validation\Rule;
 
 class StoreUserRequest extends BaseRequest
 {
     protected function prepareForValidation(): void
     {
         $this->merge([
-
             'name' => $this->sanitizeString($this->name),
-
             'email' => $this->sanitizeEmail($this->email),
         ]);
     }
@@ -22,64 +22,47 @@ class StoreUserRequest extends BaseRequest
     public function rules(): array
     {
         return [
-
-            'name' => [
-                'required',
-                'string',
-                'min:3',
-                'max:255',
-            ],
-
-            'email' => [
-                'required',
-                'email:rfc',
-                'max:255',
-                'unique:users,email',
-            ],
-
-            'password' => [
-                'required',
-                'confirmed',
-                Password::defaults(),
-            ],
-
-            'is_active' => [
-                'sometimes',
-                'boolean',
-            ],
-
-            // Roles a asignar al usuario nuevo (opcional al crear).
-            'role_ids' => [
-                'sometimes',
-                'array',
-            ],
-
+            'name' => ['required', 'string', 'min:3', 'max:255'],
+            'email' => ['required', 'email:rfc', 'max:255'],
+            'password' => ['required', 'confirmed', Password::defaults()],
+            'is_active' => ['sometimes', 'boolean'],
+            'role_ids' => ['sometimes', 'array'],
             'role_ids.*' => [
                 'integer',
-                Rule::exists('roles', 'id')->where(function ($query) {
-                    $query->where(function ($q) {
-                        $q->where('store_id', Tenant::id())
-                          ->orWhereNull('store_id');
-                    });
-                }),
+                Rule::exists('roles', 'id')->where(
+                    fn ($query) => $query
+                        ->where('store_id', Tenant::id())
+                        ->whereNull('deleted_at')
+                ),
             ],
         ];
+    }
+
+    public function withValidator(Validator $validator): void
+    {
+        $validator->after(function (Validator $validator): void {
+            $email = strtolower(trim((string) $this->input('email')));
+
+            if ($email !== '' && User::withTrashed()
+                ->whereRaw('LOWER(BTRIM(email)) = ?', [$email])
+                ->exists()) {
+                $validator->errors()->add(
+                    'email',
+                    'Este correo ya está registrado.'
+                );
+            }
+        });
     }
 
     public function messages(): array
     {
         return [
-
             'name.required' => 'El nombre es obligatorio.',
-
             'email.required' => 'El correo electrónico es obligatorio.',
             'email.email' => 'Ingrese un correo válido.',
-            'email.unique' => 'Este correo ya está registrado.',
-
             'password.required' => 'La contraseña es obligatoria.',
             'password.confirmed' => 'Las contraseñas no coinciden.',
-
-            'role_ids.*.exists' => 'Uno de los roles seleccionados no es válido.',
+            'role_ids.*.exists' => 'El rol no pertenece a la tienda actual.',
         ];
     }
 }
