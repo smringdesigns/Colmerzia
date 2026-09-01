@@ -31,8 +31,6 @@ export function useAuthBootstrap() {
         me()
             .then((user) => {
 
-                console.log("ME:", user);
-
                 setUser(user);
 
             })

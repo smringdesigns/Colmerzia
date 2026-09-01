@@ -31,11 +31,23 @@ class AuthController extends Controller
     {
         $this->resolvePublicTenant($request);
 
-        return (new LoginResource($this->authService->register(
+        $result = $this->authService->register(
             $request->name,
             $request->email,
             $request->password
-        )))->response()->setStatusCode(201);
+        );
+
+        // Sin este load(), 'store' viene vacío en la respuesta
+        // (whenLoaded('store') omite la clave si la relación no fue
+        // cargada) -- el usuario recién registrado no vería el
+        // nombre/subdominio de su tienda hasta el próximo /me.
+        if ($result instanceof LoginResponseDTO) {
+            $result->user->load(['store', 'roles.permissions']);
+        }
+
+        return (new LoginResource($result))
+            ->response()
+            ->setStatusCode(201);
     }
 
     public function login(LoginRequest $request): LoginResource
@@ -48,7 +60,12 @@ class AuthController extends Controller
         );
 
         if ($result instanceof LoginResponseDTO) {
-            $result->user->load(['store', 'roles']);
+            // roles.permissions (no solo roles): sin el nested-load,
+            // UserResource::toArray() dispara una query POR CADA rol
+            // que tenga el usuario al armar el array de "permissions"
+            // ($role->permissions dentro de un flatMap) -- un N+1
+            // silencioso en el endpoint que se llama en cada login.
+            $result->user->load(['store', 'roles.permissions']);
         }
 
         return new LoginResource($result);
@@ -56,8 +73,12 @@ class AuthController extends Controller
 
     public function me(Request $request): UserResource
     {
+        // Mismo motivo que en login(): roles.permissions, no solo
+        // roles -- este endpoint lo llama el frontend en CADA carga
+        // de página (bootstrap de sesión), así que el N+1 acá pega
+        // más seguido todavía que en login.
         return new UserResource(
-            $request->user()->load(['store', 'roles'])
+            $request->user()->load(['store', 'roles.permissions'])
         );
     }
 
