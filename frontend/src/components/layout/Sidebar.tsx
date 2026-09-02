@@ -17,6 +17,7 @@ import { NavLink } from "react-router-dom";
 
 import { useAuthStore } from "../../store/authStore";
 import { openStorefront } from "../../features/platform/platformApi";
+import { LANDING_URL } from "../../lib/landingUrl";
 
 const menu = [
     {
@@ -73,13 +74,19 @@ export default function Sidebar() {
 
     return (
         <aside className="sidebar">
-            <div className="sidebar-brand">
+            <a
+                href={LANDING_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="sidebar-brand"
+                title="Ir a colmerzia.com"
+            >
                 <div className="sidebar-logo">C</div>
                 <div>
                     <h1>Colmerzia</h1>
                     <p>Panel Administrativo</p>
                 </div>
-            </div>
+            </a>
 
             <nav className="sidebar-nav">
                 {menu.map((item) => (

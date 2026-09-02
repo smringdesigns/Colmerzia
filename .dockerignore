@@ -1,15 +1,57 @@
+# =============================================================
+# Todo lo que entra acá NO llega al build context de Docker, es
+# decir: ni se sube al daemon, ni puede terminar copiado adentro
+# de ninguna imagen (backend, frontend, storefront o landing).
+#
+# Regla simple: si no hace falta para CORRER en producción, no
+# tiene por qué viajar acá. node_modules/vendor se reinstalan
+# limpios dentro del build (Dockerfile.prod), no hace falta (ni
+# conviene) copiar los locales.
+# =============================================================
+
+# ---- Node (frontend, storefront, landing -- las 3 apps Vite) ----
 frontend/node_modules
 frontend/dist
+storefront/node_modules
+storefront/dist
+landing/node_modules
+landing/dist
 
+# ---- PHP / Laravel ----
 backend/vendor
 backend/storage/logs
 backend/storage/framework/cache
 backend/storage/framework/sessions
 backend/storage/framework/views
+# Uploads de pruebas locales (logos, etc.) -- en producción esto
+# vive en un volumen, no horneado en la imagen.
+backend/storage/app/public
 
+# ---- Control de versiones ----
 .git
 .gitignore
+.gitattributes
 
-.vscode
-
+# ---- Entornos y secretos (nunca deben viajar en una imagen) ----
 .env
+.env.*
+!.env.example
+!.env.production.example
+!**/.env.example
+!**/.env.production.example
+
+# ---- Herramientas de desarrollo / IA, sin relevancia en runtime ----
+.vscode
+.idea
+.github
+graphify-out
+CLAUDE.md
+AGENTS.md
+
+# ---- Documentación del repo (no hace falta dentro de una imagen) ----
+*.md
+!backend/README.md
+
+# ---- Artefactos sueltos que no deberían estar en la raíz igual ----
+*.zip
+*.log

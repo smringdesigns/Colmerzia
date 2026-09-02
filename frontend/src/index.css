@@ -72,7 +72,7 @@ input {
   height: 38px;
   place-items: center;
   border-radius: 8px;
-  background: #7c3aed;
+  background: #4648d4;
   color: #ffffff;
   font-weight: 800;
 }
@@ -116,13 +116,13 @@ input {
 }
 
 .sidebar-link:hover {
-  background: #f5f3ff;
-  color: #5b21b6;
+  background: #f1f1fd;
+  color: #2e30a3;
 }
 
 .sidebar-link.active {
-  background: #f5f3ff;
-  color: #5b21b6;
+  background: #f1f1fd;
+  color: #2e30a3;
 }
 
 .sidebar-link.active::before {
@@ -131,7 +131,7 @@ input {
   width: 4px;
   height: 28px;
   border-radius: 0 8px 8px 0;
-  background: #7c3aed;
+  background: #4648d4;
   content: "";
 }
 
@@ -141,13 +141,13 @@ input {
   margin: auto 18px 20px;
   padding: 16px;
   border-radius: 8px;
-  background: #f5f3ff;
-  color: #5b21b6;
+  background: #f1f1fd;
+  color: #2e30a3;
   font-size: 13px;
 }
 
 .sidebar-cta span {
-  color: #6d28d9;
+  color: #3538b0;
   line-height: 1.45;
 }
 
@@ -172,7 +172,7 @@ input {
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   background: #f9fafb;
-  color: #7c3aed;
+  color: #4648d4;
   padding: 0 13px;
 }
 
@@ -242,8 +242,8 @@ input {
   height: 38px;
   place-items: center;
   border-radius: 999px;
-  background: #ede9fe;
-  color: #6d28d9;
+  background: #e6e7fb;
+  color: #3538b0;
 }
 
 .logout-button,
@@ -255,7 +255,7 @@ input {
   min-height: 40px;
   border: 0;
   border-radius: 8px;
-  background: #7c3aed;
+  background: #4648d4;
   color: #ffffff;
   cursor: pointer;
   font-weight: 700;
@@ -290,12 +290,12 @@ input {
 }
 
 .ui-button-primary {
-  background: #7c3aed;
+  background: #4648d4;
   color: #ffffff;
 }
 
 .ui-button-primary:hover:not(:disabled) {
-  background: #6d28d9;
+  background: #3538b0;
 }
 
 .ui-button-secondary {
@@ -311,7 +311,7 @@ input {
 
 .ui-button-ghost {
   background: transparent;
-  color: #6d28d9;
+  color: #3538b0;
 }
 
 .ui-field {
@@ -332,7 +332,7 @@ input {
   border: 1.5px solid #e5e7eb;
   border-radius: 8px;
   background: #f9fafb;
-  color: #7c3aed;
+  color: #4648d4;
 }
 
 .ui-input-wrap:focus-within {
@@ -432,8 +432,8 @@ input {
 }
 
 .ui-badge.purple {
-  background: #ede9fe;
-  color: #6d28d9;
+  background: #e6e7fb;
+  color: #3538b0;
 }
 
 .resource-page {
@@ -457,7 +457,7 @@ input {
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   background: #f9fafb;
-  color: #7c3aed;
+  color: #4648d4;
   padding: 0 13px;
 }
 
@@ -572,7 +572,7 @@ input {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: #6d28d9;
+  color: #3538b0;
   font-weight: 800;
 }
 
@@ -595,8 +595,8 @@ input {
 }
 
 .actions-cell button:hover {
-  background: #f5f3ff;
-  color: #6d28d9;
+  background: #f1f1fd;
+  color: #3538b0;
 }
 
 .actions-cell button.danger {
@@ -872,7 +872,7 @@ input {
 }
 
 .toast.info {
-  border-left-color: #7c3aed;
+  border-left-color: #4648d4;
 }
 
 .toast-icon {
@@ -894,8 +894,8 @@ input {
 }
 
 .toast.info .toast-icon {
-  background: #ede9fe;
-  color: #6d28d9;
+  background: #e6e7fb;
+  color: #3538b0;
 }
 
 .toast strong,
@@ -1033,7 +1033,7 @@ input {
   height: 42px;
   place-items: center;
   border-radius: 8px;
-  background: #7c3aed;
+  background: #4648d4;
   color: #ffffff;
 }
 
@@ -1093,7 +1093,7 @@ input {
 
 .auth-row a,
 .auth-footer-text a {
-  color: #6d28d9;
+  color: #3538b0;
   font-weight: 700;
   text-decoration: none;
 }
@@ -1113,7 +1113,7 @@ input {
 .check-row input {
   width: 15px;
   height: 15px;
-  accent-color: #7c3aed;
+  accent-color: #4648d4;
 }
 
 .auth-footer-text {
@@ -1137,7 +1137,7 @@ input {
 
 .eyebrow {
   margin: 0 0 4px;
-  color: #7c3aed;
+  color: #4648d4;
   font-size: 12px;
   font-weight: 800;
   text-transform: uppercase;
@@ -1156,7 +1156,7 @@ input {
   gap: 18px;
   padding: 24px;
   border-radius: 8px;
-  background: #7c3aed;
+  background: #4648d4;
   color: #ffffff;
 }
 
@@ -1225,8 +1225,8 @@ input {
 }
 
 .stat-icon.purple {
-  background: #ede9fe;
-  color: #7c3aed;
+  background: #e6e7fb;
+  color: #4648d4;
 }
 
 .stat-card p,
@@ -1360,14 +1360,14 @@ input {
   height: 8px;
   overflow: hidden;
   border-radius: 999px;
-  background: #ede9fe;
+  background: #e6e7fb;
 }
 
 .progress-track span {
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: #7c3aed;
+  background: #4648d4;
 }
 
 @media (max-width: 1100px) {

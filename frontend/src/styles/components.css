@@ -11,7 +11,7 @@
   min-height: 40px;
   border: 0;
   border-radius: 8px;
-  background: #7c3aed;
+  background: #4648d4;
   color: #ffffff;
   cursor: pointer;
   font-weight: 700;
@@ -46,12 +46,12 @@
 }
 
 .ui-button-primary {
-  background: #7c3aed;
+  background: #4648d4;
   color: #ffffff;
 }
 
 .ui-button-primary:hover:not(:disabled) {
-  background: #6d28d9;
+  background: #3538b0;
 }
 
 .ui-button-secondary {
@@ -67,7 +67,7 @@
 
 .ui-button-ghost {
   background: transparent;
-  color: #6d28d9;
+  color: #3538b0;
 }
 
 /* =========================================================
@@ -99,7 +99,7 @@
   border: 1.5px solid #e5e7eb;
   border-radius: 8px;
   background: #f9fafb;
-  color: #7c3aed;
+  color: #4648d4;
 }
 
 .ui-input-wrap:focus-within {
@@ -207,8 +207,8 @@
 }
 
 .ui-badge.purple {
-  background: #ede9fe;
-  color: #6d28d9;
+  background: #e6e7fb;
+  color: #3538b0;
 }
 
 /* =========================================================
@@ -236,7 +236,7 @@
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   background: #f9fafb;
-  color: #7c3aed;
+  color: #4648d4;
   padding: 0 13px;
 }
 
@@ -395,7 +395,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: #6d28d9;
+  color: #3538b0;
   font-weight: 800;
 }
 
@@ -418,8 +418,8 @@
 }
 
 .actions-cell button:hover {
-  background: #f5f3ff;
-  color: #6d28d9;
+  background: #f1f1fd;
+  color: #3538b0;
 }
 
 .actions-cell button.danger {
@@ -722,7 +722,7 @@
 }
 
 .toast.info {
-  border-left-color: #7c3aed;
+  border-left-color: #4648d4;
 }
 
 .toast-icon {
@@ -744,8 +744,8 @@
 }
 
 .toast.info .toast-icon {
-  background: #ede9fe;
-  color: #6d28d9;
+  background: #e6e7fb;
+  color: #3538b0;
 }
 
 .toast strong,

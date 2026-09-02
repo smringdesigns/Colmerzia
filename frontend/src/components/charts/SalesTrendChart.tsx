@@ -48,8 +48,8 @@ export default function SalesTrendChart({ months }: SalesTrendChartProps) {
         >
             <defs>
                 <linearGradient id="salesTrendFill" x1="0" x2="0" y1="0" y2="1">
-                    <stop offset="0%" stopColor="#7c3aed" stopOpacity="0.22" />
-                    <stop offset="100%" stopColor="#7c3aed" stopOpacity="0" />
+                    <stop offset="0%" stopColor="#4648d4" stopOpacity="0.22" />
+                    <stop offset="100%" stopColor="#4648d4" stopOpacity="0" />
                 </linearGradient>
             </defs>
 
@@ -73,11 +73,11 @@ export default function SalesTrendChart({ months }: SalesTrendChartProps) {
             </text>
 
             <path d={areaPath} fill="url(#salesTrendFill)" />
-            <path d={linePath} fill="none" stroke="#7c3aed" strokeWidth={2.5} />
+            <path d={linePath} fill="none" stroke="#4648d4" strokeWidth={2.5} />
 
             {points.map((p) => (
                 <g key={p.month.month}>
-                    <circle cx={p.x} cy={p.y} r={3.5} fill="#7c3aed" />
+                    <circle cx={p.x} cy={p.y} r={3.5} fill="#4648d4" />
                     <text
                         x={p.x}
                         y={height - 4}
