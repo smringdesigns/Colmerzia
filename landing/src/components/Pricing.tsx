@@ -6,10 +6,10 @@ export default function Pricing() {
         <section id="planes" className="py-20">
             <div className="mx-auto max-w-6xl px-6">
                 <div className="max-w-xl">
-                    <h2 className="font-display text-3xl font-semibold tracking-tight text-[var(--color-ink)] sm:text-4xl">
+                    <h2 className="text-3xl font-bold tracking-tight text-[var(--color-text-white)] sm:text-4xl">
                         Un plan para cada tamaño de negocio.
                     </h2>
-                    <p className="mt-4 text-base leading-relaxed text-[var(--color-ink-soft)]">
+                    <p className="mt-4 text-base leading-relaxed text-[var(--color-text-gray)]">
                         Empezá gratis. Subí de plan cuando tu catálogo o tu
                         equipo lo necesiten, no antes.
                     </p>
@@ -21,32 +21,32 @@ export default function Pricing() {
                             key={plan.slug}
                             className={`flex flex-col rounded-2xl border p-6 ${
                                 plan.highlight
-                                    ? "border-[var(--color-stamp)] bg-[var(--color-stamp-soft)]"
-                                    : "border-[var(--color-paper-line)] bg-[var(--color-paper-raised)]"
+                                    ? "border-[var(--color-accent)] bg-[rgba(0,188,235,0.06)]"
+                                    : "border-[var(--color-bg-line)] bg-[var(--color-bg-raised)]"
                             }`}
                         >
-                            <p className="font-display text-xl font-semibold text-[var(--color-ink)]">
+                            <p className="text-xl font-semibold text-[var(--color-text-white)]">
                                 {plan.name}
                             </p>
 
-                            <p className="mt-1 font-mono text-xs uppercase tracking-wider text-[var(--color-ink-faint)]">
+                            <p className="mt-1 font-mono text-xs uppercase tracking-wider text-[var(--color-text-muted)]">
                                 {plan.trialDays
                                     ? `${plan.trialDays} días de prueba`
                                     : "Sin límite de tiempo"}
                             </p>
 
-                            <ul className="mt-5 flex flex-col gap-2 text-sm text-[var(--color-ink-soft)]">
+                            <ul className="mt-5 flex flex-col gap-2 text-sm text-[var(--color-text-gray)]">
                                 <li>{plan.limits.products}</li>
                                 <li>{plan.limits.staff}</li>
                                 <li>{plan.limits.warehouses}</li>
                             </ul>
 
-                            <div className="my-5 border-t border-dashed border-[var(--color-paper-line)]" />
+                            <div className="my-5 border-t border-dashed border-[var(--color-bg-line)]" />
 
-                            <ul className="flex flex-col gap-2 text-sm text-[var(--color-ink)]">
+                            <ul className="flex flex-col gap-2 text-sm text-[var(--color-text-white)]">
                                 {plan.features.map((feature) => (
                                     <li key={feature} className="flex gap-2">
-                                        <span className="text-[var(--color-forest)]">✓</span>
+                                        <span className="text-[var(--color-success)]">✓</span>
                                         {feature}
                                     </li>
                                 ))}
@@ -56,8 +56,8 @@ export default function Pricing() {
                                 href={SIGNUP_URL}
                                 className={`mt-7 rounded-full px-5 py-2.5 text-center text-sm font-semibold transition ${
                                     plan.highlight
-                                        ? "bg-[var(--color-stamp)] text-white hover:bg-[var(--color-stamp-dark)]"
-                                        : "border border-[var(--color-ink)] text-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-[var(--color-paper)]"
+                                        ? "bg-[var(--color-accent)] text-[var(--color-bg-darker)] hover:brightness-110"
+                                        : "border border-[var(--color-bg-line)] text-[var(--color-text-white)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
                                 }`}
                             >
                                 {plan.slug === "free" ? "Empezar gratis" : "Hablar con nosotros"}

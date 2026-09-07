@@ -1,7 +1,16 @@
 @import "tailwindcss";
 
 /* =========================================================
-   SISTEMA DE DISEÑO — COLMERZIA
+   SISTEMA DE DISEÑO — COLMERZIA (v2, tema oscuro)
+
+   Reemplaza la paleta anterior ("cuenta de cobro del
+   tendero", fondo papel + sello índigo) por una identidad
+   "azul noche + resplandor": fondo azul marino profundo,
+   brillo radial sutil, acento cian neón, formas decorativas
+   orgánicas y geométricas sueltas. Decisión explícita de
+   JorSti (sept. 2026), inspirada en el hero de Cisco
+   Networking Academy — se toman colores/tipografía/formas,
+   NO su estructura ni contenido.
    ========================================================= */
 
 @theme {
@@ -9,28 +18,28 @@
        Colores principales
     ----------------------------------------------------- */
 
-    --color-paper: #ffffff;
-    --color-paper-soft: #faf8ff;
-    --color-paper-raised: #ffffff;
-    --color-paper-line: #e2e8f0;
+    --color-bg-dark: #0b162c;
+    --color-bg-darker: #060d1c;
+    --color-bg-glow: #2a1610;
+    --color-bg-raised: #101d38;
+    --color-bg-line: #1c2c4d;
 
-    --color-ink: #131b2e;
-    --color-ink-soft: #464554;
-    --color-ink-faint: #767586;
+    --color-accent: #00bceb;
+    --color-accent-dark: #0090b8;
 
-    --color-stamp: #4648d4;
-    --color-stamp-soft: #f2f3ff;
-    --color-stamp-dark: #3638b5;
+    --color-text-white: #ffffff;
+    --color-text-gray: #b0b8c4;
+    --color-text-muted: #6c7a90;
 
     /* -----------------------------------------------------
-       Acentos secundarios
+       Formas decorativas (blob + confeti)
        ----------------------------------------------------- */
 
-    --color-gold: #c7c4d7;
-    --color-gold-soft: #f2f3ff;
-
-    --color-forest: #3f7d5c;
-    --color-forest-soft: #e4f0e8;
+    --color-shape-blue: #3b5bdb;
+    --color-shape-cyan: #15aabf;
+    --color-shape-magenta: #e64980;
+    --color-shape-orange: #f08c00;
+    --color-success: #6abf4b;
 
     /* -----------------------------------------------------
        Tipografía
@@ -52,8 +61,8 @@
 
     body {
         margin: 0;
-        background-color: var(--color-paper);
-        color: var(--color-ink);
+        background-color: var(--color-bg-dark);
+        color: var(--color-text-white);
         font-family: var(--font-sans);
         -webkit-font-smoothing: antialiased;
         overflow-x: hidden;
@@ -89,88 +98,72 @@
 }
 
 /* =========================================================
-   FONDO LANDING
+   RESPLANDOR DE FONDO (hero y secciones oscuras)
    ========================================================= */
 
-.ledger-bg {
-    background-color: var(--color-paper-soft);
+.hero-glow {
+    background:
+        radial-gradient(55% 65% at 92% 92%, var(--color-bg-glow) 0%, transparent 60%),
+        radial-gradient(45% 55% at 12% 8%, rgba(59, 91, 219, 0.18) 0%, transparent 60%),
+        var(--color-bg-dark);
+}
 
-    background-image:
-        linear-gradient(
-            to bottom,
-            rgba(255, 255, 255, 0.65),
-            rgba(250, 248, 255, 0.95)
-        ),
-        repeating-linear-gradient(
-            to bottom,
-            transparent 0,
-            transparent 35px,
-            rgba(199, 196, 215, 0.35) 35px,
-            rgba(199, 196, 215, 0.35) 36px
-        );
+.section-glow {
+    background:
+        radial-gradient(60% 80% at 50% 120%, rgba(0, 188, 235, 0.08) 0%, transparent 60%),
+        var(--color-bg-darker);
 }
 
 /* =========================================================
-   RECIBO — ELEMENTO DISTINTIVO
+   BOTÓN GLOW (efecto neón) — CTA principal sobre fondo oscuro
    ========================================================= */
 
-.receipt-card {
-    position: relative;
-
-    background: var(--color-paper-raised);
-
-    border: 1px solid var(--color-paper-line);
-
+.btn-glow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 32px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text-white);
+    text-decoration: none;
+    background-color: rgba(0, 188, 235, 0.05);
+    border: 1.5px solid var(--color-accent);
+    border-radius: 8px;
     box-shadow:
-        0 24px 60px -20px rgba(19, 27, 46, 0.18),
-        0 8px 24px -16px rgba(19, 27, 46, 0.12);
+        0 0 15px rgba(0, 188, 235, 0.3),
+        inset 0 0 10px rgba(0, 188, 235, 0.15);
+    transition: all 0.25s ease;
+    cursor: pointer;
 }
 
-/* ---------------------------------------------------------
-   Borde perforado
-   --------------------------------------------------------- */
-
-.receipt-card::before {
-    content: "";
-
-    position: absolute;
-
-    top: -1px;
-    left: 0;
-    right: 0;
-
-    height: 12px;
-
-    background-image: radial-gradient(
-        circle at 12px 0,
-        transparent 7px,
-        var(--color-paper-soft) 7.5px
-    );
-
-    background-size: 24px 12px;
-    background-repeat: repeat-x;
+.btn-glow:hover {
+    background-color: rgba(0, 188, 235, 0.15);
+    box-shadow:
+        0 0 25px rgba(0, 188, 235, 0.5),
+        inset 0 0 15px rgba(0, 188, 235, 0.3);
+    transform: translateY(-2px);
 }
 
-/* =========================================================
-   SELLO
-   ========================================================= */
-
-.receipt-stamp {
-    font-family: var(--font-display);
-
+/* Variante sólida — usada donde un botón outline no tenga
+   suficiente contraste (ej. sobre una tarjeta ya oscura) */
+.btn-solid {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 32px;
+    font-size: 1rem;
     font-weight: 700;
+    color: var(--color-bg-darker);
+    background: var(--color-accent);
+    border-radius: 8px;
+    text-decoration: none;
+    transition: filter 0.2s ease;
+}
 
-    color: var(--color-stamp);
-
-    border: 3px solid var(--color-stamp);
-
-    border-radius: 9999px;
-
-    transform: rotate(-9deg);
-
-    letter-spacing: 0.08em;
-
-    opacity: 0.9;
+.btn-solid:hover {
+    filter: brightness(1.1);
 }
 
 /* =========================================================
@@ -189,10 +182,8 @@
 }
 
 .skeleton {
-    background: var(--color-stamp-soft);
-
+    background: var(--color-bg-raised);
     border-radius: 0.5rem;
-
     animation: skeleton-pulse 1.4s ease-in-out infinite;
 }
 
@@ -206,17 +197,16 @@
 }
 
 ::-webkit-scrollbar-track {
-    background: var(--color-paper-soft);
+    background: var(--color-bg-darker);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--color-gold);
-
+    background: var(--color-bg-line);
     border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-stamp);
+    background: var(--color-accent);
 }
 
 /* =========================================================
@@ -231,16 +221,5 @@
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
-    }
-}
-
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
-
-@media (max-width: 640px) {
-    .receipt-card {
-        box-shadow:
-            0 16px 40px -20px rgba(19, 27, 46, 0.18);
     }
 }

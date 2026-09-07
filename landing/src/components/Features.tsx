@@ -33,10 +33,10 @@ const features = [
 
 export default function Features() {
     return (
-        <section id="funciones" className="border-b border-[var(--color-paper-line)] bg-[var(--color-paper-raised)] py-20">
+        <section id="funciones" className="section-glow border-b border-[var(--color-bg-line)] py-20">
             <div className="mx-auto max-w-6xl px-6">
                 <div className="max-w-xl">
-                    <h2 className="font-display text-3xl font-semibold tracking-tight text-[var(--color-ink)] sm:text-4xl">
+                    <h2 className="text-3xl font-bold tracking-tight text-[var(--color-text-white)] sm:text-4xl">
                         Todo lo que ya usas en el negocio, en un solo panel.
                     </h2>
                 </div>
@@ -44,14 +44,14 @@ export default function Features() {
                 <div className="mt-10 grid grid-cols-1 gap-x-10 gap-y-10 sm:grid-cols-2">
                     {features.map((feature) => (
                         <div key={feature.code} className="flex gap-4">
-                            <span className="mt-1 shrink-0 font-mono text-xs text-[var(--color-gold)]">
+                            <span className="mt-1 shrink-0 font-mono text-xs text-[var(--color-accent)]">
                                 {feature.code}
                             </span>
                             <div>
-                                <h3 className="font-display text-lg font-semibold text-[var(--color-ink)]">
+                                <h3 className="text-lg font-semibold text-[var(--color-text-white)]">
                                     {feature.title}
                                 </h3>
-                                <p className="mt-1.5 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+                                <p className="mt-1.5 text-sm leading-relaxed text-[var(--color-text-gray)]">
                                     {feature.body}
                                 </p>
                             </div>

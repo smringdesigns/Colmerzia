@@ -2,7 +2,7 @@ import { LOGIN_URL, SIGNUP_URL } from "../lib/adminUrl";
 
 export default function Footer() {
     return (
-        <footer className="bg-[var(--color-ink)] py-10">
+        <footer className="bg-[var(--color-bg-darker)] py-10">
             <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-6 text-sm text-white/50 sm:flex-row sm:justify-between">
                 <span className="font-display text-white">Colmerzia</span>
 
