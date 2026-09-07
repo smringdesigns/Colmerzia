@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 /* =========================================================
+<<<<<<< Updated upstream
    SISTEMA DE DISEÑO — COLMERZIA (v2, tema oscuro)
 
    Reemplaza la paleta anterior ("cuenta de cobro del
@@ -11,13 +12,21 @@
    JorSti (sept. 2026), inspirada en el hero de Cisco
    Networking Academy — se toman colores/tipografía/formas,
    NO su estructura ni contenido.
+=======
+   COLMERZIA — SISTEMA VISUAL TECNOLÓGICO
+   Fondo oscuro + neon + gradientes + grid
+>>>>>>> Stashed changes
    ========================================================= */
 
 @theme {
-    /* -----------------------------------------------------
-       Colores principales
-    ----------------------------------------------------- */
+    /* Fondos */
+    --color-bg-dark: #081426;
+    --color-bg-darker: #050b17;
+    --color-bg-soft: #0d1b32;
+    --color-bg-raised: #101d38;
+    --color-bg-line: #1b2d4d;
 
+<<<<<<< Updated upstream
     --color-bg-dark: #0b162c;
     --color-bg-darker: #060d1c;
     --color-bg-glow: #2a1610;
@@ -44,27 +53,82 @@
     /* -----------------------------------------------------
        Tipografía
        ----------------------------------------------------- */
+=======
+    /* Cyan principal */
+    --color-accent: #00bceb;
+    --color-accent-bright: #19d7ff;
+    --color-accent-dark: #008fb7;
+    --color-accent-soft: #e8faff;
 
+    /* Neon */
+    --color-pink: #ff087f;
+    --color-orange: #ff922f;
+
+    /* Formas */
+    --color-shape-blue: #3b5bdb;
+    --color-shape-cyan: #15aabf;
+    --color-shape-magenta: #e64980;
+    --color-shape-orange: #f08c00;
+
+    /* Estados */
+    --color-success: #37d7a2;
+
+    /* Texto */
+    --color-text-white: #ffffff;
+    --color-text-gray: #b9c4d1;
+    --color-text-muted: #7d8998;
+>>>>>>> Stashed changes
+
+    /* Tipografía */
     --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
     --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
     --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 }
+
 
 /* =========================================================
    BASE
    ========================================================= */
 
 @layer base {
+
     html {
         scroll-behavior: smooth;
+        background: var(--color-bg-dark);
     }
 
     body {
         margin: 0;
+<<<<<<< Updated upstream
         background-color: var(--color-bg-dark);
+=======
+        min-height: 100vh;
+
+        background:
+            radial-gradient(
+                circle at 85% 95%,
+                rgba(255, 146, 47, 0.10) 0,
+                transparent 28%
+            ),
+            radial-gradient(
+                circle at 72% 100%,
+                rgba(255, 8, 127, 0.08) 0,
+                transparent 28%
+            ),
+            radial-gradient(
+                circle at 8% 20%,
+                rgba(0, 188, 235, 0.09) 0,
+                transparent 30%
+            ),
+            var(--color-bg-dark);
+
+>>>>>>> Stashed changes
         color: var(--color-text-white);
         font-family: var(--font-sans);
+
         -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+
         overflow-x: hidden;
     }
 
@@ -80,9 +144,11 @@
     h4,
     h5,
     h6 {
-        font-family: var(--font-display);
-        letter-spacing: -0.02em;
         margin: 0;
+
+        font-family: var(--font-display);
+
+        letter-spacing: -0.025em;
     }
 
     button,
@@ -97,7 +163,9 @@
     }
 }
 
+
 /* =========================================================
+<<<<<<< Updated upstream
    RESPLANDOR DE FONDO (hero y secciones oscuras)
    ========================================================= */
 
@@ -112,9 +180,119 @@
     background:
         radial-gradient(60% 80% at 50% 120%, rgba(0, 188, 235, 0.08) 0%, transparent 60%),
         var(--color-bg-darker);
+=======
+   HERO
+   ========================================================= */
+
+.hero-section {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+
+    min-height: calc(100vh - 73px);
+
+    display: flex;
+    align-items: center;
+
+    color: #ffffff;
+
+    background:
+        radial-gradient(
+            circle at 86% 92%,
+            rgba(255, 146, 47, 0.16) 0,
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 72% 98%,
+            rgba(255, 8, 127, 0.13) 0,
+            transparent 27%
+        ),
+        radial-gradient(
+            circle at 8% 34%,
+            rgba(0, 188, 235, 0.14) 0,
+            transparent 29%
+        ),
+        var(--color-bg-dark);
 }
 
+
 /* =========================================================
+   GLOW DEL HERO
+   ========================================================= */
+
+.hero-section::after {
+    content: "";
+
+    position: absolute;
+
+    inset: auto -10% -45% 35%;
+
+    height: 65%;
+
+    z-index: -1;
+
+    background:
+        radial-gradient(
+            ellipse,
+            rgba(0, 188, 235, 0.15),
+            transparent 62%
+        );
+
+    filter: blur(22px);
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   GRID TECNOLÓGICO
+   ========================================================= */
+
+.hero-grid {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: -1;
+
+    opacity: 0.25;
+
+    background-image:
+        linear-gradient(
+            rgba(255, 255, 255, 0.035) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.035) 1px,
+            transparent 1px
+        );
+
+    background-size: 72px 72px;
+
+    mask-image:
+        linear-gradient(
+            to bottom,
+            transparent,
+            black 20%,
+            black 75%,
+            transparent
+        );
+
+    -webkit-mask-image:
+        linear-gradient(
+            to bottom,
+            transparent,
+            black 20%,
+            black 75%,
+            transparent
+        );
+>>>>>>> Stashed changes
+}
+
+
+/* =========================================================
+<<<<<<< Updated upstream
    BOTÓN GLOW (efecto neón) — CTA principal sobre fondo oscuro
    ========================================================= */
 
@@ -154,6 +332,565 @@
     justify-content: center;
     padding: 14px 32px;
     font-size: 1rem;
+=======
+   CONTENIDO HERO
+   ========================================================= */
+
+.hero-content {
+    position: relative;
+
+    max-width: 690px;
+}
+
+.hero-overline {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    color: #9ba8ba;
+
+    font-size: 0.82rem;
+
+    font-weight: 600;
+
+    letter-spacing: 1.8px;
+
+    text-transform: uppercase;
+}
+
+.hero-overline::before {
+    content: "";
+
+    width: 26px;
+    height: 1px;
+
+    background: var(--color-accent);
+
+    box-shadow:
+        0 0 10px rgba(0, 188, 235, 0.8),
+        0 0 20px rgba(0, 188, 235, 0.35);
+}
+
+
+/* =========================================================
+   TITULO HERO
+   ========================================================= */
+
+.hero-title {
+    margin-top: 22px;
+
+    max-width: 760px;
+
+    color: #ffffff;
+
+    font-size: clamp(3rem, 6vw, 5.35rem);
+
+    font-weight: 400;
+
+    line-height: 1.03;
+
+    letter-spacing: -3px;
+
+    text-wrap: balance;
+}
+
+.hero-title strong {
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   TEXTO HERO
+   ========================================================= */
+
+.hero-description {
+    max-width: 650px;
+
+    margin-top: 28px;
+
+    color: var(--color-text-gray);
+
+    font-size: clamp(1.05rem, 2vw, 1.22rem);
+
+    line-height: 1.65;
+}
+
+
+/* =========================================================
+   TEXTO GRADIENTE
+   ========================================================= */
+
+.hero-gradient-text {
+    font-weight: 700;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--color-pink),
+            var(--color-orange)
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+
+    filter:
+        drop-shadow(0 0 14px rgba(255, 8, 127, 0.12));
+}
+
+
+/* =========================================================
+   BOTÓN NEON
+   ========================================================= */
+
+.btn-glow {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    min-height: 54px;
+
+    padding: 0 30px;
+
+    color: #ffffff;
+
+    background: rgba(0, 188, 235, 0.07);
+
+    border: 1px solid rgba(0, 188, 235, 0.95);
+
+    border-radius: 9px;
+
+    box-shadow:
+        0 0 14px rgba(0, 188, 235, 0.30),
+        inset 0 0 12px rgba(0, 188, 235, 0.10);
+
+    font-size: 1rem;
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.btn-glow:hover {
+    transform: translateY(-2px);
+
+    background: rgba(0, 188, 235, 0.16);
+
+    box-shadow:
+        0 0 22px rgba(0, 188, 235, 0.45),
+        0 0 48px rgba(0, 188, 235, 0.12),
+        inset 0 0 16px rgba(0, 188, 235, 0.15);
+}
+
+
+/* =========================================================
+   BOTÓN SÓLIDO
+   ========================================================= */
+
+.btn-solid {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    min-height: 54px;
+
+    padding: 0 30px;
+
+    color: var(--color-bg-darker);
+
+    background: var(--color-accent);
+
+    border: 1px solid var(--color-accent);
+
+    border-radius: 9px;
+
+    font-size: 1rem;
+
+    font-weight: 700;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 0 20px rgba(0, 188, 235, 0.22);
+
+    transition:
+        transform 0.2s ease,
+        filter 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.btn-solid:hover {
+    transform: translateY(-2px);
+
+    filter: brightness(1.08);
+
+    box-shadow:
+        0 0 28px rgba(0, 188, 235, 0.38);
+}
+
+
+/* =========================================================
+   SEGUNDO LINK DEL HERO
+   ========================================================= */
+
+.hero-secondary {
+    color: #dce4ed;
+
+    font-size: 0.95rem;
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+    transition:
+        color 0.2s ease;
+}
+
+.hero-secondary:hover {
+    color: var(--color-accent-bright);
+}
+
+
+/* =========================================================
+   DECORACIONES NEON
+   ========================================================= */
+
+.hero-neon-line {
+    position: absolute;
+
+    left: -80px;
+    top: 27%;
+
+    width: 310px;
+    height: 310px;
+
+    border-left: 5px solid var(--color-accent);
+    border-bottom: 5px solid var(--color-pink);
+
+    border-radius:
+        45% 60% 40% 55%;
+
+    transform: rotate(-18deg);
+
+    filter:
+        drop-shadow(
+            0 0 8px rgba(0, 188, 235, 0.85)
+        )
+        drop-shadow(
+            0 0 18px rgba(255, 8, 127, 0.45)
+        );
+
+    opacity: 0.78;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   FORMAS
+   ========================================================= */
+
+.hero-dot,
+.hero-square,
+.hero-diamond,
+.hero-orange {
+    position: absolute;
+
+    pointer-events: none;
+}
+
+
+/* Cyan */
+
+.hero-dot {
+    left: 20%;
+    top: 21%;
+
+    width: 28px;
+    height: 28px;
+
+    border-radius: 50%;
+
+    background: var(--color-accent);
+
+    box-shadow:
+        0 0 14px var(--color-accent),
+        0 0 34px rgba(0, 188, 235, 0.42);
+}
+
+
+/* Rosa */
+
+.hero-square {
+    left: 25%;
+    top: 15%;
+
+    width: 52px;
+    height: 52px;
+
+    border-radius: 2px;
+
+    background: var(--color-pink);
+
+    box-shadow:
+        0 0 18px var(--color-pink),
+        0 0 38px rgba(255, 8, 127, 0.35);
+}
+
+
+/* Cyan */
+
+.hero-diamond {
+    left: 12%;
+    bottom: 15%;
+
+    width: 28px;
+    height: 28px;
+
+    transform: rotate(45deg);
+
+    background: var(--color-accent);
+
+    box-shadow:
+        0 0 16px rgba(0, 188, 235, 0.5);
+}
+
+
+/* Orange */
+
+.hero-orange {
+    left: 6%;
+    bottom: 8%;
+
+    width: 48px;
+    height: 48px;
+
+    border-radius: 35%;
+
+    background: var(--color-orange);
+
+    box-shadow:
+        0 0 18px rgba(255, 146, 47, 0.45),
+        0 0 36px rgba(255, 146, 47, 0.15);
+}
+
+
+/* =========================================================
+   SECCIONES OSCURAS
+   ========================================================= */
+
+.section-dark {
+    position: relative;
+
+    background:
+        radial-gradient(
+            60% 80% at 50% 120%,
+            rgba(0, 188, 235, 0.08),
+            transparent 60%
+        ),
+        var(--color-bg-darker);
+}
+
+
+/* =========================================================
+   SECCIÓN OSCURA SUAVE
+   ========================================================= */
+
+.section-soft {
+    background:
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(59, 91, 219, 0.08),
+            transparent 35%
+        ),
+        var(--color-bg-dark);
+}
+
+
+/* =========================================================
+   CARDS
+   ========================================================= */
+
+.dark-card {
+    position: relative;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(16, 29, 56, 0.94),
+            rgba(7, 17, 32, 0.96)
+        );
+
+    border: 1px solid rgba(255, 255, 255, 0.07);
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.28),
+        0 0 30px rgba(0, 188, 235, 0.04);
+
+    transition:
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.dark-card:hover {
+    transform: translateY(-4px);
+
+    border-color:
+        rgba(0, 188, 235, 0.30);
+
+    box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.36),
+        0 0 30px rgba(0, 188, 235, 0.08);
+}
+
+
+/* =========================================================
+   CARD CON GLOW CYAN
+   ========================================================= */
+
+.card-glow {
+    box-shadow:
+        0 0 25px rgba(0, 188, 235, 0.10),
+        0 25px 70px rgba(0, 0, 0, 0.30);
+}
+
+
+/* =========================================================
+   CÓDIGO / TEXTO TÉCNICO
+   ========================================================= */
+
+.feature-code {
+    color: var(--color-accent);
+
+    font-family: var(--font-mono);
+
+    text-shadow:
+        0 0 10px rgba(0, 188, 235, 0.25);
+}
+
+
+/* =========================================================
+   MOCKUP DASHBOARD
+   ========================================================= */
+
+.dashboard-wrap {
+    position: relative;
+
+    width: 100%;
+
+    max-width: 650px;
+
+    margin-inline: auto;
+
+    perspective: 1200px;
+}
+
+.dashboard-glow {
+    position: absolute;
+
+    inset:
+        8% -8% -10%;
+
+    background:
+        radial-gradient(
+            ellipse,
+            rgba(0, 188, 235, 0.20),
+            transparent 62%
+        );
+
+    filter: blur(30px);
+
+    z-index: -1;
+}
+
+.dashboard-card {
+    position: relative;
+
+    overflow: hidden;
+
+    border:
+        1px solid rgba(0, 188, 235, 0.62);
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0d1b30,
+            #071120 70%
+        );
+
+    box-shadow:
+        0 0 24px rgba(0, 188, 235, 0.18),
+        0 35px 90px rgba(0, 0, 0, 0.45);
+}
+
+
+/* =========================================================
+   RECIBO
+   ========================================================= */
+
+.receipt-card {
+    position: relative;
+
+    background: #ffffff;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.22);
+
+    box-shadow:
+        0 30px 80px -25px rgba(0, 0, 0, 0.45),
+        0 0 30px rgba(0, 188, 235, 0.08);
+}
+
+.receipt-card::before {
+    content: "";
+
+    position: absolute;
+
+    top: -1px;
+    left: 0;
+    right: 0;
+
+    height: 12px;
+
+    background-image:
+        radial-gradient(
+            circle at 12px 0,
+            transparent 7px,
+            var(--color-bg-dark) 7.5px
+        );
+
+    background-size: 24px 12px;
+
+    background-repeat: repeat-x;
+}
+
+.receipt-stamp {
+    font-family: var(--font-display);
+
+>>>>>>> Stashed changes
     font-weight: 700;
     color: var(--color-bg-darker);
     background: var(--color-accent);
@@ -162,15 +899,35 @@
     transition: filter 0.2s ease;
 }
 
+<<<<<<< Updated upstream
 .btn-solid:hover {
     filter: brightness(1.1);
+=======
+    color: var(--color-accent);
+
+    border:
+        3px solid var(--color-accent);
+
+    border-radius: 9999px;
+
+    transform: rotate(-9deg);
+
+    letter-spacing: 0.08em;
+
+    opacity: 0.9;
+
+    box-shadow:
+        0 0 12px rgba(0, 188, 235, 0.12);
+>>>>>>> Stashed changes
 }
+
 
 /* =========================================================
    SKELETON
    ========================================================= */
 
 @keyframes skeleton-pulse {
+
     0%,
     100% {
         opacity: 1;
@@ -182,10 +939,28 @@
 }
 
 .skeleton {
+<<<<<<< Updated upstream
     background: var(--color-bg-raised);
     border-radius: 0.5rem;
     animation: skeleton-pulse 1.4s ease-in-out infinite;
+=======
+    background:
+        linear-gradient(
+            90deg,
+            var(--color-bg-raised),
+            #182846,
+            var(--color-bg-raised)
+        );
+
+    background-size: 200% 100%;
+
+    border-radius: 0.5rem;
+
+    animation:
+        skeleton-pulse 1.4s ease-in-out infinite;
+>>>>>>> Stashed changes
 }
+
 
 /* =========================================================
    SCROLLBAR
@@ -201,25 +976,175 @@
 }
 
 ::-webkit-scrollbar-thumb {
+<<<<<<< Updated upstream
     background: var(--color-bg-line);
+=======
+    background: #263b60;
+
+>>>>>>> Stashed changes
     border-radius: 9999px;
+
+    transition:
+        background 0.2s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
     background: var(--color-accent);
+<<<<<<< Updated upstream
+=======
+
+    box-shadow:
+        0 0 8px rgba(0, 188, 235, 0.5);
+>>>>>>> Stashed changes
 }
+
 
 /* =========================================================
    ACCESIBILIDAD
    ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
+
     *,
     *::before,
     *::after {
         animation-duration: 0.01ms !important;
+
         animation-iteration-count: 1 !important;
+
         transition-duration: 0.01ms !important;
+
         scroll-behavior: auto !important;
     }
 }
+<<<<<<< Updated upstream
+=======
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .hero-neon-line {
+        left: -150px;
+
+        opacity: 0.5;
+    }
+
+    .hero-dot {
+        left: 10%;
+    }
+
+    .hero-square {
+        left: 17%;
+    }
+
+    .dashboard-wrap {
+        max-width: 570px;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 767px) {
+
+    .hero-section {
+        min-height: auto;
+
+        padding-top: 5rem;
+        padding-bottom: 5rem;
+    }
+
+    .hero-title {
+        letter-spacing: -2px;
+    }
+
+    .hero-neon-line {
+        left: -170px;
+
+        opacity: 0.45;
+    }
+
+    .hero-dot {
+        left: 72%;
+        top: 8%;
+    }
+
+    .hero-square {
+        left: auto;
+        right: 8%;
+        top: 10%;
+
+        width: 36px;
+        height: 36px;
+    }
+
+    .hero-diamond {
+        left: 9%;
+        bottom: 10%;
+    }
+
+    .hero-orange {
+        left: 3%;
+        bottom: 4%;
+
+        width: 38px;
+        height: 38px;
+    }
+}
+
+
+/* =========================================================
+   MOBILE PEQUEÑO
+   ========================================================= */
+
+@media (max-width: 640px) {
+
+    .hero-title {
+        font-size: clamp(
+            2.65rem,
+            12vw,
+            4rem
+        );
+
+        letter-spacing: -2px;
+    }
+
+    .hero-description {
+        font-size: 1rem;
+    }
+
+    .hero-neon-line {
+        left: -205px;
+
+        top: 39%;
+
+        transform:
+            scale(0.75)
+            rotate(-18deg);
+
+        opacity: 0.28;
+    }
+
+    .hero-dot {
+        left: 8%;
+        top: 18%;
+
+        width: 20px;
+        height: 20px;
+    }
+
+    .hero-square {
+        left: 18%;
+        top: 13%;
+
+        width: 38px;
+        height: 38px;
+    }
+}
+>>>>>>> Stashed changes

@@ -3,30 +3,20 @@ import { SIGNUP_URL } from "../lib/adminUrl";
 
 export default function Pricing() {
     return (
-        <section id="planes" className="section-light border-b border-[var(--color-paper-line)] py-20 sm:py-24">
+        <section id="planes" className="py-20">
             <div className="mx-auto max-w-6xl px-6">
                 <div className="max-w-xl">
-<<<<<<< Updated upstream
                     <h2 className="text-3xl font-bold tracking-tight text-[var(--color-text-white)] sm:text-4xl">
                         Un plan para cada tamaño de negocio.
                     </h2>
                     <p className="mt-4 text-base leading-relaxed text-[var(--color-text-gray)]">
                         Empezá gratis. Subí de plan cuando tu catálogo o tu
                         equipo lo necesiten, no antes.
-=======
-                    <span className="feature-code text-xs font-semibold uppercase tracking-[.18em]">03 / Planes</span>
-                    <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight text-[var(--color-ink)] sm:text-4xl">
-                        Un plan para cada tamaño de negocio.
-                    </h2>
-                    <p className="mt-4 text-base leading-relaxed text-[var(--color-ink-soft)]">
-                        Empezá gratis. Subí de plan cuando tu catálogo o tu equipo lo necesiten, no antes.
->>>>>>> Stashed changes
                     </p>
                 </div>
 
                 <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
                     {plans.map((plan) => (
-<<<<<<< Updated upstream
                         <div
                             key={plan.slug}
                             className={`flex flex-col rounded-2xl border p-6 ${
@@ -43,13 +33,6 @@ export default function Pricing() {
                                 {plan.trialDays
                                     ? `${plan.trialDays} días de prueba`
                                     : "Sin límite de tiempo"}
-=======
-                        <div key={plan.slug} className={`relative flex flex-col rounded-2xl border p-6 ${plan.highlight ? "border-[var(--color-stamp)] bg-[var(--color-stamp-soft)] shadow-[0_16px_45px_rgba(0,188,235,.10)]" : "border-[var(--color-paper-line)] bg-white"}`}>
-                            {plan.highlight && <span className="absolute -top-3 right-5 rounded-full bg-[var(--color-stamp)] px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white">Más elegido</span>}
-                            <p className="font-display text-xl font-semibold text-[var(--color-ink)]">{plan.name}</p>
-                            <p className="mt-1 font-mono text-xs uppercase tracking-wider text-[var(--color-ink-faint)]">
-                                {plan.trialDays ? `${plan.trialDays} días de prueba` : "Sin límite de tiempo"}
->>>>>>> Stashed changes
                             </p>
 
                             <ul className="mt-5 flex flex-col gap-2 text-sm text-[var(--color-text-gray)]">
@@ -63,17 +46,12 @@ export default function Pricing() {
                             <ul className="flex flex-col gap-2 text-sm text-[var(--color-text-white)]">
                                 {plan.features.map((feature) => (
                                     <li key={feature} className="flex gap-2">
-<<<<<<< Updated upstream
                                         <span className="text-[var(--color-success)]">✓</span>
                                         {feature}
-=======
-                                        <span className="font-semibold text-[var(--color-stamp-dark)]">✓</span>{feature}
->>>>>>> Stashed changes
                                     </li>
                                 ))}
                             </ul>
 
-<<<<<<< Updated upstream
                             <a
                                 href={SIGNUP_URL}
                                 className={`mt-7 rounded-full px-5 py-2.5 text-center text-sm font-semibold transition ${
@@ -82,9 +60,6 @@ export default function Pricing() {
                                         : "border border-[var(--color-bg-line)] text-[var(--color-text-white)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
                                 }`}
                             >
-=======
-                            <a href={SIGNUP_URL} className={`mt-7 rounded-lg px-5 py-2.5 text-center text-sm font-semibold transition ${plan.highlight ? "bg-[var(--color-stamp)] text-white shadow-[0_0_18px_rgba(0,188,235,.20)] hover:bg-[var(--color-stamp-dark)]" : "border border-[var(--color-ink)] text-[var(--color-ink)] hover:border-[var(--color-stamp)] hover:text-[var(--color-stamp-dark)]"}`}>
->>>>>>> Stashed changes
                                 {plan.slug === "free" ? "Empezar gratis" : "Hablar con nosotros"}
                             </a>
                         </div>

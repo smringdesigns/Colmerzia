@@ -2,7 +2,6 @@ import { LOGIN_URL, SIGNUP_URL } from "../lib/adminUrl";
 
 export default function Nav() {
     return (
-<<<<<<< Updated upstream
         <header className="sticky top-0 z-30 border-b border-[var(--color-bg-line)] bg-[var(--color-bg-dark)]/90 backdrop-blur">
             <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
                 <a href="#top" className="flex items-center gap-2">
@@ -37,28 +36,6 @@ export default function Nav() {
                         href={SIGNUP_URL}
                         className="rounded-full bg-[var(--color-accent)] px-5 py-2.5 text-sm font-semibold text-[var(--color-bg-darker)] transition hover:brightness-110"
                     >
-=======
-        <header className="sticky top-0 z-30 border-b border-white/10 bg-[var(--color-night)]/90 text-white backdrop-blur-xl">
-            <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-                <a href="#top" className="flex items-center gap-2.5">
-                    <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-[var(--color-cyan)]/70 bg-[var(--color-cyan)]/10 font-display text-sm font-bold text-white shadow-[0_0_16px_rgba(0,188,235,.18)]">
-                        C
-                    </span>
-                    <span className="font-display text-lg font-semibold tracking-tight">Colmerzia</span>
-                </a>
-
-                <nav className="hidden items-center gap-8 text-sm font-medium text-white/65 md:flex">
-                    <a href="#negocios" className="transition hover:text-white">Para tu negocio</a>
-                    <a href="#funciones" className="transition hover:text-white">Qué incluye</a>
-                    <a href="#planes" className="transition hover:text-white">Planes</a>
-                </nav>
-
-                <div className="flex items-center gap-4">
-                    <a href={LOGIN_URL} className="hidden text-sm font-medium text-white/65 transition hover:text-white sm:block">
-                        Iniciar sesión
-                    </a>
-                    <a href={SIGNUP_URL} className="btn-glow min-h-0 px-5 py-2.5 text-sm">
->>>>>>> Stashed changes
                         Crear tienda gratis
                     </a>
                 </div>

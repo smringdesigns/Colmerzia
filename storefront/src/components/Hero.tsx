@@ -3,7 +3,6 @@ import DecorativeShapes from "./DecorativeShapes";
 
 export default function Hero() {
     return (
-<<<<<<< Updated upstream
         <section id="top" className="hero-glow relative overflow-hidden border-b border-[var(--color-bg-line)]">
             <div className="relative mx-auto max-w-4xl px-6 py-28 md:py-36">
                 <DecorativeShapes className="left-6 top-0 hidden md:block" />
@@ -36,40 +35,6 @@ export default function Hero() {
                     </div>
 
                     <p className="mt-6 text-sm text-[var(--color-text-muted)]">
-=======
-        <section id="top" className="hero-section border-b border-white/10">
-            <div className="hero-grid" />
-            <div className="hero-neon-line" />
-            <div className="hero-dot" />
-            <div className="hero-square" />
-            <div className="hero-diamond" />
-            <div className="hero-orange" />
-
-            <div className="relative z-10 mx-auto grid w-full max-w-6xl gap-16 px-6 py-24 md:grid-cols-[1.05fr_.95fr] md:items-center md:py-28 lg:gap-20">
-                <div className="hero-content">
-                    <span className="hero-overline">Hecho para negocios colombianos</span>
-
-                    <h1 className="hero-title">
-                        Monta tu tienda en línea como quien abre las puertas del local.
-                    </h1>
-
-                    <p className="hero-description">
-                        Catálogo, inventario, pedidos, clientes y tus ganancias reales,
-                        mes a mes, en un solo panel. Sin pagar por un desarrollador y sin
-                        depender de nadie más para vender.
-                    </p>
-
-                    <div className="mt-9 flex flex-wrap items-center gap-6">
-                        <a href={SIGNUP_URL} className="btn-glow">
-                            Crear tienda gratis
-                        </a>
-                        <a href="#funciones" className="hero-secondary">
-                            Ver qué incluye <span aria-hidden="true">→</span>
-                        </a>
-                    </div>
-
-                    <p className="mt-5 text-sm text-white/45">
->>>>>>> Stashed changes
                         60 días de prueba en el plan Free, sin costo.
                     </p>
                 </div>

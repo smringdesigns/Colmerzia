@@ -13,6 +13,7 @@ const orders = [
 
 export default function ReceiptCard() {
     return (
+<<<<<<< Updated upstream
         <div className="dashboard-wrap">
             <div className="dashboard-glow" />
             <div className="dashboard-card">
@@ -89,6 +90,28 @@ export default function ReceiptCard() {
                     <MiniProduct title="Gorra" price="$49.900" type="cap" />
                     <MiniProduct title="Mug" price="$34.900" type="mug" />
                     <MiniProduct title="Hoodie" price="$129.900" type="hoodie" />
+=======
+        <div className="relative mx-auto w-full max-w-sm rotate-2 select-none transition duration-500 hover:rotate-0 md:mx-0">
+            <div className="receipt-card rounded-sm px-7 pb-7 pt-9 font-mono text-sm text-[var(--color-ink)]">
+                <div className="mb-4 flex items-baseline justify-between border-b border-dashed border-[var(--color-paper-line)] pb-3">
+                    <span className="font-semibold tracking-tight">COLMERZIA</span>
+                    <span className="text-xs text-[var(--color-ink-faint)]">No. 000001</span>
+                </div>
+                <ul className="flex flex-col gap-2.5">
+                    {lineItems.map(([label, value]) => (
+                        <li key={label} className="flex items-baseline justify-between gap-3">
+                            <span className="text-[var(--color-ink-soft)]">{label}</span>
+                            <span className="whitespace-nowrap text-[var(--color-forest)]">{value}</span>
+                        </li>
+                    ))}
+                </ul>
+                <div className="mt-5 flex items-baseline justify-between border-t border-dashed border-[var(--color-paper-line)] pt-4 text-base font-semibold">
+                    <span>Costo en código</span>
+                    <span>$0</span>
+                </div>
+                <div className="absolute -right-3 top-16 rotate-[-9deg] rounded-full border-[3px] border-[var(--color-stamp)] px-4 py-1.5 font-display text-xs font-bold uppercase tracking-widest text-[var(--color-stamp)] opacity-90">
+                    Lista hoy
+>>>>>>> Stashed changes
                 </div>
             </div>
         </div>

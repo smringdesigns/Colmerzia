@@ -2,7 +2,6 @@ import { businessTypes } from "../data/content";
 
 export default function BusinessTypes() {
     return (
-<<<<<<< Updated upstream
         <section id="negocios" className="border-b border-[var(--color-bg-line)] py-20">
             <div className="mx-auto max-w-6xl px-6">
                 <div className="max-w-xl">
@@ -12,32 +11,16 @@ export default function BusinessTypes() {
                     <p className="mt-4 text-base leading-relaxed text-[var(--color-text-gray)]">
                         Por eso tu tienda se configura según lo que vendés,
                         no al revés.
-=======
-        <section id="negocios" className="section-light border-b border-[var(--color-paper-line)] py-20 sm:py-24">
-            <div className="mx-auto max-w-6xl px-6">
-                <div className="max-w-xl">
-                    <span className="feature-code text-xs font-semibold uppercase tracking-[.18em]">01 / Tu negocio</span>
-                    <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight text-[var(--color-ink)] sm:text-4xl">
-                        No todos los negocios venden igual.
-                    </h2>
-                    <p className="mt-4 text-base leading-relaxed text-[var(--color-ink-soft)]">
-                        Por eso tu tienda se configura según lo que vendés, no al revés.
->>>>>>> Stashed changes
                     </p>
                 </div>
 
                 <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
                     {businessTypes.map((type) => (
-<<<<<<< Updated upstream
                         <div
                             key={type.slug}
                             className="rounded-2xl border border-[var(--color-bg-line)] bg-[var(--color-bg-raised)] p-5 transition hover:border-[var(--color-accent)]"
                         >
                             <p className="text-base font-semibold text-[var(--color-text-white)]">
-=======
-                        <div key={type.slug} className="group rounded-2xl border border-[var(--color-paper-line)] bg-white p-5 transition hover:-translate-y-1 hover:border-[var(--color-stamp)] hover:shadow-[0_14px_35px_rgba(0,188,235,.10)]">
-                            <p className="font-display text-base font-semibold text-[var(--color-ink)] transition group-hover:text-[var(--color-stamp-dark)]">
->>>>>>> Stashed changes
                                 {type.name}
                             </p>
                             <p className="mt-2 font-mono text-xs uppercase tracking-wider text-[var(--color-text-muted)]">
