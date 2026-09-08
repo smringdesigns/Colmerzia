@@ -5,11 +5,20 @@ namespace Database\Seeders;
 use App\Models\Store;
 use App\Models\Subscription;
 use Illuminate\Database\Seeder;
+use RuntimeException;
 
 class StoreSeeder extends Seeder
 {
     public function run(): void
     {
+        $email = env('SEED_STORE_EMAIL');
+
+        if (!is_string($email) || trim($email) === '') {
+            throw new RuntimeException(
+                'SEED_STORE_EMAIL debe estar definido para ejecutar StoreSeeder.'
+            );
+        }
+
         /*
          * Tienda principal para desarrollo local.
          *
@@ -22,7 +31,7 @@ class StoreSeeder extends Seeder
             ],
             [
                 'name' => 'Colmerzia',
-                'email' => 'elmusdevops@gmail.com',
+                'email' => strtolower(trim($email)),
                 'is_active' => true,
                 'is_verified' => true,
                 'business_type' => 'retail',

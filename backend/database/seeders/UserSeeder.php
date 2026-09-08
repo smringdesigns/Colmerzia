@@ -13,8 +13,14 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        $email = strtolower(trim('elmusdevops@gmail.com'));
+        $email = strtolower(trim((string) env('SEED_ADMIN_EMAIL')));
         $password = env('SEED_ADMIN_PASSWORD');
+
+        if ($email === '') {
+            throw new RuntimeException(
+                'SEED_ADMIN_EMAIL debe estar definido para ejecutar UserSeeder.'
+            );
+        }
 
         if (!is_string($password) || trim($password) === '') {
             throw new RuntimeException(

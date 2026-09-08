@@ -9,7 +9,7 @@ export default function ClosingCta() {
               ¿Listo para llevar tu negocio al siguiente nivel?
             </h2>
             <p className="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
-              Empieza hoy tus <strong>14 días de prueba gratis</strong> sin tarjeta de crédito. Configura tu tienda en
+              Empieza hoy tus <strong>30 días de prueba gratis</strong> sin tarjeta de crédito. Configura tu tienda en
               minutos y comienza a vender en todo el país.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
