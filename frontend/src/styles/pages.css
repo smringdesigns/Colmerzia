@@ -101,8 +101,15 @@
 .auth-media::after {
   position: absolute;
   inset: 0;
+  /* Gradiente vertical (no diagonal): sus paradas de color son
+     porcentajes de la altura del contenedor, así que se ve
+     proporcionalmente igual sin importar si la tarjeta mide 520px
+     (auth-card-compact, usada en ForgotPassword) o 620px (Login,
+     CreateAccount). Un gradiente diagonal (135deg) en cambio cambia
+     de "ángulo visual" según el aspect-ratio de la caja, que era
+     justo la causa de que ForgotPassword se viera más oscuro. */
   background: linear-gradient(
-    135deg,
+    to top,
     rgba(17, 24, 39, 0.88),
     rgba(109, 40, 217, 0.62)
   );
