@@ -15,7 +15,17 @@
     /* Acentos Neón */
     --color-accent: #00bceb;
     --color-accent-dark: #0090b8;
+    --color-accent-bright: #3fd4ff;
     --color-accent-pink: #ff087f;
+
+    /* Estado */
+    --color-success: #2ee6a6;
+
+    /* Colores de las formas flotantes (deben calzar con FloatingShape.tsx) */
+    --color-shape-cyan: #22d3ee;
+    --color-shape-magenta: #ec4899;
+    --color-shape-orange: #f97316;
+    --color-shape-blue: #3b82f6;
 
     /* Textos */
     --color-text-white: #ffffff;
@@ -74,11 +84,17 @@
     50% { opacity: 0.9; }
 }
 
+/* Entrada/salida de la palabra rotativa del Hero (ver RotatingWord en Hero.tsx) */
+@keyframes word-in {
+    0% { opacity: 0; transform: translateY(0.4em); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
 /* =========================================================
    FONDOS, LUZ Y TEXTURA (El secreto de la vitalidad)
    ========================================================= */
 
-/* Luz ambiental vibrante */
+/* Luz ambiental vibrante — Hero */
 .hero-glow {
     position: relative;
     background:
@@ -102,6 +118,24 @@
     mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
     -webkit-mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
     pointer-events: none;
+}
+
+/* Fondo suave — usado en secciones "de transición" como BusinessTypes */
+.section-soft {
+    position: relative;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(0, 188, 235, 0.06) 0%, transparent 45%),
+        radial-gradient(circle at 80% 80%, rgba(255, 8, 127, 0.05) 0%, transparent 45%),
+        var(--color-bg-darker);
+}
+
+/* Fondo con más energía — usado en secciones destacadas como Features */
+.section-glow {
+    position: relative;
+    background:
+        radial-gradient(circle at 85% 15%, rgba(255, 146, 47, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 15% 85%, rgba(0, 188, 235, 0.1) 0%, transparent 40%),
+        var(--color-bg-dark);
 }
 
 /* =========================================================
@@ -131,6 +165,25 @@
     transform: rotate(15deg);
     box-shadow: 0 0 25px rgba(255, 8, 127, 0.4);
     animation-delay: -2s;
+}
+
+/* =========================================================
+   TARJETAS
+   ========================================================= */
+
+/* Tarjeta oscura base — usada en BusinessTypes, Features y DashboardPreview */
+.dark-card {
+    position: relative;
+    background: linear-gradient(135deg, var(--color-bg-raised) 0%, var(--color-bg-dark) 100%);
+    border: 1px solid var(--color-bg-line);
+    border-radius: 1rem;
+    transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dark-card:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px -12px rgba(0, 188, 235, 0.25);
 }
 
 /* =========================================================

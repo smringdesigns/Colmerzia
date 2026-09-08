@@ -1,57 +1,34 @@
-﻿import { SIGNUP_URL } from "../lib/adminUrl";
-
 export default function ClosingCta() {
-    return (
-        <section className="relative py-24 bg-[var(--color-bg-darker)] overflow-hidden">
-            
-            {/* Resplandor ambiental de fondo */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] max-w-3xl h-[60%] bg-[var(--color-accent)]/10 blur-[120px] rounded-full pointer-events-none z-0"></div>
-
-            <div className="relative z-10 mx-auto max-w-4xl px-6">
-                
-                {/* 
-                    CONTENEDOR DEL EFECTO "CORRIENTE" 
-                    Usamos 'group' para que toda la tarjeta reaccione al hover
-                */}
-                <div className="relative group rounded-[2rem] p-[2px] overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.4)] transition-transform duration-500 hover:scale-[1.02] cursor-pointer">
-                    
-                    {/* 1. Borde estático por defecto (La línea cian tenue arriba que se ve en tu imagen) */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-accent)]/40 to-transparent transition-opacity duration-500 group-hover:opacity-0"></div>
-
-                    {/* 2. La "Corriente" de energía (Gira infinitamente, pero solo se enciende en hover) */}
-                    <div 
-                        className="absolute inset-[-100%] opacity-0 group-hover:opacity-100 transition-opacity duration-700 animate-spin"
-                        style={{ 
-                            animationDuration: '4s', // Giro suave y elegante
-                            // Degradado cónico con tus colores: Transparente -> Rosa -> Cian
-                            backgroundImage: 'conic-gradient(from 0deg, transparent 0%, transparent 65%, #ec4899 85%, #22d3ee 100%)' 
-                        }}
-                    ></div>
-                    
-                    {/* 3. Tarjeta interna oscura (Tapa el centro y deja expuesto solo el borde animado de 2px) */}
-                    <div className="relative z-10 bg-[var(--color-bg-darker)] h-full w-full rounded-[calc(2rem-2px)] p-10 md:p-16 text-center flex flex-col items-center justify-center">
-                        
-                        <h2 className="text-3xl font-bold tracking-tight text-[var(--color-text-white)] sm:text-5xl mb-6">
-                            Tu tienda puede estar lista <span className="text-[var(--color-accent)]">hoy.</span>
-                        </h2>
-                        
-                        <p className="mx-auto max-w-xl text-lg md:text-xl leading-relaxed text-[var(--color-text-gray)] mb-10">
-                            Creá tu cuenta, configurá tu catálogo y empezá a vender. Sin código, sin desarrollador, sin esperar.
-                        </p>
-                        
-                        <div className="flex justify-center">
-                            <a href={SIGNUP_URL} className="btn-glow text-lg px-10 py-4">
-                                Crear tienda gratis
-                            </a>
-                        </div>
-                        
-                        <p className="mt-6 font-mono text-[11px] sm:text-xs text-[var(--color-text-muted)] tracking-widest uppercase">
-                            Configuración en minutos &bull; Cancele cuando quiera
-                        </p>
-                        
-                    </div>
-                </div>
+  return (
+    <section className="w-full bg-[#06090e] py-24 relative overflow-hidden" id="crear-tienda">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="magic-border-container">
+          <div className="magic-border-content p-10 sm:p-16 text-center bg-gradient-to-r from-[#06192d] via-[#0b1328] to-[#1a0c24]">
+            <p className="text-xs uppercase font-bold tracking-[0.25em] text-cyan-400 mb-4">EMPIEZA HOY MISMO</p>
+            <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight max-w-3xl mx-auto mb-6">
+              ¿Listo para llevar tu negocio al siguiente nivel?
+            </h2>
+            <p className="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
+              Empieza hoy tus <strong>14 días de prueba gratis</strong> sin tarjeta de crédito. Configura tu tienda en
+              minutos y comienza a vender en todo el país.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <a
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold px-8 py-4 rounded-xl shadow-[0_0_35px_rgba(6,182,212,0.6)] transition-all transform hover:-translate-y-0.5"
+                href="#crear-tienda"
+              >
+                <span>Crear tienda gratis ahora</span>
+              </a>
+              <a
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl text-slate-300 hover:text-white border border-slate-700 hover:border-cyan-500/50 transition-colors text-sm font-medium"
+                href="#contacto"
+              >
+                Hablar con un asesor en WhatsApp
+              </a>
             </div>
-        </section>
-    );
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 }

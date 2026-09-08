@@ -1,125 +1,108 @@
-﻿import { plans } from "../data/content";
-import { SIGNUP_URL } from "../lib/adminUrl";
-import FloatingShape from './FloatingShape';
-import NeonPath from './NeonPath';
+const PLANS = [
+  {
+    name: "Emprendedor",
+    tagline: "Ideal para tiendas que están empezando.",
+    price: "$49.000",
+    features: ["Hasta 50 productos activos", "Pagos con PSE, Nequi y Daviplata", "Subdominio colmerzia.com"],
+    highlighted: false,
+    cta: "Empezar con Emprendedor",
+  },
+  {
+    name: "Crecimiento",
+    tagline: "Para marcas con ventas constantes.",
+    price: "$89.000",
+    features: [
+      "Productos ilimitados",
+      "0% de comisiones por venta",
+      "Dominio propio (.co, .com)",
+      "Soporte prioritario por WhatsApp",
+    ],
+    highlighted: true,
+    cta: "Elegir Crecimiento",
+  },
+  {
+    name: "Escala / Pro",
+    tagline: "Para empresas de alto volumen.",
+    price: "$149.000",
+    features: ["Todo lo del plan Crecimiento", "Multiusuario con roles y permisos", "Gerente de cuenta dedicado"],
+    highlighted: false,
+    cta: "Empezar con Pro",
+  },
+];
 
 export default function Pricing() {
-    return (
-        <section id="planes" className="relative py-24 bg-[var(--color-bg-darker)] overflow-hidden">
-            
-            {/* PULSO DE DATOS DE NEÓN */}
-            <NeonPath variant="pulse" className="top-[30%] left-[-10%] md:left-[10%] opacity-30 w-[600px] z-0" />
+  return (
+    <section className="w-full bg-[#06090e] text-white py-24 relative ambient-glow-section" id="precios">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <p className="text-xs uppercase font-bold tracking-[0.25em] text-cyan-400 mb-2">PRECIOS JUSTOS Y TRANSPARENTES</p>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4">
+            Planes pensados para cada etapa de tu negocio
+          </h2>
+          <p className="text-slate-300 text-base">
+            Sin contratos forzosos. Empieza gratis con 14 días de prueba y escala a tu ritmo en pesos colombianos.
+          </p>
+        </div>
 
-            {/* FIGURAS GEOMÉTRICAS FLOTANTES */}
-            <FloatingShape type="square" color="blue" className="w-8 h-8 top-[10%] right-[12%]" delay="0.5s" />
-            <FloatingShape type="circle" color="magenta" className="w-5 h-5 bottom-[15%] left-[8%]" delay="2s" />
-            <FloatingShape type="petal" color="cyan" className="w-10 h-10 top-[60%] right-[85%]" delay="1.2s" />
-
-            <div className="mx-auto max-w-7xl px-6 lg:px-16 relative z-10">
-                <div className="max-w-2xl mb-16 text-center md:text-left mx-auto md:mx-0">
-                    <h2 className="text-3xl font-bold tracking-tight text-[var(--color-text-white)] sm:text-4xl lg:text-5xl">
-                        Un plan para cada <span className="text-[var(--color-accent)]">tamaño de negocio.</span>
-                    </h2>
-                    <p className="mt-4 text-lg leading-relaxed text-[var(--color-text-gray)]">
-                        Empezá gratis. Subí de plan cuando tu catálogo o tu equipo lo necesiten, no antes.
-                    </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+          {PLANS.map((plan) =>
+            plan.highlighted ? (
+              <div key={plan.name} className="magic-border-container transform md:-translate-y-3">
+                <div className="magic-border-content p-8 flex flex-col justify-between h-full bg-gradient-to-b from-[#0c1930] to-[#060c18] relative">
+                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-pink-500 to-cyan-400 text-white font-bold text-[11px] uppercase tracking-wider py-1 px-4 rounded-full shadow-md">
+                    MÁS POPULAR
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white mb-2">{plan.name}</h3>
+                    <p className="text-xs text-slate-300 mb-6">{plan.tagline}</p>
+                    <div className="flex items-baseline gap-1 mb-6">
+                      <span className="text-4xl font-extrabold text-white">{plan.price}</span>
+                      <span className="text-xs text-slate-300">COP / mes</span>
+                    </div>
+                    <ul className="space-y-3.5 text-sm text-slate-200 mb-8">
+                      {plan.features.map((feature) => (
+                        <li key={feature} className="flex items-center gap-2.5">
+                          ✓ {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <a
+                    className="w-full py-3.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 font-bold text-sm text-slate-950 text-center transition-all shadow-[0_0_25px_rgba(6,182,212,0.5)] block"
+                    href="#crear-tienda"
+                  >
+                    {plan.cta}
+                  </a>
                 </div>
-
-                <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 items-stretch">
-                    {plans.map((plan) => (
-                        
-                        /* 
-                           CONTENEDOR DE LA TARJETA (GROUP)
-                           Usamos p-[1.5px] para definir el grosor del borde de energía.
-                        */
-                        <div
-                            key={plan.slug}
-                            className={`relative group flex flex-col h-full rounded-2xl p-[1.5px] overflow-hidden transition-transform duration-500 hover:-translate-y-2 cursor-default ${
-                                plan.highlight ? "z-10 shadow-[0_0_30px_rgba(0,188,235,0.15)] md:-translate-y-2" : ""
-                            }`}
-                        >
-                            
-                            {/* 1. BORDE TENUE EN REPOSO (Se oculta al hacer hover) */}
-                            <div className={`absolute inset-0 transition-opacity duration-500 group-hover:opacity-0 ${
-                                plan.highlight 
-                                    ? 'bg-gradient-to-b from-[var(--color-accent)]/60 to-[var(--color-bg-line)]/10' 
-                                    : 'bg-gradient-to-b from-[var(--color-bg-line)]/40 to-transparent'
-                            }`}></div>
-
-                            {/* 2. CORRIENTE DE ENERGÍA GIRATORIA (Aparece en hover) */}
-                            <div
-                                className={`absolute inset-[-100%] transition-opacity duration-700 animate-spin ${
-                                    plan.highlight ? 'opacity-40 group-hover:opacity-100' : 'opacity-0 group-hover:opacity-100'
-                                }`}
-                                style={{
-                                    animationDuration: '4s',
-                                    backgroundImage: 'conic-gradient(from 0deg, transparent 0%, transparent 70%, #ec4899 85%, #22d3ee 100%)'
-                                }}
-                            ></div>
-
-                            {/* 3. TARJETA INTERNA OSCURA (Oculta el centro del rayo y deja el contenido visible) */}
-                            <div className="relative z-10 flex flex-col h-full w-full bg-[var(--color-bg-dark)] rounded-[calc(1rem-1.5px)] p-8">
-                                
-                                {/* Resplandor interior extra solo para el plan Pro */}
-                                {plan.highlight && (
-                                    <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-accent)]/5 to-transparent rounded-[calc(1rem-1.5px)] pointer-events-none"></div>
-                                )}
-
-                                <div className="relative z-10">
-                                    <p className="text-2xl font-bold text-[var(--color-text-white)]">
-                                        {plan.name}
-                                    </p>
-                                    <p className="mt-2 font-mono text-xs uppercase tracking-widest text-[var(--color-text-muted)]">
-                                        {plan.trialDays
-                                            ? `${plan.trialDays} días de prueba`
-                                            : "Sin límite de tiempo"}
-                                    </p>
-                                </div>
-
-                                <ul className="mt-6 flex flex-col gap-3 text-sm font-medium text-[var(--color-text-gray)] relative z-10">
-                                    <li className="flex items-center gap-2">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-bg-line)]"></div>
-                                        {plan.limits.products}
-                                    </li>
-                                    <li className="flex items-center gap-2">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-bg-line)]"></div>
-                                        {plan.limits.staff}
-                                    </li>
-                                    <li className="flex items-center gap-2">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-bg-line)]"></div>
-                                        {plan.limits.warehouses}
-                                    </li>
-                                </ul>
-
-                                <div className="my-6 h-px w-full bg-gradient-to-r from-transparent via-[var(--color-bg-line)] to-transparent relative z-10" />
-
-                                <ul className="flex flex-col gap-3 text-sm text-[var(--color-text-white)] relative z-10 mb-8">
-                                    {plan.features.map((feature) => (
-                                        <li key={feature} className="flex gap-3 items-start">
-                                            <svg className="w-5 h-5 text-[var(--color-success)] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                                            </svg>
-                                            <span className="leading-relaxed">{feature}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-
-                                {/* Botón alineado al fondo */}
-                                <a
-                                    href={SIGNUP_URL}
-                                    className={`mt-auto w-full inline-flex items-center justify-center rounded-lg px-5 py-3.5 text-sm font-bold transition-all relative z-10 ${
-                                        plan.highlight
-                                            ? "bg-[var(--color-accent)] text-[var(--color-bg-darker)] shadow-[0_0_15px_rgba(0,188,235,0.3)] hover:shadow-[0_0_25px_rgba(0,188,235,0.5)] hover:-translate-y-0.5 hover:brightness-110"
-                                            : "bg-[var(--color-bg-line)]/30 text-[var(--color-text-white)] border border-[var(--color-bg-line)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] hover:bg-[var(--color-bg-line)]/50"
-                                    }`}
-                                >
-                                    {plan.slug === "free" ? "Empezar gratis" : "Elegir plan"}
-                                </a>
-                            </div>
-                        </div>
+              </div>
+            ) : (
+              <div key={plan.name} className="dark-card rounded-2xl p-8 flex flex-col justify-between">
+                <div>
+                  <h3 className="text-xl font-bold text-white mb-2">{plan.name}</h3>
+                  <p className="text-xs text-slate-400 mb-6">{plan.tagline}</p>
+                  <div className="flex items-baseline gap-1 mb-6">
+                    <span className="text-4xl font-extrabold text-white">{plan.price}</span>
+                    <span className="text-xs text-slate-400">COP / mes</span>
+                  </div>
+                  <ul className="space-y-3.5 text-sm text-slate-300 mb-8">
+                    {plan.features.map((feature) => (
+                      <li key={feature} className="flex items-center gap-2.5">
+                        ✓ {feature}
+                      </li>
                     ))}
+                  </ul>
                 </div>
-            </div>
-        </section>
-    );
+                <a
+                  className="w-full py-3.5 rounded-xl border border-white/20 font-semibold text-sm text-white hover:bg-white/5 text-center transition-colors block"
+                  href="#crear-tienda"
+                >
+                  {plan.cta}
+                </a>
+              </div>
+            )
+          )}
+        </div>
+      </div>
+    </section>
+  );
 }

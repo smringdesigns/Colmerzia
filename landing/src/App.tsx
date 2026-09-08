@@ -1,5 +1,6 @@
 import Nav from "./components/Nav";
 import Hero from "./components/Hero";
+import Stats from "./components/Stats";
 import BusinessTypes from "./components/BusinessTypes";
 import Features from "./components/Features";
 import Pricing from "./components/Pricing";
@@ -13,6 +14,7 @@ export default function App() {
 
             <main className="flex-1">
                 <Hero />
+                <Stats />
                 <BusinessTypes />
                 <Features />
                 <Pricing />

@@ -1,7 +1,44 @@
-﻿import { SIGNUP_URL } from "../lib/adminUrl";
+﻿import { useEffect, useState } from "react";
+import { SIGNUP_URL } from "../lib/adminUrl";
 import DashboardPreview from "./DashboardPreview";
-import FloatingShape from "./FloatingShape"; 
+import FloatingShape from "./FloatingShape";
 import NeonPath from "./NeonPath";
+
+// Frases que completan "Tu negocio puede ser..." — cortas, concretas,
+// sin inventar métricas ni promesas que la plataforma no pueda cumplir.
+const ROTATING_PHRASES = [
+    "tu vitrina abierta 24/7",
+    "tu próxima gran venta",
+    "un negocio sin código",
+    "tuyo, no de un tercero",
+];
+
+function RotatingPhrase() {
+    const [index, setIndex] = useState(0);
+
+    useEffect(() => {
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (prefersReducedMotion) return;
+
+        const interval = setInterval(() => {
+            setIndex((i) => (i + 1) % ROTATING_PHRASES.length);
+        }, 2400);
+
+        return () => clearInterval(interval);
+    }, []);
+
+    return (
+        <span className="relative inline-block overflow-hidden align-bottom">
+            <span
+                key={index}
+                className="inline-block text-[var(--color-accent)]"
+                style={{ animation: "word-in 0.5s cubic-bezier(0.16, 1, 0.3, 1)" }}
+            >
+                {ROTATING_PHRASES[index]}
+            </span>
+        </span>
+    );
+}
 
 export default function Hero() {
     return (
@@ -23,7 +60,9 @@ export default function Hero() {
                     </span>
 
                     <h1 className="mt-4 text-4xl font-bold leading-[1.15] tracking-tight text-[var(--color-text-white)] sm:text-5xl lg:text-6xl">
-                        Monta tu tienda en línea como quien abre las puertas del local
+                        Tu negocio puede ser
+                        <br />
+                        <RotatingPhrase />
                     </h1>
 
                     <p className="mt-6 max-w-lg text-lg leading-relaxed text-[var(--color-text-gray)]">
