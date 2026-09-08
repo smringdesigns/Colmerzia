@@ -1,29 +1,36 @@
-import { SIGNUP_URL } from "../lib/adminUrl";
-import DecorativeShapes from "./DecorativeShapes";
+﻿import { SIGNUP_URL } from "../lib/adminUrl";
+import DashboardPreview from "./DashboardPreview";
+import FloatingShape from "./FloatingShape"; 
+import NeonPath from "./NeonPath";
 
 export default function Hero() {
     return (
-<<<<<<< Updated upstream
-        <section id="top" className="hero-glow relative overflow-hidden border-b border-[var(--color-bg-line)]">
-            <div className="relative mx-auto max-w-4xl px-6 py-28 md:py-36">
-                <DecorativeShapes className="left-6 top-0 hidden md:block" />
+        <section id="top" className="hero-glow relative flex min-h-[90vh] items-center overflow-hidden">
+            
+            {/* ONDA ORGÁNICA DE NEÓN (Detrás de todo) */}
+            <NeonPath variant="wave" className="top-10 left-[-5%] md:left-[2%] opacity-80 w-[350px] md:w-[500px]" />
 
-                <div className="relative max-w-xl md:pt-8">
-                    <span className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--color-text-muted)]">
+            {/* FIGURAS FLOTANTES DE NEÓN */}
+            <FloatingShape type="circle" color="cyan" className="w-10 h-10 top-[15%] left-[5%]" delay="0s" />
+            <FloatingShape type="polygon" color="orange" className="w-16 h-16 bottom-[15%] left-[45%]" delay="1.5s" />
+            <FloatingShape type="petal" color="magenta" className="w-8 h-8 top-[20%] right-[40%]" delay="0.5s" />
+            <FloatingShape type="square" color="blue" className="w-6 h-6 bottom-[25%] left-[10%]" delay="2s" />
+
+            <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-16 px-6 py-20 lg:grid-cols-2 lg:px-16">
+                <div className="relative flex flex-col justify-center pt-10 md:pt-0">
+                    <span className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--color-accent)]">
                         Hecho para negocios colombianos
                     </span>
 
-                    <h1 className="mt-4 text-4xl font-bold leading-[1.15] tracking-tight text-[var(--color-text-white)] sm:text-5xl">
-                        Monta tu tienda en línea como quien abre las puertas
-                        del local
+                    <h1 className="mt-4 text-4xl font-bold leading-[1.15] tracking-tight text-[var(--color-text-white)] sm:text-5xl lg:text-6xl">
+                        Monta tu tienda en línea como quien abre las puertas del local
                     </h1>
 
-                    <p className="mt-5 max-w-lg text-lg leading-relaxed text-[var(--color-text-gray)]">
-                        Catálogo, inventario, pedidos y tus ganancias reales
-                        en un solo panel — sin pagar por un desarrollador.
+                    <p className="mt-6 max-w-lg text-lg leading-relaxed text-[var(--color-text-gray)]">
+                        Catálogo, inventario, pedidos y tus ganancias reales en un solo panel — sin pagar por un desarrollador.
                     </p>
 
-                    <div className="mt-9 flex flex-wrap items-center gap-5">
+                    <div className="mt-10 flex flex-wrap items-center gap-6">
                         <a href={SIGNUP_URL} className="btn-glow">
                             Crear tienda gratis
                         </a>
@@ -36,44 +43,20 @@ export default function Hero() {
                     </div>
 
                     <p className="mt-6 text-sm text-[var(--color-text-muted)]">
-=======
-        <section id="top" className="hero-section border-b border-white/10">
-            <div className="hero-grid" />
-            <div className="hero-neon-line" />
-            <div className="hero-dot" />
-            <div className="hero-square" />
-            <div className="hero-diamond" />
-            <div className="hero-orange" />
-
-            <div className="relative z-10 mx-auto grid w-full max-w-6xl gap-16 px-6 py-24 md:grid-cols-[1.05fr_.95fr] md:items-center md:py-28 lg:gap-20">
-                <div className="hero-content">
-                    <span className="hero-overline">Hecho para negocios colombianos</span>
-
-                    <h1 className="hero-title">
-                        Monta tu tienda en línea como quien abre las puertas del local.
-                    </h1>
-
-                    <p className="hero-description">
-                        Catálogo, inventario, pedidos, clientes y tus ganancias reales,
-                        mes a mes, en un solo panel. Sin pagar por un desarrollador y sin
-                        depender de nadie más para vender.
-                    </p>
-
-                    <div className="mt-9 flex flex-wrap items-center gap-6">
-                        <a href={SIGNUP_URL} className="btn-glow">
-                            Crear tienda gratis
-                        </a>
-                        <a href="#funciones" className="hero-secondary">
-                            Ver qué incluye <span aria-hidden="true">→</span>
-                        </a>
-                    </div>
-
-                    <p className="mt-5 text-sm text-white/45">
->>>>>>> Stashed changes
                         60 días de prueba en el plan Free, sin costo.
                     </p>
                 </div>
+
+                <div className="relative hidden w-full items-center justify-center md:flex lg:h-full">
+                    <div className="absolute inset-0 z-0 scale-75 transform rounded-full bg-[var(--color-accent)]/20 blur-[100px] pointer-events-none"></div>
+                    <div className="relative z-10 w-full max-w-lg transition-transform duration-500 hover:scale-[1.02]">
+                        <DashboardPreview />
+                    </div>
+                </div>
             </div>
+
+            {/* Degradado de transición a la siguiente sección */}
+            <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-b from-transparent to-[var(--color-bg-darker)] pointer-events-none z-0"></div>
         </section>
     );
 }

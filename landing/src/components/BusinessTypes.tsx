@@ -1,51 +1,42 @@
-import { businessTypes } from "../data/content";
+﻿import { businessTypes } from "../data/content";
 
 export default function BusinessTypes() {
     return (
-<<<<<<< Updated upstream
-        <section id="negocios" className="border-b border-[var(--color-bg-line)] py-20">
-            <div className="mx-auto max-w-6xl px-6">
-                <div className="max-w-xl">
-                    <h2 className="text-3xl font-bold tracking-tight text-[var(--color-text-white)] sm:text-4xl">
-                        No todos los negocios venden igual.
+        <section id="negocios" className="relative py-24 section-soft overflow-hidden">
+            <div className="mx-auto max-w-7xl px-6 lg:px-16 relative z-10">
+                
+                {/* Encabezado */}
+                <div className="max-w-2xl mb-14">
+                    <h2 className="text-3xl font-bold tracking-tight text-[var(--color-text-white)] sm:text-4xl lg:text-5xl">
+                        No todos los negocios <span className="text-[var(--color-accent-pink)]">venden igual.</span>
                     </h2>
-                    <p className="mt-4 text-base leading-relaxed text-[var(--color-text-gray)]">
-                        Por eso tu tienda se configura según lo que vendés,
-                        no al revés.
-=======
-        <section id="negocios" className="section-light border-b border-[var(--color-paper-line)] py-20 sm:py-24">
-            <div className="mx-auto max-w-6xl px-6">
-                <div className="max-w-xl">
-                    <span className="feature-code text-xs font-semibold uppercase tracking-[.18em]">01 / Tu negocio</span>
-                    <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight text-[var(--color-ink)] sm:text-4xl">
-                        No todos los negocios venden igual.
-                    </h2>
-                    <p className="mt-4 text-base leading-relaxed text-[var(--color-ink-soft)]">
+                    <p className="mt-4 text-lg leading-relaxed text-[var(--color-text-gray)]">
                         Por eso tu tienda se configura según lo que vendés, no al revés.
->>>>>>> Stashed changes
                     </p>
                 </div>
 
-                <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+                {/* Grilla de tipos de negocio (2 columnas en móvil, 3 en tablet, 5 en escritorio) */}
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                     {businessTypes.map((type) => (
-<<<<<<< Updated upstream
                         <div
                             key={type.slug}
-                            className="rounded-2xl border border-[var(--color-bg-line)] bg-[var(--color-bg-raised)] p-5 transition hover:border-[var(--color-accent)]"
+                            className="dark-card group p-6 flex flex-col justify-between min-h-[140px] cursor-pointer"
                         >
-                            <p className="text-base font-semibold text-[var(--color-text-white)]">
-=======
-                        <div key={type.slug} className="group rounded-2xl border border-[var(--color-paper-line)] bg-white p-5 transition hover:-translate-y-1 hover:border-[var(--color-stamp)] hover:shadow-[0_14px_35px_rgba(0,188,235,.10)]">
-                            <p className="font-display text-base font-semibold text-[var(--color-ink)] transition group-hover:text-[var(--color-stamp-dark)]">
->>>>>>> Stashed changes
-                                {type.name}
-                            </p>
-                            <p className="mt-2 font-mono text-xs uppercase tracking-wider text-[var(--color-text-muted)]">
-                                {type.layout}
-                            </p>
+                            {/* Pequeño acento visual (LED que se enciende en hover) */}
+                            <div className="w-2 h-2 rounded-full bg-[var(--color-bg-line)] group-hover:bg-[var(--color-accent)] group-hover:shadow-[0_0_10px_rgba(0,188,235,0.8)] transition-all mb-4 duration-300"></div>
+                            
+                            <div>
+                                <p className="text-base md:text-lg font-bold text-[var(--color-text-white)] group-hover:text-[var(--color-accent-bright)] transition-colors">
+                                    {type.name}
+                                </p>
+                                <p className="mt-2 font-mono text-[10px] sm:text-xs uppercase tracking-widest text-[var(--color-text-muted)] group-hover:text-[var(--color-text-gray)] transition-colors">
+                                    {type.layout}
+                                </p>
+                            </div>
                         </div>
                     ))}
                 </div>
+                
             </div>
         </section>
     );

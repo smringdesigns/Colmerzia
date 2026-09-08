@@ -1,3 +1,6 @@
+﻿import React from 'react';
+
+// 1. Textos corregidos con tildes y caracteres limpios
 const products = [
     ["Camiseta Oversize", "$89.900", "128 ventas"],
     ["Gorra Clásica", "$49.900", "96 ventas"],
@@ -11,130 +14,102 @@ const orders = [
     ["#1045", "Daniel Pérez", "$95.000", "Pendiente"],
 ];
 
+// 2. Agregué el array faltante para que el map() funcione
+const lineItems = [
+    ["Desarrollo web", "$3.500.000"],
+    ["Hosting (1 año)", "$450.000"],
+    ["Pasarela de pagos", "$200.000"],
+];
+
 export default function ReceiptCard() {
     return (
-<<<<<<< Updated upstream
-        <div className="dashboard-wrap">
-            <div className="dashboard-glow" />
-            <div className="dashboard-card">
-                <div className="dashboard-topbar">
-                    <div className="flex items-center gap-2">
-                        <span className="dashboard-logo">C</span>
-                        <span className="font-display text-sm font-semibold text-white">colmerzia</span>
-                    </div>
-                    <span className="dashboard-menu">☰</span>
+        <div className="relative mx-auto w-full max-w-sm rotate-2 select-none transition-all duration-500 hover:rotate-0 hover:-translate-y-2 md:mx-0">
+            
+            {/* Contenedor principal: De papel blanco a tarjeta oscura tecnológica */}
+            <div className="dark-card rounded-xl px-7 pb-7 pt-9 font-mono text-sm shadow-2xl">
+                
+                {/* Cabecera del ticket */}
+                <div className="mb-4 flex items-baseline justify-between border-b border-dashed border-[var(--color-bg-line)] pb-3">
+                    <span className="font-bold tracking-widest text-[var(--color-accent)] drop-shadow-[0_0_8px_rgba(0,188,235,0.4)]">
+                        COLMERZIA
+                    </span>
+                    <span className="text-xs text-[var(--color-text-muted)]">No. 000001</span>
                 </div>
-
-                <div className="dashboard-body">
-                    <aside className="dashboard-sidebar">
-                        <div className="dashboard-nav active">⌂ <span>Resumen</span></div>
-                        <div className="dashboard-nav">▣ <span>Pedidos</span><b>12</b></div>
-                        <div className="dashboard-nav">□ <span>Productos</span></div>
-                        <div className="dashboard-nav">▤ <span>Inventario</span></div>
-                        <div className="dashboard-nav">♙ <span>Clientes</span></div>
-                        <div className="dashboard-nav">⌁ <span>Reportes</span></div>
-                        <div className="dashboard-nav">⚙ <span>Configuración</span></div>
-                    </aside>
-
-                    <div className="dashboard-main">
-                        <div className="dashboard-heading">
-                            <div>
-                                <h3>¡Hola, Juan! <span>👋</span></h3>
-                                <p>Así va tu tienda hoy</p>
-                            </div>
-                            <span className="dashboard-filter">Últimos 7 días⌄</span>
-                        </div>
-
-                        <div className="dashboard-stats">
-                            <Stat label="Ventas" value="$2.450.000" trend="↑ 18.8%" />
-                            <Stat label="Pedidos" value="86" trend="↑ 12.3%" />
-                            <Stat label="Productos" value="128" trend="↑ 7.6%" />
-                            <Stat label="Visitas" value="1.248" trend="↑ 21.4%" />
-                        </div>
-
-                        <div className="dashboard-panels">
-                            <div className="dashboard-panel">
-                                <div className="panel-title">Productos más vendidos <span>⌄</span></div>
-                                {products.map(([name, price, sales], index) => (
-                                    <div className="product-row" key={name}>
-                                        <div className={`product-thumb product-${index + 1}`} />
-                                        <div className="min-w-0 flex-1">
-                                            <div className="truncate text-[10px] font-semibold text-white">{name}</div>
-                                            <div className="product-bar"><i style={{ width: `${90 - index * 18}%` }} /></div>
-                                        </div>
-                                        <span>{sales}</span>
-                                    </div>
-                                ))}
-                            </div>
-
-                            <div className="dashboard-panel">
-                                <div className="panel-title">Pedidos recientes <span>⌄</span></div>
-                                {orders.map(([id, name, total, status]) => (
-                                    <div className="order-row" key={id}>
-                                        <span className="order-id">{id}</span>
-                                        <span className="order-name">{name}</span>
-                                        <span className="order-total">{total}</span>
-                                        <span className={`order-status ${status.toLowerCase()}`}>{status}</span>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div className="store-mini-card">
-                <div className="store-mini-head"><span>●</span><span>tu tienda en línea</span><b>↗</b></div>
-                <div className="store-products">
-                    <MiniProduct title="Camiseta" price="$89.900" type="shirt" />
-                    <MiniProduct title="Gorra" price="$49.900" type="cap" />
-                    <MiniProduct title="Mug" price="$34.900" type="mug" />
-                    <MiniProduct title="Hoodie" price="$129.900" type="hoodie" />
-=======
-        <div className="relative mx-auto w-full max-w-sm rotate-2 select-none transition duration-500 hover:rotate-0 md:mx-0">
-            <div className="receipt-card rounded-sm px-7 pb-7 pt-9 font-mono text-sm text-[var(--color-ink)]">
-                <div className="mb-4 flex items-baseline justify-between border-b border-dashed border-[var(--color-paper-line)] pb-3">
-                    <span className="font-semibold tracking-tight">COLMERZIA</span>
-                    <span className="text-xs text-[var(--color-ink-faint)]">No. 000001</span>
-                </div>
-                <ul className="flex flex-col gap-2.5">
+                
+                {/* Lista de ítems tachados (mostrando el ahorro) */}
+                <ul className="flex flex-col gap-3">
                     {lineItems.map(([label, value]) => (
                         <li key={label} className="flex items-baseline justify-between gap-3">
-                            <span className="text-[var(--color-ink-soft)]">{label}</span>
-                            <span className="whitespace-nowrap text-[var(--color-forest)]">{value}</span>
+                            <span className="text-[var(--color-text-gray)]">{label}</span>
+                            {/* Tachamos los precios viejos con la variable rosa de acento */}
+                            <span className="whitespace-nowrap text-[var(--color-text-muted)] line-through decoration-[var(--color-accent-pink)] decoration-2">
+                                {value}
+                            </span>
                         </li>
                     ))}
                 </ul>
-                <div className="mt-5 flex items-baseline justify-between border-t border-dashed border-[var(--color-paper-line)] pt-4 text-base font-semibold">
+                
+                {/* Total (Gratis) */}
+                <div className="mt-5 flex items-baseline justify-between border-t border-dashed border-[var(--color-bg-line)] pt-4 text-base font-bold text-[var(--color-text-white)]">
                     <span>Costo en código</span>
-                    <span>$0</span>
+                    <span className="text-[var(--color-success)] drop-shadow-[0_0_8px_rgba(106,191,75,0.5)]">
+                        $0
+                    </span>
                 </div>
-                <div className="absolute -right-3 top-16 rotate-[-9deg] rounded-full border-[3px] border-[var(--color-stamp)] px-4 py-1.5 font-display text-xs font-bold uppercase tracking-widest text-[var(--color-stamp)] opacity-90">
+                
+                {/* Sello: De tinta física a Badge Neón */}
+                <div className="absolute -right-4 top-12 rotate-[-12deg] rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-bg-dark)]/90 backdrop-blur px-4 py-1.5 font-display text-xs font-bold uppercase tracking-widest text-[var(--color-accent)] shadow-[0_0_15px_rgba(0,188,235,0.25)]">
                     Lista hoy
->>>>>>> Stashed changes
                 </div>
             </div>
         </div>
     );
 }
 
-function Stat({ label, value, trend }: { label: string; value: string; trend: string }) {
+/* =========================================================
+   SUBCOMPONENTES DEL DASHBOARD MOCKUP
+   Los actualizamos para que usen las clases de Tailwind de tu tema
+========================================================= */
+
+export function Stat({ label, value, trend }: { label: string; value: string; trend: string }) {
+    const isPositive = trend.includes("+") || trend.includes("up");
     return (
-        <div className="dashboard-stat">
-            <span>{label}</span>
-            <strong>{value}</strong>
-            <small>{trend}</small>
-            <div className="stat-chart" />
+        <div className="dark-card flex flex-col p-4 rounded-lg border border-[var(--color-bg-line)]">
+            <span className="text-xs text-[var(--color-text-muted)] uppercase tracking-wider font-semibold">
+                {label}
+            </span>
+            <div className="mt-2 flex items-end justify-between">
+                <strong className="text-xl font-bold text-[var(--color-text-white)]">
+                    {value}
+                </strong>
+                <small className={`font-mono text-xs ${isPositive ? 'text-[var(--color-success)]' : 'text-[var(--color-accent-pink)]'}`}>
+                    {trend}
+                </small>
+            </div>
         </div>
     );
 }
 
-function MiniProduct({ title, price, type }: { title: string; price: string; type: string }) {
+export function MiniProduct({ title, price, type }: { title: string; price: string; type: string }) {
     return (
-        <div className="mini-product">
-            <div className={`mini-product-image ${type}`} />
-            <strong>{title}</strong>
-            <span>{price}</span>
+        <div className="flex items-center justify-between p-3 rounded-lg bg-[var(--color-bg-raised)] border border-[var(--color-bg-line)] transition-colors hover:border-[var(--color-accent)]/50 cursor-default">
+            <div className="flex items-center gap-3">
+                <div className="h-10 w-10 rounded-md bg-[var(--color-bg-dark)] flex items-center justify-center border border-[var(--color-bg-line)]">
+                    {/* Placeholder para la imagen del producto */}
+                    <span className="text-[10px] text-[var(--color-text-muted)] font-mono">IMG</span>
+                </div>
+                <div className="flex flex-col">
+                    <strong className="text-sm font-semibold text-[var(--color-text-white)]">
+                        {title}
+                    </strong>
+                    <span className="text-xs text-[var(--color-text-gray)]">
+                        {type}
+                    </span>
+                </div>
+            </div>
+            <span className="font-mono text-sm text-[var(--color-success)] font-medium">
+                {price}
+            </span>
         </div>
     );
 }

@@ -9,6 +9,8 @@
       name="description"
       content="Crea tu tienda en línea en minutos: catálogo, inventario, pedidos y ganancias en un solo panel. Hecho para negocios colombianos."
     />
+    
+    <!-- Preconexión para optimizar la carga de fuentes -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -16,7 +18,9 @@
       rel="stylesheet"
     />
   </head>
-  <body>
+  
+  <!-- Agregamos el color oscuro (#050b14) para evitar el parpadeo blanco al cargar -->
+  <body style="background-color: #050b14; color: #ffffff; margin: 0;">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

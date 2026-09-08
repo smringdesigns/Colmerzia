@@ -1,67 +1,53 @@
-import { LOGIN_URL, SIGNUP_URL } from "../lib/adminUrl";
+﻿import { LOGIN_URL, SIGNUP_URL } from "../lib/adminUrl";
 
 export default function Nav() {
     return (
-<<<<<<< Updated upstream
-        <header className="sticky top-0 z-30 border-b border-[var(--color-bg-line)] bg-[var(--color-bg-dark)]/90 backdrop-blur">
-            <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-                <a href="#top" className="flex items-center gap-2">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-accent)] font-display text-sm font-semibold text-[var(--color-bg-darker)]">
+        <header className="sticky top-0 z-50 bg-[var(--color-bg-dark)]/85 backdrop-blur-md transition-all">
+            
+            {/* LÍNEA DIVISORIA INFERIOR (Degradado en lugar de borde sólido) */}
+            <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[var(--color-bg-line)] to-transparent opacity-70"></div>
+
+            <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-16">
+                
+                {/* LOGO */}
+                <a href="#top" className="flex items-center gap-2 group">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-accent)] font-display text-sm font-bold text-[var(--color-bg-darker)] shadow-[0_0_12px_rgba(0,188,235,0.4)] transition-transform group-hover:scale-105">
                         C
                     </span>
-                    <span className="font-display text-lg font-semibold tracking-tight text-[var(--color-text-white)]">
+                    <span className="font-display text-xl font-bold tracking-tight text-[var(--color-text-white)]">
                         Colmerzia
                     </span>
                 </a>
 
+                {/* ENLACES CENTRALES */}
                 <nav className="hidden items-center gap-8 text-sm font-medium text-[var(--color-text-gray)] md:flex">
-                    <a href="#negocios" className="transition hover:text-[var(--color-text-white)]">
+                    <a href="#negocios" className="transition-colors hover:text-[var(--color-accent)]">
                         Para tu negocio
                     </a>
-                    <a href="#funciones" className="transition hover:text-[var(--color-text-white)]">
+                    <a href="#funciones" className="transition-colors hover:text-[var(--color-accent)]">
                         Qué incluye
                     </a>
-                    <a href="#planes" className="transition hover:text-[var(--color-text-white)]">
+                    <a href="#planes" className="transition-colors hover:text-[var(--color-accent)]">
                         Planes
                     </a>
                 </nav>
 
-                <div className="flex items-center gap-3">
+                {/* BOTONES DE ACCIÓN */}
+                <div className="flex items-center gap-5">
                     <a
                         href={LOGIN_URL}
-                        className="hidden text-sm font-medium text-[var(--color-text-gray)] transition hover:text-[var(--color-text-white)] sm:block"
+                        className="hidden text-sm font-medium text-[var(--color-text-gray)] transition-colors hover:text-[var(--color-accent)] sm:block"
                     >
                         Iniciar sesión
                     </a>
                     <a
                         href={SIGNUP_URL}
-                        className="rounded-full bg-[var(--color-accent)] px-5 py-2.5 text-sm font-semibold text-[var(--color-bg-darker)] transition hover:brightness-110"
+                        className="inline-flex items-center justify-center rounded-lg bg-[var(--color-accent)] px-5 py-2.5 text-sm font-bold text-[var(--color-bg-darker)] shadow-[0_0_15px_rgba(0,188,235,0.25)] transition-all hover:-translate-y-0.5 hover:shadow-[0_0_25px_rgba(0,188,235,0.4)] hover:brightness-110"
                     >
-=======
-        <header className="sticky top-0 z-30 border-b border-white/10 bg-[var(--color-night)]/90 text-white backdrop-blur-xl">
-            <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-                <a href="#top" className="flex items-center gap-2.5">
-                    <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-[var(--color-cyan)]/70 bg-[var(--color-cyan)]/10 font-display text-sm font-bold text-white shadow-[0_0_16px_rgba(0,188,235,.18)]">
-                        C
-                    </span>
-                    <span className="font-display text-lg font-semibold tracking-tight">Colmerzia</span>
-                </a>
-
-                <nav className="hidden items-center gap-8 text-sm font-medium text-white/65 md:flex">
-                    <a href="#negocios" className="transition hover:text-white">Para tu negocio</a>
-                    <a href="#funciones" className="transition hover:text-white">Qué incluye</a>
-                    <a href="#planes" className="transition hover:text-white">Planes</a>
-                </nav>
-
-                <div className="flex items-center gap-4">
-                    <a href={LOGIN_URL} className="hidden text-sm font-medium text-white/65 transition hover:text-white sm:block">
-                        Iniciar sesión
-                    </a>
-                    <a href={SIGNUP_URL} className="btn-glow min-h-0 px-5 py-2.5 text-sm">
->>>>>>> Stashed changes
-                        Crear tienda gratis
+                        Crear tienda
                     </a>
                 </div>
+                
             </div>
         </header>
     );
