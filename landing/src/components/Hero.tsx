@@ -82,7 +82,7 @@ export default function Hero() {
                     </div>
 
                     <p className="mt-6 text-sm text-[var(--color-text-muted)]">
-                        60 días de prueba en el plan Free, sin costo.
+                        30 días de prueba en el plan Free, sin costo.
                     </p>
                 </div>
 

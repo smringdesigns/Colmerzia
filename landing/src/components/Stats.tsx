@@ -1,7 +1,7 @@
 ﻿const STATS = [
     { value: "5", label: "Tipos de negocio con catálogo listo desde el día uno" },
     { value: "0%", label: "Comisión por venta, en cualquier plan" },
-    { value: "60", label: "Días de prueba gratis en el plan Free" },
+    { value: "30", label: "Días de prueba gratis en el plan Free" },
     { value: "100%", label: "Pensado en pesos colombianos, desde el primer clic" },
 ];
 

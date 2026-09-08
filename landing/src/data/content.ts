@@ -44,7 +44,7 @@ export const plans: PlanTier[] = [
     {
         slug: "free",
         name: "Free",
-        trialDays: 60,
+        trialDays: 30,
         limits: {
             products: "Hasta 50 productos",
             staff: "Hasta 2 usuarios",

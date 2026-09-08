@@ -1,55 +1,61 @@
+﻿import FloatingShape from "./FloatingShape";
+
 const STEPS = [
-  {
-    number: 1,
-    color: "border-cyan-500/30",
-    numberColor: "bg-cyan-500/20 border-cyan-400 text-cyan-300",
-    title: "Registra y personaliza",
-    description:
-      "Crea tu cuenta en menos de 5 minutos, sube el logo de tu marca, define tus colores y personaliza tu enlace único.",
-  },
-  {
-    number: 2,
-    color: "border-pink-500/30",
-    numberColor: "bg-pink-500/20 border-pink-400 text-pink-300",
-    title: "Sube tus productos",
-    description:
-      "Carga tus artículos directo desde tu celular: fotos, precios en COP, tallas, variantes e inventario inicial en un clic.",
-  },
-  {
-    number: 3,
-    color: "border-orange-500/30",
-    numberColor: "bg-orange-500/20 border-orange-400 text-orange-300",
-    title: "Comparte y factura",
-    description:
-      "Pega tu link en Instagram, TikTok y WhatsApp. Recibe pedidos pagados con Nequi y genera guías al instante.",
-  },
+    {
+        number: "1",
+        color: "border-[var(--color-accent)]/30",
+        badge: "bg-[var(--color-accent)]/15 border-[var(--color-accent)] text-[var(--color-accent)]",
+        title: "Regístrate y personaliza",
+        body: "Crea tu cuenta, sube el logo de tu marca y define los colores de tu tienda. Tu enlace único queda listo desde el primer momento.",
+    },
+    {
+        number: "2",
+        color: "border-[var(--color-accent-pink)]/30",
+        badge: "bg-[var(--color-accent-pink)]/15 border-[var(--color-accent-pink)] text-[var(--color-accent-pink)]",
+        title: "Sube tus productos",
+        body: "Carga tu catálogo con fotos, precios en COP, variantes e inventario inicial. Todo desde el mismo panel, sin depender de un desarrollador.",
+    },
+    {
+        number: "3",
+        color: "border-[var(--color-bg-glow)]/30",
+        badge: "bg-[var(--color-bg-glow)]/15 border-[var(--color-bg-glow)] text-[var(--color-bg-glow)]",
+        title: "Comparte y recibe pedidos",
+        body: "Pega el link de tu tienda en Instagram, TikTok o WhatsApp. Cada pedido llega directo a tu panel, listo para que lo proceses.",
+    },
 ];
 
 export default function HowItWorks() {
-  return (
-    <section className="w-full bg-[#05070a] text-white py-24 relative" id="como-funciona">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <p className="text-xs uppercase font-bold tracking-[0.25em] text-cyan-400 mb-3">SIMPLICIDAD TOTAL</p>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white mb-4">
-            En 3 simples pasos tienes tu negocio vendiendo
-          </h2>
-          <p className="text-slate-300 text-base">
-            Diseñado para personas que quieren vender, no perder horas programando. Sin configuraciones complejas.
-          </p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {STEPS.map((step) => (
-            <div key={step.number} className={`bg-gradient-to-b from-[#0e1628] to-[#090e1a] border rounded-2xl p-8 shadow-xl ${step.color}`}>
-              <div className={`w-12 h-12 rounded-xl border font-extrabold text-xl flex items-center justify-center mb-6 ${step.numberColor}`}>
-                {step.number}
-              </div>
-              <h3 className="text-xl font-bold text-white mb-3">{step.title}</h3>
-              <p className="text-slate-300 text-sm leading-relaxed mb-5">{step.description}</p>
+    return (
+        <section className="relative py-24 bg-[var(--color-bg-dark)] overflow-hidden">
+            
+            <FloatingShape type="circle" color="cyan" className="w-8 h-8 top-[10%] left-[6%]" delay="0.3s" />
+            <FloatingShape type="polygon" color="orange" className="w-10 h-10 bottom-[15%] right-[8%]" delay="1.8s" />
+
+            <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-16">
+                <div className="mx-auto max-w-2xl text-center mb-16">
+                    <span className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--color-accent)]">
+                        Simplicidad total
+                    </span>
+                    <h2 className="mt-4 text-3xl font-bold tracking-tight text-[var(--color-text-white)] sm:text-4xl lg:text-5xl">
+                        En 3 pasos tu negocio queda vendiendo
+                    </h2>
+                    <p className="mt-4 text-lg leading-relaxed text-[var(--color-text-gray)]">
+                        Pensado para quien quiere vender, no para quien quiere programar.
+                    </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {STEPS.map((step) => (
+                        <div key={step.number} className={`dark-card border p-8 ${step.color}`}>
+                            <div className={`w-12 h-12 rounded-xl border font-extrabold text-xl flex items-center justify-center mb-6 ${step.badge}`}>
+                                {step.number}
+                            </div>
+                            <h3 className="text-xl font-bold text-[var(--color-text-white)] mb-3">{step.title}</h3>
+                            <p className="text-[var(--color-text-gray)] text-sm leading-relaxed">{step.body}</p>
+                        </div>
+                    ))}
+                </div>
             </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
+        </section>
+    );
 }
